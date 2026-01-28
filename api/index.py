@@ -7,29 +7,32 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 def get_gemini_response(user_input):
-    # O código agora busca a variável GEMINI_API_KEY
     api_key = os.environ.get('GEMINI_API_KEY', '').strip()
     if not api_key:
-        return "Erro: Chave GEMINI_API_KEY não configurada na Vercel."
+        return "Erro: GEMINI_API_KEY não configurada."
 
-    # Usando o modelo Gemini 1.5 Flash (Gratuito e estável)
-    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={api_key}"
-    
+    # Lista de tentativas para evitar o erro 404
+    tentativas = [
+        f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}",
+        f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}",
+        f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={api_key}"
+    ]
+
     payload = {
-        "contents": [{
-            "parts": [{"text": f"Você é um tutor pedagógico de Circuitos CA. Responda: {user_input}"}]
-        }]
+        "contents": [{"parts": [{"text": f"Você é um tutor de Circuitos CA. Responda de forma pedagógica: {user_input}"}]}]
     }
 
-    try:
-        response = requests.post(url, json=payload, timeout=30)
-        data = response.json()
-        
-        if response.status_code == 200:
-            return data['candidates'][0]['content']['parts'][0]['text']
-        return f"Erro no Google (Status {response.status_code}): {data.get('error', {}).get('message', 'Erro desconhecido')}"
-    except Exception as e:
-        return f"Erro de conexão: {str(e)}"
+    ultimo_erro = ""
+    for url in tentativas:
+        try:
+            response = requests.post(url, json=payload, timeout=20)
+            if response.status_code == 200:
+                return response.json()['candidates'][0]['content']['parts'][0]['text']
+            ultimo_erro = response.text
+        except Exception as e:
+            ultimo_erro = str(e)
+
+    return f"Erro final após testar todas as rotas: {ultimo_erro}"
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -38,4 +41,4 @@ def chat():
 
 @app.route('/')
 def home():
-    return jsonify({"status": "Tutor Gemini Online"}), 200
+    return jsonify({"status": "Tutor Online", "engine": "Gemini 1.5 Flash Multi-Route"}), 200
