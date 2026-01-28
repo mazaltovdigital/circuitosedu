@@ -9,17 +9,17 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def get_gemini_response(user_input):
     api_key = os.environ.get('GEMINI_API_KEY', '').strip()
     if not api_key:
-        return "Erro: GEMINI_API_KEY não configurada."
+        return "Erro: GEMINI_API_KEY não configurada na Vercel."
 
-    # Lista de tentativas para evitar o erro 404
+    # Lista de tentativas focada na compatibilidade total
     tentativas = [
-        f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}",
-        f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}",
-        f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={api_key}"
+        f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key={api_key}",
+        f"https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={api_key}",
+        f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
     ]
 
     payload = {
-        "contents": [{"parts": [{"text": f"Você é um tutor de Circuitos CA. Responda de forma pedagógica: {user_input}"}]}]
+        "contents": [{"parts": [{"text": f"Você é um tutor pedagógico de Circuitos CA. Responda de forma clara: {user_input}"}]}]
     }
 
     ultimo_erro = ""
@@ -32,7 +32,7 @@ def get_gemini_response(user_input):
         except Exception as e:
             ultimo_erro = str(e)
 
-    return f"Erro final após testar todas as rotas: {ultimo_erro}"
+    return f"Erro final após testar Pro e Flash: {ultimo_erro}"
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -41,4 +41,4 @@ def chat():
 
 @app.route('/')
 def home():
-    return jsonify({"status": "Tutor Online", "engine": "Gemini 1.5 Flash Multi-Route"}), 200
+    return jsonify({"status": "Tutor Online", "engine": "Gemini Multi-Route (Pro/Flash)"}), 200
