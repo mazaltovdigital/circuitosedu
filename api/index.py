@@ -4,41 +4,38 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-# Permite que seu site no GitHub Pages fale com o servidor
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-def get_response(user_input):
-    # Busca a chave que você vai configurar na Vercel
-    api_key = os.environ.get('PERPLEXITY_API_KEY', '').strip()
+def get_gemini_response(user_input):
+    # O código agora busca a variável GEMINI_API_KEY
+    api_key = os.environ.get('GEMINI_API_KEY', '').strip()
     if not api_key:
-        return "Erro: PERPLEXITY_API_KEY não configurada."
+        return "Erro: Chave GEMINI_API_KEY não configurada na Vercel."
 
-    url = "https://api.perplexity.ai/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
+    # Usando o modelo Gemini 1.5 Flash (Gratuito e estável)
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    
     payload = {
-        "model": "llama-3.1-sonar-small-128k-online",
-        "messages": [
-            {"role": "system", "content": "Você é um tutor de Circuitos CA. Explique de forma clara."},
-            {"role": "user", "content": user_input}
-        ]
+        "contents": [{
+            "parts": [{"text": f"Você é um tutor pedagógico de Circuitos CA. Responda: {user_input}"}]
+        }]
     }
 
     try:
         response = requests.post(url, json=payload, timeout=30)
+        data = response.json()
+        
         if response.status_code == 200:
-            return response.json()['choices'][0]['message']['content']
-        return f"Erro na API (Status {response.status_code}): {response.text}"
+            return data['candidates'][0]['content']['parts'][0]['text']
+        return f"Erro no Google (Status {response.status_code}): {data.get('error', {}).get('message', 'Erro desconhecido')}"
     except Exception as e:
         return f"Erro de conexão: {str(e)}"
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
     data = request.get_json()
-    return jsonify({"reply": get_response(data.get('message', ''))})
+    return jsonify({"reply": get_gemini_response(data.get('message', ''))})
 
 @app.route('/')
 def home():
-    return jsonify({"status": "Servidor Perplexity Online"}), 200
+    return jsonify({"status": "Tutor Gemini Online"}), 200
