@@ -13,7 +13,7 @@ def get_gemini_response(user_input):
         return "Erro: Chave GEMINI_API_KEY não configurada na Vercel."
 
     # Usando o modelo Gemini 1.5 Flash (Gratuito e estável)
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={api_key}"
     
     payload = {
         "contents": [{
