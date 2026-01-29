@@ -125,7 +125,7 @@
         const texto = input.value; input.value = '';
         box.scrollTop = box.scrollHeight;
         try {
-            const res = await fetch('/api/chat', {
+            const res = await fetch('https://circuitosedu-backend.vercel.app/api/chat', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({message: texto})
