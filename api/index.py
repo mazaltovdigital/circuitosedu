@@ -4,9 +4,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
-# Memória temporária para feedbacks (Reinicia se o servidor da Vercel hibernar)
+# Memória temporária para feedbacks (Sessions)
 feedbacks_lista = []
 
 @app.route('/api/chat', methods=['POST'])
@@ -17,15 +17,15 @@ def chat():
     
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
     payload = {
-        "contents": [{"parts": [{"text": f"Você é um tutor pedagógico mediador de Circuitos CA para o mestrado de Daniel Sandoval. Ajude o aluno a pensar, não dê apenas a resposta: {user_input}"}]}]
+        "contents": [{"parts": [{"text": f"Você é um tutor pedagógico mediador de Circuitos CA. Ajude o aluno a refletir sobre os conceitos físicos: {user_input}"}]}]
     }
     
     try:
-        response = requests.post(url, json=payload, timeout=20)
+        response = requests.post(url, json=payload, timeout=15)
         reply = response.json()['candidates'][0]['content']['parts'][0]['text']
         return jsonify({"reply": reply})
     except Exception as e:
-        return jsonify({"reply": "Tive um problema na conexão. Pode repetir a dúvida?"})
+        return jsonify({"reply": "Ops! Tive um problema de conexão. Pode tentar novamente?"})
 
 @app.route('/api/feedback', methods=['POST'])
 def salvar_feedback():
@@ -36,11 +36,11 @@ def salvar_feedback():
 @app.route('/api/admin/feedbacks', methods=['POST'])
 def listar_feedbacks():
     senha = request.get_json().get('password')
-    # Senha de acesso ao painel
+    # Senha definida conforme sua preferência para o painel
     if senha == "Mestrado2026":
         return jsonify(feedbacks_lista), 200
     return jsonify({"erro": "Acesso negado"}), 403
 
 @app.route('/')
 def home():
-    return jsonify({"status": "Backend CircuitosEdu Operacional"}), 200
+    return jsonify({"status": "Servidor CircuitosEdu Online"}), 200
