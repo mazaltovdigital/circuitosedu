@@ -43,7 +43,7 @@
     <main>
         <article class="section-box" id="material-teorico">
             <h2>📖 Base de Conhecimento CA</h2>
-            <p>Selecione um módulo para explorar os fundamentos teóricos antes da prática:</p>
+            <p>Selecione um módulo para explorar os fundamentos teóricos:</p>
             <div class="teoria-grid">
                 <div class="teoria-card" onclick="location.href='grandezas.html'">
                     <div class="icon-circle">⚡</div>
@@ -82,7 +82,6 @@
         
         <article class="section-box" id="ra">
             <h2>🕶️ Realidade Aumentada em Campo</h2>
-            <p>Registros da aplicação prática com estudantes:</p>
             <div id="galeria" class="gallery-grid"></div>
         </article>
 
@@ -100,56 +99,52 @@
     <aside class="chat-sidebar">
         <h3>Tutor IA Mediador</h3>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Sou seu tutor assistente. Como os conceitos de **impedância** estão se conectando para você nos testes do PHET?</div>
+            <div class="bubble tutor-msg">Olá! Estou aqui para ajudar com suas dúvidas sobre Circuitos de Corrente Alternada. Como estão os testes no PHET?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Digite sua dúvida aqui...">
+            <input type="text" id="msg-input" placeholder="Pergunte ao Tutor...">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
 
 <script>
-    // Carregamento dinâmico da galeria de fotos
+    // Carrega Galeria
     const galeria = document.getElementById('galeria');
     for (let i = 1; i <= 4; i++) {
         const img = document.createElement('img');
         img.src = `assets/aluno${i}.jpg`;
-        img.alt = `Evidência de uso ${i}`;
+        img.alt = `Atividade Prática ${i}`;
         galeria.appendChild(img);
     }
 
-    // Comunicação com o Backend do Tutor IA
+    // Lógica do Chat - Apontando para API interna da Vercel
     async function enviarChat() {
         const input = document.getElementById('msg-input');
         const box = document.getElementById('chat-content');
         if(!input.value.trim()) return;
 
-        // Adiciona mensagem do usuário na tela
         box.innerHTML += `<div class="bubble user-msg">${input.value}</div>`;
         const texto = input.value; 
         input.value = '';
         box.scrollTop = box.scrollHeight;
 
         try {
-            // Chamada para a API unificada na Vercel
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({message: texto})
             });
             const data = await res.json();
-            
-            // Adiciona resposta do tutor
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
         } catch(e) { 
-            box.innerHTML += `<div class="bubble tutor-msg">Ops! Tive um problema técnico. Pode repetir?</div>`; 
+            box.innerHTML += `<div class="bubble tutor-msg">Ops! Houve um erro na conexão. Pode tentar novamente?</div>`; 
         }
         box.scrollTop = box.scrollHeight;
     }
 
-    // Listener para tecla Enter no chat
-    document.getElementById('msg-input').addEventListener('keypress', function (e) {
+    // Atalho tecla Enter
+    document.getElementById('msg-input').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') enviarChat();
     });
 </script>
