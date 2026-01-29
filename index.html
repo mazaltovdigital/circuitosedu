@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CircuitosEdu - AVA de Circuitos CA</title>
+    <title>CircuitosEdu - Plataforma de Aprendizagem CA</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-676V40J9RX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -17,76 +17,85 @@
         header { background: var(--blue); color: white; padding: 30px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .main-layout { display: grid; grid-template-columns: 250px 1fr 350px; gap: 20px; max-width: 1600px; margin: 20px auto; padding: 0 20px; }
         nav, article, aside { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
-        
-        /* Botão de Download */
-        .btn-download { display: inline-block; background: var(--orange); color: white; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 15px; transition: 0.3s; }
-        .btn-download:hover { background: #e67e22; transform: scale(1.02); }
-
+        .btn-download { display: inline-block; background: var(--orange); color: white; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 15px; }
         .simulation-frame { width: 100%; height: 500px; border: none; border-radius: 8px; background: #000; margin-top: 20px; }
-        #chat-content { flex: 1; overflow-y: auto; height: 500px; padding: 15px; background: #fdfdfd; display: flex; flex-direction: column; gap: 10px; border: 1px solid #eee; margin-bottom: 10px; }
+        #chat-content { flex: 1; overflow-y: auto; height: 500px; padding: 15px; background: #fdfdfd; display: flex; flex-direction: column; gap: 10px; border: 1px solid #eee; }
         .bubble { padding: 10px 14px; border-radius: 12px; font-size: 0.9em; max-width: 85%; }
         .tutor-msg { background: #f1f3f4; align-self: flex-start; }
         .user-msg { background: var(--blue); color: white; align-self: flex-end; }
-        
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-top: 20px; }
         .gallery-grid img { width: 100%; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .admin-section { margin-top: 40px; padding: 20px; border: 1px dashed var(--blue); background: #f9f9f9; border-radius: 8px; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>CircuitosEdu</h1>
-    <p>Produto Educacional: Mediação de Circuitos CA com IA e RA</p>
+    <p>Ensino de Circuitos CA mediado por IA e Realidade Aumentada</p>
 </header>
 
 <div class="main-layout">
     <nav>
-        <h3 style="color:var(--blue); border-bottom: 2px solid var(--orange);">Módulos</h3>
+        <h3 style="color:var(--blue); border-bottom: 2px solid var(--orange);">Navegação</h3>
         <ul style="list-style:none; padding:0;">
             <li>🏠 Início</li>
-            <li>🔋 Grandezas CA</li>
-            <li>📈 Fasores</li>
             <li>🔌 Simulação RLC</li>
+            <li>🕶️ Espaço RA</li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
     </nav>
 
     <main>
         <article>
-            <h2>🔬 Laboratório e Simulação</h2>
-            <p>Utilize o simulador PHET para validar os cálculos de impedância antes de realizar a prática física.</p>
+            <h2>🔬 Prática e Simulação</h2>
             <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html" class="simulation-frame"></iframe>
             
-            <h3 style="margin-top:40px;">🕶️ Galeria de Testes em Campo</h3>
+            <h3>🕶️ Galeria de Testes com Alunos</h3>
             <div id="galeria" class="gallery-grid"></div>
+
+            <div style="margin-top:40px; padding:20px; background:#eef6ff; border-radius:8px;">
+                <h3>📊 Pesquisa de Satisfação</h3>
+                <form id="form-pesquisa">
+                    <p>O Tutor IA foi útil? <input type="radio" name="p1" value="Sim" required> Sim <input type="radio" name="p1" value="Não"> Não</p>
+                    <p>Nota para RA: <select name="p2"><option>Excelente</option><option>Bom</option><option>Regular</option></select></p>
+                    <textarea name="coment" placeholder="Comentários..." style="width:100%; margin:10px 0;"></textarea>
+                    <button type="submit" style="background:var(--blue); color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">Enviar Feedback</button>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <h3>🔐 Painel do Pesquisador</h3>
+                <button onclick="acessarPainel()" style="cursor:pointer;">Ver Resultados da Pesquisa</button>
+                <div id="dados-painel" style="display:none; margin-top:15px;">
+                    <table border="1" style="width:100%; border-collapse:collapse;" id="tabela-resultados"></table>
+                </div>
+            </div>
         </article>
     </main>
 
     <aside>
-        <h3 style="text-align:center; color:var(--blue);">Tutor IA Mediador</h3>
-        <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Sou seu tutor. Vamos explorar a defasagem entre tensão e corrente?</div>
-        </div>
-        <div style="display:flex; gap:5px;">
+        <h3 style="text-align:center; color:var(--blue);">Tutor IA</h3>
+        <div id="chat-content"></div>
+        <div style="display:flex; gap:5px; margin-top:10px;">
             <input type="text" id="msg" style="flex:1; padding:10px; border-radius:5px; border:1px solid #ddd;" placeholder="Dúvida?">
-            <button onclick="enviar()" style="background:var(--blue); color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">Enviar</button>
+            <button onclick="enviarChat()" style="background:var(--blue); color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">Ir</button>
         </div>
     </aside>
 </div>
 
 <script>
-    // Carregamento da Galeria
+    // 1. Carregar Galeria Automática da pasta /assets
     const galeria = document.getElementById('galeria');
-    const totalFotos = 4; 
-    for (let i = 1; i <= totalFotos; i++) {
+    for (let i = 1; i <= 4; i++) {
         const img = document.createElement('img');
         img.src = `assets/aluno${i}.jpg`;
-        img.alt = `Atividade Prática ${i}`;
+        img.alt = `Atividade ${i}`;
         galeria.appendChild(img);
     }
 
-    // Chat Backend
-    async function enviar() {
+    // 2. Chat com o Tutor
+    async function enviarChat() {
         const input = document.getElementById('msg');
         const box = document.getElementById('chat-content');
         if(!input.value) return;
@@ -102,6 +111,36 @@
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
         } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão.</div>`; }
         box.scrollTop = box.scrollHeight;
+    }
+
+    // 3. Enviar Feedback
+    document.getElementById('form-pesquisa').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const payload = { p1: formData.get('p1'), p2: formData.get('p2'), coment: formData.get('coment') };
+        const res = await fetch('https://circuitosedu-backend.vercel.app/api/feedback', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        if(res.ok) { alert("Feedback enviado!"); e.target.reset(); }
+    });
+
+    // 4. Acessar Painel Admin
+    async function acessarPainel() {
+        const pass = prompt("Senha do Pesquisador:");
+        const res = await fetch('https://circuitosedu-backend.vercel.app/api/admin/feedbacks', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({password: pass})
+        });
+        if(res.ok) {
+            const dados = await res.json();
+            const tabela = document.getElementById('tabela-resultados');
+            tabela.innerHTML = `<tr><th>IA Útil?</th><th>RA</th><th>Comentário</th></tr>` + 
+                dados.map(d => `<tr><td>${d.p1}</td><td>${d.p2}</td><td>${d.coment}</td></tr>`).join('');
+            document.getElementById('dados-painel').style.display = 'block';
+        } else { alert("Acesso Negado."); }
     }
 </script>
 </body>
