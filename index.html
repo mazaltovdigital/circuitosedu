@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CircuitosEdu - Plataforma de Aprendizagem CA</title>
-    
     <link rel="stylesheet" href="style.css">
-    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-676V40J9RX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date()); gtag('config', 'G-676V40J9RX');
     </script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -42,38 +39,41 @@
     <main>
         <article class="section-box" id="material-teorico">
             <h2>📖 Base de Conhecimento CA</h2>
-            <p>Explore os conceitos fundamentais antes de iniciar as simulações práticas.</p>
+            <p>Selecione um módulo para explorar os conceitos antes da prática:</p>
             
             <div class="teoria-grid">
                 <div class="teoria-card" onclick="location.href='grandezas.html'">
                     <div class="icon-circle">⚡</div>
-                    <h4>Grandezas CA</h4>
+                    <span class="teoria-titulo">Grandezas CA</span>
                     <p>Frequência, Período e Valor Eficaz (RMS).</p>
+                    <button class="btn-explorar">Explorar Conteúdo</button>
                 </div>
                 
                 <div class="teoria-card" onclick="location.href='fasores.html'">
                     <div class="icon-circle">📈</div>
-                    <h4>Diagramas Fasoriais</h4>
+                    <span class="teoria-titulo">Fasores</span>
                     <p>Representação vetorial de tensões e correntes.</p>
+                    <button class="btn-explorar">Explorar Conteúdo</button>
                 </div>
                 
                 <div class="teoria-card" onclick="location.href='impedancia.html'">
                     <div class="icon-circle">🔋</div>
-                    <h4>Reatância e Impedância</h4>
-                    <p>O comportamento de capacitores e indutores.</p>
+                    <span class="teoria-titulo">Impedância</span>
+                    <p>Comportamento de capacitores e indutores.</p>
+                    <button class="btn-explorar">Explorar Conteúdo</button>
                 </div>
 
                 <div class="teoria-card" onclick="location.href='guia-ra.html'">
                     <div class="icon-circle">🕶️</div>
-                    <h4>Guia de RA</h4>
+                    <span class="teoria-titulo">Guia de RA</span>
                     <p>Como usar o SENAI Space nos circuitos.</p>
+                    <button class="btn-explorar">Ver Tutorial</button>
                 </div>
             </div>
         </article>
 
         <article class="section-box" id="phet">
             <h2>🔬 Laboratório Virtual (PHET)</h2>
-            <p>Utilize o simulador abaixo para validar os conceitos de impedância complexa.</p>
             <div class="iframe-container">
                 <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" 
                         width="100%" height="550px" style="border:none;" allowfullscreen></iframe>
@@ -81,18 +81,16 @@
         </article>
         
         <article class="section-box" id="ra">
-            <h2>🕶️ Evidências: Realidade Aumentada</h2>
-            <p>Registros da interação dos alunos com marcadores de RA no laboratório.</p>
+            <h2>🕶️ Realidade Aumentada</h2>
             <div id="galeria" class="gallery-grid"></div>
         </article>
 
         <article class="section-box">
-            <h3>📊 Pesquisa de Mestrado</h3>
+            <h3>📊 Pesquisa de Satisfação</h3>
             <form id="form-pesquisa">
-                <label>O Tutor IA auxiliou no seu aprendizado?</label><br>
-                <input type="radio" name="p1" value="Sim" required> Sim 
-                <input type="radio" name="p1" value="Não"> Não<br><br>
-                <button type="submit" class="btn-chat" style="border-radius:4px; width:100%;">Enviar Feedback</button>
+                <label>O Tutor IA auxiliou no aprendizado?</label><br>
+                <input type="radio" name="p1" value="Sim" required> Sim <input type="radio" name="p1" value="Não"> Não<br><br>
+                <button type="submit" class="btn-submit">Enviar Feedback</button>
             </form>
         </article>
     </main>
@@ -100,26 +98,23 @@
     <aside class="chat-sidebar">
         <h3>Tutor IA Mediador</h3>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Sou seu tutor assistente. Como os conceitos de **fasores** e **impedância** estão se conectando para você hoje?</div>
+            <div class="bubble tutor-msg">Como os conceitos de **impedância** estão se conectando para você?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Dúvida técnica?">
+            <input type="text" id="msg-input" placeholder="Dúvida?">
             <button onclick="enviarChat()" class="btn-chat">Enviar</button>
         </div>
     </aside>
 </div>
 
 <script>
-    // 1. Carregamento da Galeria
     const galeria = document.getElementById('galeria');
     for (let i = 1; i <= 4; i++) {
         const img = document.createElement('img');
         img.src = `assets/aluno${i}.jpg`;
-        img.alt = `Atividade ${i}`;
         galeria.appendChild(img);
     }
 
-    // 2. Lógica de Chat
     async function enviarChat() {
         const input = document.getElementById('msg-input');
         const box = document.getElementById('chat-content');
@@ -135,7 +130,7 @@
             });
             const data = await res.json();
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
-        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão.</div>`; }
+        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão.</div>`; }
         box.scrollTop = box.scrollHeight;
     }
 </script>
