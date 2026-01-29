@@ -1,41 +1,29 @@
-/* --- VARIÁVEIS E RESET --- */
+/* --- RESET GERAL --- */
 :root {
     --primary-blue: #1a73e8;
     --secondary-orange: #f39c12;
     --bg-light: #f8f9fa;
     --white: #ffffff;
     --text-main: #202124;
-    --border-color: #dadce0;
-    --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); color: var(--text-main); }
 
-body { 
-    font-family: 'Roboto', sans-serif; 
-    background-color: var(--bg-light); 
-    color: var(--text-main); 
-    line-height: 1.6;
-}
-
-/* --- CABEÇALHO LIMPO (SEM DUPLICAÇÃO) --- */
+/* --- CABEÇALHO (O SEGREDO DO DESIGN) --- */
 .main-header {
     background: url('assets/banner-header.png') no-repeat center center;
     background-size: cover;
-    min-height: 350px;
+    min-height: 320px;
     width: 100%;
     position: relative;
-    overflow: hidden;
+    display: flex;
 }
 
 .header-overlay {
-    background: rgba(0, 0, 0, 0.5); 
+    background: rgba(0, 0, 0, 0.6); /* Camada de contraste */
     width: 100%;
-    min-height: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,16 +36,15 @@ body {
 }
 
 .header-logo-icon {
-    width: 90px;
+    width: 80px;
     height: auto;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    margin-bottom: 10px;
 }
 
 .logo-text-group {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     gap: 10px;
     font-size: 2.8rem;
     margin-bottom: 10px;
@@ -65,25 +52,21 @@ body {
 
 .logo-box {
     background: var(--primary-blue);
-    color: white;
-    padding: 5px 20px;
+    padding: 5px 15px;
     border-radius: 8px;
     font-weight: bold;
 }
 
-.logo-text-light {
-    font-weight: 300;
-}
+.logo-text-light { font-weight: 300; }
 
 .header-subtitle {
-    font-size: 1.2rem;
-    font-weight: 400;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    font-size: 1.1rem;
+    font-weight: 300;
     max-width: 700px;
-    margin: 0 auto;
+    line-height: 1.4;
 }
 
-/* --- LAYOUT PRINCIPAL --- */
+/* --- GRID E LAYOUT --- */
 .main-layout {
     display: grid;
     grid-template-columns: 260px 1fr 350px;
@@ -93,51 +76,42 @@ body {
     padding: 0 20px;
 }
 
-/* --- NAVEGAÇÃO --- */
-nav { 
-    background: var(--white); 
-    padding: 20px; 
-    border-radius: 12px; 
-    box-shadow: var(--shadow); 
-    height: fit-content; 
-}
-
-.nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); padding-bottom: 10px; margin-bottom: 15px; }
+nav { background: var(--white); padding: 20px; border-radius: 12px; box-shadow: var(--shadow); height: fit-content; }
+.nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); margin-bottom: 15px; padding-bottom: 5px; }
 .nav-list { list-style: none; }
-.nav-list li { padding: 12px 10px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: 0.3s; }
-.nav-list li:hover { background: #f1f6ff; color: var(--primary-blue); padding-left: 15px; }
+.nav-list li { padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; transition: 0.2s; }
+.nav-list li:hover { background: #f0f7ff; color: var(--primary-blue); }
 
-.btn-download { display: block; background: var(--secondary-orange); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 25px; transition: 0.3s; }
-.btn-download:hover { background: #e67e22; }
+.btn-download { display: block; background: var(--secondary-orange); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px; }
 
-/* --- GRID DE TEORIA --- */
-.teoria-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 25px; }
-.teoria-card { background: var(--white); border: 2px solid #f0f0f0; padding: 25px 15px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
-.teoria-card:hover { transform: translateY(-8px); border-color: var(--primary-blue); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+/* --- CARDS DE TEORIA --- */
+.teoria-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
+.teoria-card { background: var(--white); border: 2px solid #eee; padding: 20px; border-radius: 12px; text-align: center; transition: 0.3s; cursor: pointer; }
+.teoria-card:hover { transform: translateY(-5px); border-color: var(--primary-blue); shadow: var(--shadow); }
+.icon-circle { width: 50px; height: 50px; background: #e8f0fe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 1.5rem; }
+.teoria-titulo { font-weight: bold; color: var(--primary-blue); }
+.btn-explorar { margin-top: 10px; background: var(--primary-blue); color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; }
 
-.icon-circle { width: 60px; height: 60px; background: #eef6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 15px; border: 2px solid var(--primary-blue); }
-.teoria-titulo { font-weight: bold; color: var(--primary-blue); font-size: 1.1rem; margin-bottom: 8px; }
-.btn-explorar { margin-top: 10px; background: var(--primary-blue); color: white; border: none; padding: 6px 15px; border-radius: 4px; cursor: pointer; }
+/* --- SEÇÕES --- */
+.section-box { background: var(--white); padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: var(--shadow); }
+.iframe-container { width: 100%; height: 500px; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; }
 
-/* --- CONTEÚDO --- */
-.section-box { background: var(--white); padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: var(--shadow); }
-.iframe-container { width: 100%; height: 550px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); }
-
-/* --- CHAT --- */
-.chat-sidebar { background: var(--white); border-radius: 12px; display: flex; flex-direction: column; height: 750px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
-.chat-sidebar h3 { background: var(--primary-blue); color: white; padding: 15px; text-align: center; border-radius: 12px 12px 0 0; }
-#chat-content { flex: 1; overflow-y: auto; padding: 20px; background: #fcfcfc; }
-.bubble { padding: 12px 16px; border-radius: 15px; margin-bottom: 15px; font-size: 0.95rem; max-width: 85%; }
+/* --- CHAT SIDEBAR --- */
+.chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: var(--shadow); display: flex; flex-direction: column; height: 700px; }
+.chat-sidebar h3 { background: var(--primary-blue); color: white; padding: 15px; border-radius: 12px 12px 0 0; text-align: center; }
+#chat-content { flex: 1; overflow-y: auto; padding: 15px; background: #fafafa; }
+.bubble { padding: 10px 15px; border-radius: 12px; margin-bottom: 10px; max-width: 85%; line-height: 1.4; }
 .tutor-msg { background: #f1f3f4; align-self: flex-start; }
 .user-msg { background: var(--primary-blue); color: white; align-self: flex-end; margin-left: auto; }
-.chat-input-area { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; }
-.chat-input-area input { flex: 1; border-radius: 25px; border: 1px solid #ddd; padding: 10px 18px; outline: none; }
+
+.chat-input-area { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 8px; }
+.chat-input-area input { flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #ddd; outline: none; }
 .btn-chat { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
 
-.gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .gallery-grid img { width: 100%; border-radius: 8px; }
 
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
     .main-layout { grid-template-columns: 1fr; }
-    .chat-sidebar { height: 500px; }
+    .chat-sidebar { height: 450px; }
 }
