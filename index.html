@@ -12,7 +12,7 @@
 <header class="main-header">
     <div class="header-overlay">
         <div class="header-content">
-            <img src="assets/logo-circular.png" alt="Logo CircuitosEdu" class="header-logo-icon">
+            <img src="assets/logo-circular.png" alt="Logo" class="header-logo-icon">
             <div class="logo-text-group">
                 <span class="logo-box">Circuitos</span>
                 <span class="logo-text-light">Edu</span>
@@ -23,18 +23,18 @@
 </header>
 
 <div class="main-layout">
-    <nav>
+    <nav class="sidebar-nav">
         <h3 class="nav-title">Navegação</h3>
         <ul class="nav-list">
-            <li onclick="location.href='#material-teorico'">📖 Material Teórico</li>
-            <li onclick="location.href='#phet'">🔌 Simulações PHET</li>
-            <li onclick="location.href='#ra'">🕶️ Realidade Aumentada</li>
+            <li>📖 Material Teórico</li>
+            <li>🔌 Simulações PHET</li>
+            <li>🕶️ Realidade Aumentada</li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
     </nav>
 
-    <main>
-        <article class="section-box" id="material-teorico">
+    <main class="content-area">
+        <section class="section-box">
             <h2>📖 Base de Conhecimento CA</h2>
             <div class="teoria-grid">
                 <div class="teoria-card" onclick="location.href='grandezas.html'">
@@ -53,15 +53,15 @@
                     <button class="btn-explorar">Acessar</button>
                 </div>
             </div>
-        </article>
+        </section>
 
-        <article class="section-box" id="phet">
+        <section class="section-box">
             <h2>🔬 Laboratório Virtual (PHET)</h2>
             <div class="iframe-container">
                 <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" 
                         width="100%" height="100%" style="border:none;" allowfullscreen></iframe>
             </div>
-        </article>
+        </section>
     </main>
 
     <aside class="chat-sidebar">
@@ -96,7 +96,7 @@
             const data = await res.json();
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
         } catch(e) { 
-            box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão com o servidor.</div>`; 
+            box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão com o Tutor.</div>`; 
         }
         box.scrollTop = box.scrollHeight;
     }
