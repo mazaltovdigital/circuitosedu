@@ -27,13 +27,89 @@
 </header>
 
 <div class="main-layout">
-    <nav>
+    <nav id="sidebar-menu">
         <h3 class="nav-title">Menu Principal</h3>
         <ul class="nav-list">
-            <li>🏠 Início / Ambientação</li>
-            <li class="menu-destaque">🔌 Simulações PHET</li>
-            <li class="menu-destaque">🕶️ Realidade Aumentada (RA)</li>
-            <li class="menu-destaque">📝 Quizzes de Avaliação</li>
-            <li>📖 Material Teórico</li>
-            <li>🛠️ Guia de Implantação</li>
+            <li onclick="location.href='#inicio'">🏠 Início / Ambientação</li>
+            <li class="menu-destaque" onclick="location.href='#phet-section'">🔌 Simulações PHET</li>
+            <li class="menu-destaque" onclick="location.href='#ra-section'">🕶️ Realidade Aumentada</li>
+            <li class="menu-destaque" onclick="location.href='#quiz-section'">📝 Quizzes de Avaliação</li>
+            <li onclick="location.href='GUIA_IMPLANTACAO.md'">🛠️ Guia de Implantação</li>
         </ul>
+        <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
+    </nav>
+
+    <main>
+        <article class="section-box" id="phet-section">
+            <h2>🔬 Laboratório Virtual (PHET)</h2>
+            <p>Monte seu circuito RLC e observe a defasagem entre os fasores de tensão e corrente.</p>
+            <div class="iframe-container" style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;">
+                <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" 
+                        style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%; border: none; border-radius: 8px;" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </article>
+        
+        <article class="section-box" id="ra-section">
+            <h2>🕶️ Espaço Realidade Aumentada</h2>
+            <p>Utilize os marcadores do app <strong>SENAI Space</strong> para visualizar fasores em 3D.</p>
+            <div id="galeria" class="gallery-grid">
+                </div>
+        </article>
+
+        <article class="section-box">
+            <h3>📊 Pesquisa de Mestrado</h3>
+            <form id="form-pesquisa">
+                <label>O Tutor IA foi útil?</label><br>
+                <input type="radio" name="p1" value="Sim" required> Sim 
+                <input type="radio" name="p1" value="Não"> Não<br><br>
+                <button type="submit" class="btn-submit">Enviar Dados</button>
+            </form>
+        </article>
+    </main>
+
+    <aside class="chat-sidebar">
+        <h3>Tutor IA Mediador</h3>
+        <div id="chat-content">
+            <div class="bubble tutor-msg">Olá! Sou seu tutor. Como posso ajudar nos seus estudos de circuitos hoje?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="msg-input" placeholder="Sua dúvida...">
+            <button onclick="enviarChat()" class="btn-chat">Enviar</button>
+        </div>
+    </aside>
+</div>
+
+<script>
+    // Carregar Galeria
+    const galeria = document.getElementById('galeria');
+    for (let i = 1; i <= 4; i++) {
+        const img = document.createElement('img');
+        img.src = `assets/aluno${i}.jpg`;
+        img.alt = `Atividade ${i}`;
+        galeria.appendChild(img);
+    }
+
+    // Chat
+    async function enviarChat() {
+        const input = document.getElementById('msg-input');
+        const box = document.getElementById('chat-content');
+        if(!input.value.trim()) return;
+        box.innerHTML += `<div class="bubble user-msg">${input.value}</div>`;
+        const texto = input.value; input.value = '';
+        box.scrollTop = box.scrollHeight;
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: texto})
+            });
+            const data = await res.json();
+            box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
+        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão.</div>`; }
+        box.scrollTop = box.scrollHeight;
+    }
+</script>
+</body>
+</html>
