@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CircuitosEdu - Plataforma de Aprendizagem CA</title>
+    
     <link rel="stylesheet" href="style.css">
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-676V40J9RX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date()); gtag('config', 'G-676V40J9RX');
     </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <header>
     <div class="logo-container">
-        <img src="assets/logo.png" alt="Logo CircuitosEdu" class="logo-site">
+        <div class="logo-box">Circuitos</div>
+        <div class="logo-text">Edu</div>
     </div>
-    <p>Produto Educacional: Mediação de Circuitos CA com IA e RA</p>
+    <p>Produto Educacional: Mediação de Circuitos CA com IA e Realidade Aumentada</p>
 </header>
 
 <div class="main-layout">
@@ -33,77 +37,3 @@
             <li>📖 Material Teórico</li>
             <li>🛠️ Guia de Implantação</li>
         </ul>
-        <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
-    </nav>
-
-    <main>
-        <article>
-            <section class="section-box">
-                <h2>🔌 Simulador Interativo</h2>
-                <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" 
-                        class="simulation-frame" allowfullscreen></iframe>
-            </section>
-            
-            <section class="section-box" id="ra-section">
-                <h2>🕶️ Espaço Realidade Aumentada</h2>
-                <p>Aponte o aplicativo <strong>SENAI Space</strong> para os marcadores físicos e visualize o comportamento dos campos magnéticos em 3D.</p>
-                <div class="gallery-grid" id="galeria"></div>
-            </section>
-
-            <section class="section-box" id="quiz-section">
-                <h2>📝 Teste seus Conhecimentos</h2>
-                <p>Responda ao quiz rápido para validar seu aprendizado sobre fasores e impedância complexa.</p>
-                <button class="btn-submit" onclick="alert('Iniciando Quiz pedagógico...')">Abrir Quiz Online</button>
-            </section>
-
-            <div class="section-box">
-                <h3>📊 Pesquisa de Mestrado</h3>
-                <form id="form-pesquisa">
-                    <label>O Tutor IA auxiliou no seu aprendizado?</label><br>
-                    <input type="radio" name="p1" value="Sim" required> Sim <input type="radio" name="p1" value="Não"> Não<br><br>
-                    <button type="submit" class="btn-submit">Enviar Feedback</button>
-                </form>
-            </div>
-        </article>
-    </main>
-
-    <aside class="chat-sidebar">
-        <h3>Tutor IA Mediador</h3>
-        <div id="chat-content"></div>
-        <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Dúvida técnica?">
-            <button onclick="enviarChat()" class="btn-chat">Enviar</button>
-        </div>
-    </aside>
-</div>
-
-<script>
-    // Carregamento dinâmico das evidências (Pasta assets)
-    const galeria = document.getElementById('galeria');
-    for (let i = 1; i <= 4; i++) {
-        const img = document.createElement('img');
-        img.src = `assets/aluno${i}.jpg`;
-        img.alt = `Atividade RA ${i}`;
-        galeria.appendChild(img);
-    }
-
-    async function enviarChat() {
-        const input = document.getElementById('msg-input');
-        const box = document.getElementById('chat-content');
-        if(!input.value.trim()) return;
-        box.innerHTML += `<div class="bubble user-msg">${input.value}</div>`;
-        const texto = input.value; input.value = '';
-        try {
-            const res = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({message: texto})
-            });
-            const data = await res.json();
-            box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
-        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão.</div>`; }
-        box.scrollTop = box.scrollHeight;
-    }
-</script>
-</body>
-</html>
