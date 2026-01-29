@@ -116,15 +116,19 @@
         galeria.appendChild(img);
     }
 
-    // Lógica do Chat
+    // Lógica do Chat - APONTANDO PARA O BACKEND CORRETO
     async function enviarChat() {
         const input = document.getElementById('msg-input');
         const box = document.getElementById('chat-content');
         if(!input.value.trim()) return;
+
         box.innerHTML += `<div class="bubble user-msg">${input.value}</div>`;
-        const texto = input.value; input.value = '';
+        const texto = input.value; 
+        input.value = '';
         box.scrollTop = box.scrollHeight;
+
         try {
+            // Alterado para a URL completa do seu backend na Vercel
             const res = await fetch('https://circuitosedu-backend.vercel.app/api/chat', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -132,7 +136,9 @@
             });
             const data = await res.json();
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
-        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão.</div>`; }
+        } catch(e) { 
+            box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão com o servidor.</div>`; 
+        }
         box.scrollTop = box.scrollHeight;
     }
 </script>
