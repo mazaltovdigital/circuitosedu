@@ -18,11 +18,13 @@
 <header class="main-header">
     <div class="header-overlay">
         <div class="header-content">
-            <img src="assets/logo-circular.png" alt="Ícone CircuitosEdu" class="header-logo-icon">
+            <img src="assets/logo-circular.png" alt="Logo CircuitosEdu" class="header-logo-icon">
+            
             <div class="logo-text-group">
                 <span class="logo-box">Circuitos</span>
                 <span class="logo-text-light">Edu</span>
             </div>
+            
             <p class="header-subtitle">Produto Educacional: Mediação de Circuitos CA com IA e Realidade Aumentada</p>
         </div>
     </div>
@@ -109,7 +111,6 @@
 </div>
 
 <script>
-    // Carrega Galeria
     const galeria = document.getElementById('galeria');
     for (let i = 1; i <= 4; i++) {
         const img = document.createElement('img');
@@ -118,7 +119,6 @@
         galeria.appendChild(img);
     }
 
-    // Lógica do Chat - Apontando para API interna da Vercel
     async function enviarChat() {
         const input = document.getElementById('msg-input');
         const box = document.getElementById('chat-content');
@@ -138,12 +138,11 @@
             const data = await res.json();
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
         } catch(e) { 
-            box.innerHTML += `<div class="bubble tutor-msg">Ops! Houve um erro na conexão. Pode tentar novamente?</div>`; 
+            box.innerHTML += `<div class="bubble tutor-msg">Ops! Houve um erro na conexão.</div>`; 
         }
         box.scrollTop = box.scrollHeight;
     }
 
-    // Atalho tecla Enter
     document.getElementById('msg-input').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') enviarChat();
     });
