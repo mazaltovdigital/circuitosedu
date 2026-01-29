@@ -19,12 +19,10 @@
     <div class="header-overlay">
         <div class="header-content">
             <img src="assets/logo-circular.png" alt="Logo CircuitosEdu" class="header-logo-icon">
-            
             <div class="logo-text-group">
                 <span class="logo-box">Circuitos</span>
                 <span class="logo-text-light">Edu</span>
             </div>
-            
             <p class="header-subtitle">Produto Educacional: Mediação de Circuitos CA com IA e Realidade Aumentada</p>
         </div>
     </div>
@@ -101,24 +99,26 @@
     <aside class="chat-sidebar">
         <h3>Tutor IA Mediador</h3>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Estou aqui para ajudar com suas dúvidas sobre Circuitos de Corrente Alternada. Como estão os testes no PHET?</div>
+            <div class="bubble tutor-msg">Olá! Sou seu assistente de circuitos. Qual sua dúvida sobre os testes no PHET hoje?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Pergunte ao Tutor...">
+            <input type="text" id="msg-input" placeholder="Digite aqui...">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
 
 <script>
+    // Carrega Galeria
     const galeria = document.getElementById('galeria');
     for (let i = 1; i <= 4; i++) {
         const img = document.createElement('img');
         img.src = `assets/aluno${i}.jpg`;
-        img.alt = `Atividade Prática ${i}`;
+        img.alt = `Prática ${i}`;
         galeria.appendChild(img);
     }
 
+    // Chat
     async function enviarChat() {
         const input = document.getElementById('msg-input');
         const box = document.getElementById('chat-content');
@@ -138,7 +138,7 @@
             const data = await res.json();
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
         } catch(e) { 
-            box.innerHTML += `<div class="bubble tutor-msg">Ops! Houve um erro na conexão.</div>`; 
+            box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão. Tente novamente.</div>`; 
         }
         box.scrollTop = box.scrollHeight;
     }
