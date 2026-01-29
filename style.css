@@ -1,0 +1,89 @@
+/* Identidade Visual CircuitosEdu - Mestrado Daniel Sandoval */
+:root {
+    --blue-senai: #1a73e8;
+    --orange-senai: #f39c12;
+    --bg-light: #f1f3f4;
+    --white: #ffffff;
+    --text-dark: #3c4043;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+header {
+    background-color: var(--blue-senai);
+    color: var(--white);
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr 350px;
+    gap: 20px;
+    max-width: 1600px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+nav, article, aside {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.btn-download {
+    display: inline-block;
+    background-color: var(--orange-senai);
+    color: var(--white);
+    padding: 12px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.simulation-frame {
+    width: 100%;
+    height: 500px;
+    border: none;
+    border-radius: 8px;
+    background: #000;
+}
+
+/* Estilo do Chat Lateral */
+#chat-content {
+    flex: 1;
+    overflow-y: auto;
+    height: 450px;
+    padding: 15px;
+    background: #fdfdfd;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #eee;
+}
+
+.bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    max-width: 85%;
+}
+
+.tutor-msg { background: #f1f3f4; align-self: flex-start; }
+.user-msg { background: var(--blue-senai); color: var(--white); align-self: flex-end; }
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
