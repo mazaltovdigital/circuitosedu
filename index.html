@@ -20,6 +20,7 @@
             <li><a href="#phet">🔬 Laboratório Virtual</a></li>
             <li><a href="#ra-section">🕶️ Realidade Aumentada</a></li>
             <li><a href="#atividades">🎯 Quiz e Mapas Mentais</a></li>
+            <li><a href="#feedback-alunos">📊 Feedback dos Alunos</a></li>
             <li><a href="#sobre-projeto">ℹ️ Sobre o Projeto</a></li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
@@ -35,43 +36,65 @@
         </section>
 
         <section class="section-box" id="tipos-circuitos">
-            <h2>🔌 Tipos de Ligação</h2>
+            <h2>🔌 Configurações de Circuitos</h2>
             <div class="circuit-grid">
                 <div class="circuit-item">
-                    <img src="assets/circuito-serie.png" alt="Série" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120/001529/FFFFFF?text=CIRCUITO+SERIE'">
-                    <h4>Circuito Série</h4>
+                    <img src="assets/circuito-serie.png" alt="Série" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120?text=Circuito+Serie'">
+                    <h4>Série</h4>
                 </div>
                 <div class="circuit-item">
-                    <img src="assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120/001529/FFFFFF?text=CIRCUITO+PARALELO'">
-                    <h4>Circuito Paralelo</h4>
+                    <img src="assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120?text=Circuito+Paralelo'">
+                    <h4>Paralelo</h4>
                 </div>
                 <div class="circuit-item">
-                    <img src="assets/circuito-misto.png" alt="Misto" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120/001529/FFFFFF?text=CIRCUITO+MISTO'">
-                    <h4>Circuito Misto</h4>
+                    <img src="assets/circuito-misto.png" alt="Misto" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120?text=Circuito+Misto'">
+                    <h4>Misto</h4>
                 </div>
+            </div>
+        </section>
+
+        <section class="section-box" id="ra-section">
+            <h2>🕶️ Realidade Aumentada (RA)</h2>
+            <p>Utilize os marcadores abaixo com o app <strong>SENAI Space</strong> para visualizar os componentes em 3D.</p>
+            <div class="activity-flex">
+                <div class="activity-card blue-card">📷 Marcador Resistor</div>
+                <div class="activity-card blue-card">📷 Marcador Indutor</div>
+                <div class="activity-card blue-card">📷 Marcador Capacitor</div>
             </div>
         </section>
 
         <section class="section-box" id="atividades">
             <h2>🎯 Atividades Educativas</h2>
             <div class="activity-flex">
-                <div class="activity-card" onclick="location.href='quiz.html'">
-                    <span class="act-icon">📝</span>
-                    <h4>Acessar Quiz</h4>
+                <div class="activity-card dark-card" onclick="location.href='quiz.html'">
+                    <span>🎯</span> <h4>Acessar Quiz</h4>
                 </div>
-                <div class="activity-card" onclick="location.href='mapas.html'">
-                    <span class="act-icon">🧠</span>
-                    <h4>Mapas Mentais</h4>
+                <div class="activity-card dark-card" onclick="location.href='mapas.html'">
+                    <span>🧠</span> <h4>Mapas Mentais</h4>
                 </div>
             </div>
         </section>
 
-        <section class="section-box" id="ra-section">
-            <h2>🕶️ Realidade Aumentada</h2>
-            <div class="ra-tags">
-                <span class="tag">Marcador Resistor</span>
-                <span class="tag">Marcador Indutor</span>
-                <span class="tag">Marcador Capacitor</span>
+        <section class="section-box" id="feedback-alunos">
+            <h2>📊 Feedback: O uso da IA Mediadora</h2>
+            <form class="feedback-form">
+                <p>Como você avalia a ajuda do Tutor IA durante a prática de hoje?</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="feedback" value="excelente"> Excelente</label>
+                    <label><input type="radio" name="feedback" value="bom"> Bom</label>
+                    <label><input type="radio" name="feedback" value="regular"> Regular</label>
+                </div>
+                <textarea placeholder="Deixe seu comentário sobre a experiência..."></textarea>
+                <button type="submit" class="btn-chat" style="width: 100%; border-radius: 5px; margin-top: 10px;">Enviar Feedback</button>
+            </form>
+        </section>
+
+        <section class="section-box" id="material-teorico">
+            <h2>📖 Material Teórico</h2>
+            <div class="activity-flex">
+                <div class="activity-card light-card" onclick="location.href='grandezas.html'">⚡ Grandezas</div>
+                <div class="activity-card light-card" onclick="location.href='fasores.html'">📈 Fasores</div>
+                <div class="activity-card light-card" onclick="location.href='impedancia.html'">🔋 Impedância</div>
             </div>
         </section>
     </main>
@@ -79,18 +102,18 @@
     <aside class="chat-sidebar">
         <div class="chat-header">🤖 Tutor IA Mediador</div>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá, Prof. Daniel! Como posso mediar a aula hoje?</div>
+            <div class="bubble tutor-msg">Olá! Estou pronto para mediar sua aprendizagem. Qual sua dúvida sobre os circuitos?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Dúvida...">
+            <input type="text" id="msg-input" placeholder="Pergunte ao Tutor...">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
 
 <footer class="footer-black">
-    <p>📄 <strong>Documentação do Projeto (README):</strong> Metodologia ABP aplicada ao ensino técnico de Automação Industrial.</p>
-    <p>© 2026 CircuitosEdu</p>
+    <p>📄 <strong>Sobre o Projeto:</strong> Produto Educacional focado na mediação de circuitos CA com IA e RA.</p>
+    <p>© 2026 CircuitosEdu - Daniel</p>
 </footer>
 
 <script>
