@@ -20,7 +20,7 @@
             <li><a href="#phet">🔬 Laboratório Virtual</a></li>
             <li><a href="#ra-section">🕶️ Realidade Aumentada</a></li>
             <li><a href="#atividades">🎯 Quiz e Mapas Mentais</a></li>
-            <li><a href="#feedback-alunos">📊 Feedback dos Alunos</a></li>
+            <li><a href="#feedback-section">📊 Feedback dos Alunos</a></li>
             <li><a href="#sobre-projeto">ℹ️ Sobre o Projeto</a></li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
@@ -55,7 +55,7 @@
 
         <section class="section-box" id="ra-section">
             <h2>🕶️ Realidade Aumentada (RA)</h2>
-            <p>Utilize os marcadores abaixo com o app <strong>SENAI Space</strong> para visualizar os componentes em 3D.</p>
+            <p>Use os marcadores com o app <strong>SENAI Space</strong>:</p>
             <div class="activity-flex">
                 <div class="activity-card blue-card">📷 Marcador Resistor</div>
                 <div class="activity-card blue-card">📷 Marcador Indutor</div>
@@ -66,26 +66,21 @@
         <section class="section-box" id="atividades">
             <h2>🎯 Atividades Educativas</h2>
             <div class="activity-flex">
-                <div class="activity-card dark-card" onclick="location.href='quiz.html'">
-                    <span>🎯</span> <h4>Acessar Quiz</h4>
-                </div>
-                <div class="activity-card dark-card" onclick="location.href='mapas.html'">
-                    <span>🧠</span> <h4>Mapas Mentais</h4>
-                </div>
+                <div class="activity-card dark-card" onclick="location.href='quiz.html'">🎯 Acessar Quiz</div>
+                <div class="activity-card dark-card" onclick="location.href='mapas.html'">🧠 Mapas Mentais</div>
             </div>
         </section>
 
-        <section class="section-box" id="feedback-alunos">
-            <h2>📊 Feedback: O uso da IA Mediadora</h2>
+        <section class="section-box" id="feedback-section">
+            <h2>📊 Feedback: Mediação da IA</h2>
             <form class="feedback-form">
-                <p>Como você avalia a ajuda do Tutor IA durante a prática de hoje?</p>
+                <p>O Tutor IA ajudou você a compreender melhor o circuito?</p>
                 <div class="radio-group">
-                    <label><input type="radio" name="feedback" value="excelente"> Excelente</label>
-                    <label><input type="radio" name="feedback" value="bom"> Bom</label>
-                    <label><input type="radio" name="feedback" value="regular"> Regular</label>
+                    <label><input type="radio" name="f" value="s"> Sim</label>
+                    <label><input type="radio" name="f" value="n"> Não</label>
                 </div>
-                <textarea placeholder="Deixe seu comentário sobre a experiência..."></textarea>
-                <button type="submit" class="btn-chat" style="width: 100%; border-radius: 5px; margin-top: 10px;">Enviar Feedback</button>
+                <textarea placeholder="Deixe sua sugestão ou dúvida..."></textarea>
+                <button type="button" class="btn-download" style="width:100%; border:none; cursor:pointer">Enviar Feedback</button>
             </form>
         </section>
 
@@ -102,18 +97,18 @@
     <aside class="chat-sidebar">
         <div class="chat-header">🤖 Tutor IA Mediador</div>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Estou pronto para mediar sua aprendizagem. Qual sua dúvida sobre os circuitos?</div>
+            <div class="bubble tutor-msg">Olá! Como posso ajudar na sua prática hoje?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Pergunte ao Tutor...">
+            <input type="text" id="msg-input" placeholder="Pergunte aqui...">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
 
-<footer class="footer-black">
-    <p>📄 <strong>Sobre o Projeto:</strong> Produto Educacional focado na mediação de circuitos CA com IA e RA.</p>
-    <p>© 2026 CircuitosEdu - Daniel</p>
+<footer class="footer-black" id="sobre-projeto">
+    <p>📄 <strong>README:</strong> Projeto de Mestrado - Daniel. Foco em ABP, IA e Realidade Aumentada.</p>
+    <p>© 2026 CircuitosEdu</p>
 </footer>
 
 <script>
