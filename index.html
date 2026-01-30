@@ -23,39 +23,37 @@
 </header>
 
 <div class="main-layout">
-    <nav class="sidebar-nav">
+    
+    <nav class="sidebar">
         <h3 class="nav-title">Navegação</h3>
         <ul class="nav-list">
-            <li>📖 Material Teórico</li>
-            <li>🔌 Simulações PHET</li>
-            <li>🕶️ Realidade Aumentada</li>
+            <li onclick="location.href='#material-teorico'">📖 Material Teórico</li>
+            <li onclick="location.href='#phet'">🔌 Simulações PHET</li>
+            <li onclick="location.href='#ra'">🕶️ Realidade Aumentada</li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
     </nav>
 
-    <main class="content-area">
-        <section class="section-box">
+    <main class="main-content">
+        <section class="section-box" id="material-teorico">
             <h2>📖 Base de Conhecimento CA</h2>
             <div class="teoria-grid">
                 <div class="teoria-card" onclick="location.href='grandezas.html'">
                     <div class="icon-circle">⚡</div>
                     <span class="teoria-titulo">Grandezas CA</span>
-                    <button class="btn-explorar">Acessar</button>
                 </div>
                 <div class="teoria-card" onclick="location.href='fasores.html'">
                     <div class="icon-circle">📈</div>
                     <span class="teoria-titulo">Fasores</span>
-                    <button class="btn-explorar">Acessar</button>
                 </div>
                 <div class="teoria-card" onclick="location.href='impedancia.html'">
                     <div class="icon-circle">🔋</div>
                     <span class="teoria-titulo">Impedância</span>
-                    <button class="btn-explorar">Acessar</button>
                 </div>
             </div>
         </section>
 
-        <section class="section-box">
+        <section class="section-box" id="phet">
             <h2>🔬 Laboratório Virtual (PHET)</h2>
             <div class="iframe-container">
                 <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" 
