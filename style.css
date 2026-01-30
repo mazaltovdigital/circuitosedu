@@ -1,40 +1,61 @@
-/* --- ESTILO BASE --- */
+/* RESET E FUNDO */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Roboto', sans-serif; background-color: #f4f7f9; scroll-behavior: smooth; }
+body { font-family: 'Roboto', sans-serif; background-color: #f0f2f5; }
 
-/* HEADER */
-.main-header { background: #001529 url('assets/banner-header.png') no-repeat center center; background-size: cover; height: 280px; display: flex; }
-.header-overlay { background: rgba(0,0,0,0.6); width: 100%; display: flex; align-items: center; justify-content: center; }
-.header-content { text-align: center; color: white; }
-.logo-box { background: #1a73e8; padding: 5px 15px; border-radius: 8px; font-weight: bold; font-size: 2.5rem; }
-.header-logo-icon { width: 70px; margin-bottom: 10px; }
-
-/* LAYOUT 3 COLUNAS */
-.main-layout { display: grid; grid-template-columns: 260px 1fr 340px; gap: 20px; max-width: 1600px; margin: 20px auto; padding: 0 20px; }
-
-/* COMPONENTES */
-.sidebar, .section-box, .chat-sidebar { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
-
-/* NAVEGAÇÃO */
-.nav-list { list-style: none; margin-top: 15px; }
-.nav-list li a { text-decoration: none; color: #333; display: block; padding: 10px; border-bottom: 1px solid #eee; transition: 0.3s; }
-.nav-list li a:hover { background: #e8f0fe; color: #1a73e8; padding-left: 15px; }
-
-/* CARDS DE INFORMAÇÃO (RA, CIRCUITOS, QUIZ) */
-.flex-info-cards { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
-.info-card, .ra-card, .atv-card {
-    flex: 1; min-width: 180px; background: #f8f9fa; border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; text-align: center; transition: 0.3s;
+/* CABEÇALHO: APENAS FUNDO PRETO */
+.main-header {
+    background-color: #000000;
+    height: 100px;
+    width: 100%;
 }
-.atv-card, .ra-card { cursor: pointer; border-left: 5px solid #1a73e8; font-weight: bold; }
-.atv-card:hover { background: #1a73e8; color: white; }
 
-/* BASE DE CONHECIMENTO */
-.teoria-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
-.teoria-card { border: 1px solid #eee; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; }
+/* LAYOUT DE 3 COLUNAS */
+.main-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr 350px;
+    gap: 20px;
+    max-width: 1600px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* DESTAQUE DO LABORATÓRIO (BOX CENTRAL MAIOR) */
+.highlight-box {
+    border-top: 5px solid #1a73e8;
+}
+.box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.badge { background: #1a73e8; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
+.iframe-container { height: 600px; border-radius: 10px; overflow: hidden; border: 2px solid #ddd; }
+
+/* DESTAQUE DO TUTOR IA */
+.highlight-sidebar {
+    border: 2px solid #1a73e8;
+    box-shadow: 0 10px 25px rgba(26, 115, 232, 0.15) !important;
+}
+.chat-header { background: #1a73e8; color: white; padding: 20px; text-align: center; }
+.chat-header h3 { font-size: 1.2rem; }
+.chat-header p { font-size: 0.8rem; opacity: 0.9; }
+
+/* CONFIGURAÇÕES DE CIRCUITOS COM IMAGENS */
+.circuit-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
+.circuit-item { background: white; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
+.circuit-img { width: 100%; height: 120px; object-fit: contain; background: #fafafa; margin-bottom: 10px; border-radius: 5px; }
+
+/* COMPONENTES GERAIS */
+.sidebar, .section-box, .chat-sidebar { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; overflow: hidden; }
+.sidebar { padding: 20px; }
+.nav-list li a { text-decoration: none; color: #444; display: block; padding: 10px; border-radius: 5px; }
+.nav-list li a:hover { background: #e8f0fe; color: #1a73e8; }
+
+/* CHAT INTERNO */
+#chat-content { height: 500px; overflow-y: auto; padding: 15px; background: #f9f9f9; }
+.bubble { padding: 12px; border-radius: 10px; margin-bottom: 10px; font-size: 0.9rem; max-width: 85%; }
+.tutor-msg { background: #e2eafc; align-self: flex-start; }
+.user-msg { background: #1a73e8; color: white; margin-left: auto; }
+.chat-input-area { padding: 15px; display: flex; gap: 5px; border-top: 1px solid #eee; }
+.chat-input-area input { flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #ddd; outline: none; }
+.btn-chat { background: #f39c12; border: none; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
 
 /* FOOTER */
-.main-footer { background: #001529; color: white; padding: 40px; margin-top: 50px; }
-.footer-grid { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; }
-
-/* RESPONSIVIDADE */
-@media (max-width: 1100px) { .main-layout { grid-template-columns: 1fr; } }
+.main-footer { background: #000; color: #888; padding: 30px; margin-top: 40px; font-size: 0.9rem; }
+.footer-grid { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
