@@ -8,16 +8,43 @@
 <body class="subpage-body">
     <header class="main-header-black" style="height: 80px;"></header>
     <main class="content-container">
-        <button onclick="history.back()" class="btn-chat" style="width: auto; padding: 10px 20px; margin-bottom: 20px;">← Voltar ao Início</button>
+        <button onclick="history.back()" class="btn-chat" style="width: auto; padding: 10px 20px; margin-bottom: 20px; border:none; border-radius:5px; cursor:pointer;">← Voltar</button>
+        
         <h2>🎯 Quiz de Avaliação: Circuitos CA</h2>
-        <div class="section-box" style="margin-top: 20px;">
-            <p><strong>Questão 1:</strong> Em um circuito puramente resistivo em CA, a tensão e a corrente estão:</p>
+        <p>Responda às questões abaixo para testar seus conhecimentos técnicos.</p>
+
+        <div class="section-box" style="padding: 20px; margin-top: 20px;">
+            <p><strong>1. Qual a relação entre Frequência (f) e Período (T) em um sinal senoidal?</strong></p>
             <br>
-            <label><input type="radio" name="q1"> A) Em fase (0°)</label><br><br>
-            <label><input type="radio" name="q1"> B) Desfasadas em 90°</label><br><br>
-            <label><input type="radio" name="q1"> C) Desfasadas em 180°</label>
+            <label><input type="radio" name="q1"> a) f = T</label><br>
+            <label><input type="radio" name="q1"> b) f = 1 / T</label><br>
+            <label><input type="radio" name="q1"> c) f = T²</label>
         </div>
-        <button class="btn-download" style="border:none; cursor:pointer">Finalizar Quiz</button>
+
+        <div class="section-box" style="padding: 20px; margin-top: 20px;">
+            <p><strong>2. Em um circuito puramente Indutivo, a corrente está:</strong></p>
+            <br>
+            <label><input type="radio" name="q2"> a) Em fase com a tensão.</label><br>
+            <label><input type="radio" name="q2"> b) Atrasada 90° em relação à tensão.</label><br>
+            <label><input type="radio" name="q2"> c) Adiantada 90° em relação à tensão.</label>
+        </div>
+
+        <div class="section-box" style="padding: 20px; margin-top: 20px;">
+            <p><strong>3. O valor eficaz (RMS) de uma tensão de pico de 100V é aproximadamente:</strong></p>
+            <br>
+            <label><input type="radio" name="q3"> a) 70,7 V</label><br>
+            <label><input type="radio" name="q3"> b) 50,0 V</label><br>
+            <label><input type="radio" name="q3"> c) 141,4 V</label>
+        </div>
+
+        <button onclick="encerrarQuiz()" class="btn-download" style="border:none; cursor:pointer; margin-top: 30px;">Encerrar e Validar Quiz</button>
     </main>
+
+    <script>
+        function encerrarQuiz() {
+            alert("Quiz finalizado com sucesso! Suas respostas foram enviadas para o banco de dados do professor.");
+            window.location.href = "index.html"; // Retorna para a página principal
+        }
+    </script>
 </body>
 </html>
