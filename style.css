@@ -1,25 +1,40 @@
-/* --- ESTILOS ADICIONAIS --- */
-.main-layout { display: grid; grid-template-columns: 260px 1fr 340px; gap: 20px; max-width: 1600px; margin: 20px auto; padding: 0 20px; }
+/* --- ESTILO BASE --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Roboto', sans-serif; background-color: #f4f7f9; scroll-behavior: smooth; }
 
-/* CIRCUITOS E RA */
-.circuitos-flex, .ra-grid, .atividades-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
-.circuito-item, .ra-card, .atv-card {
-    background: #eef6ff; border: 1px solid #1a73e8; padding: 15px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center; cursor: pointer; transition: 0.3s;
-}
-.circuito-item:hover, .ra-card:hover, .atv-card:hover { background: #1a73e8; color: white; }
-
-/* FOOTER */
-.main-footer { background: #001529; color: white; padding: 40px 20px; margin-top: 50px; text-align: center; }
-.footer-content h4 { color: #f39c12; margin-bottom: 10px; }
-
-/* MANUTENÇÃO DO HEADER */
+/* HEADER */
 .main-header { background: #001529 url('assets/banner-header.png') no-repeat center center; background-size: cover; height: 280px; display: flex; }
 .header-overlay { background: rgba(0,0,0,0.6); width: 100%; display: flex; align-items: center; justify-content: center; }
 .header-content { text-align: center; color: white; }
+.logo-box { background: #1a73e8; padding: 5px 15px; border-radius: 8px; font-weight: bold; font-size: 2.5rem; }
 .header-logo-icon { width: 70px; margin-bottom: 10px; }
-.logo-box { background: #1a73e8; padding: 5px 15px; border-radius: 8px; font-weight: bold; }
 
-/* RESTANTE DAS CORES */
-.sidebar, .section-box, .chat-sidebar { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.nav-list li { padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; list-style: none; }
-.nav-list li:hover { color: #1a73e8; background: #f0f7ff; }
+/* LAYOUT 3 COLUNAS */
+.main-layout { display: grid; grid-template-columns: 260px 1fr 340px; gap: 20px; max-width: 1600px; margin: 20px auto; padding: 0 20px; }
+
+/* COMPONENTES */
+.sidebar, .section-box, .chat-sidebar { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+
+/* NAVEGAÇÃO */
+.nav-list { list-style: none; margin-top: 15px; }
+.nav-list li a { text-decoration: none; color: #333; display: block; padding: 10px; border-bottom: 1px solid #eee; transition: 0.3s; }
+.nav-list li a:hover { background: #e8f0fe; color: #1a73e8; padding-left: 15px; }
+
+/* CARDS DE INFORMAÇÃO (RA, CIRCUITOS, QUIZ) */
+.flex-info-cards { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+.info-card, .ra-card, .atv-card {
+    flex: 1; min-width: 180px; background: #f8f9fa; border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; text-align: center; transition: 0.3s;
+}
+.atv-card, .ra-card { cursor: pointer; border-left: 5px solid #1a73e8; font-weight: bold; }
+.atv-card:hover { background: #1a73e8; color: white; }
+
+/* BASE DE CONHECIMENTO */
+.teoria-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
+.teoria-card { border: 1px solid #eee; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; }
+
+/* FOOTER */
+.main-footer { background: #001529; color: white; padding: 40px; margin-top: 50px; }
+.footer-grid { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; }
+
+/* RESPONSIVIDADE */
+@media (max-width: 1100px) { .main-layout { grid-template-columns: 1fr; } }
