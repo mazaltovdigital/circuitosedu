@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<header class="main-header"></header>
+<header class="main-header-black"></header>
 
 <div class="main-layout">
     <nav class="sidebar">
@@ -38,51 +38,59 @@
             <h2>🔌 Tipos de Ligação</h2>
             <div class="circuit-grid">
                 <div class="circuit-item">
-                    <img src="assets/circuito-serie.png" alt="Série" class="circuit-img" onerror="this.src='https://via.placeholder.com/150?text=Circuito+Serie'">
-                    <h4>Série</h4>
+                    <img src="assets/circuito-serie.png" alt="Série" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120/001529/FFFFFF?text=CIRCUITO+SERIE'">
+                    <h4>Circuito Série</h4>
                 </div>
                 <div class="circuit-item">
-                    <img src="assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img" onerror="this.src='https://via.placeholder.com/150?text=Circuito+Paralelo'">
-                    <h4>Paralelo</h4>
+                    <img src="assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120/001529/FFFFFF?text=CIRCUITO+PARALELO'">
+                    <h4>Circuito Paralelo</h4>
                 </div>
                 <div class="circuit-item">
-                    <img src="assets/circuito-misto.png" alt="Misto" class="circuit-img" onerror="this.src='https://via.placeholder.com/150?text=Circuito+Misto'">
-                    <h4>Misto</h4>
+                    <img src="assets/circuito-misto.png" alt="Misto" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120/001529/FFFFFF?text=CIRCUITO+MISTO'">
+                    <h4>Circuito Misto</h4>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-box" id="atividades">
+            <h2>🎯 Atividades Educativas</h2>
+            <div class="activity-flex">
+                <div class="activity-card" onclick="location.href='quiz.html'">
+                    <span class="act-icon">📝</span>
+                    <h4>Acessar Quiz</h4>
+                </div>
+                <div class="activity-card" onclick="location.href='mapas.html'">
+                    <span class="act-icon">🧠</span>
+                    <h4>Mapas Mentais</h4>
                 </div>
             </div>
         </section>
 
         <section class="section-box" id="ra-section">
             <h2>🕶️ Realidade Aumentada</h2>
-            <div class="ra-flex">
-                <div class="ra-tag">Marcador Resistor</div>
-                <div class="ra-tag">Marcador Indutor</div>
-                <div class="ra-tag">Marcador Capacitor</div>
+            <div class="ra-tags">
+                <span class="tag">Marcador Resistor</span>
+                <span class="tag">Marcador Indutor</span>
+                <span class="tag">Marcador Capacitor</span>
             </div>
-        </section>
-
-        <section class="section-box" id="sobre-projeto">
-            <h2>ℹ️ Sobre o Projeto</h2>
-            <p>Produto Educacional desenvolvido como parte da pesquisa de mestrado, focado na mediação do ensino de circuitos elétricos CA utilizando Inteligência Artificial e Realidade Aumentada.</p>
         </section>
     </main>
 
     <aside class="chat-sidebar">
-        <div class="chat-header">
-            <h3>🤖 Tutor IA Mediador</h3>
-        </div>
+        <div class="chat-header">🤖 Tutor IA Mediador</div>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Como posso te ajudar com a simulação de hoje?</div>
+            <div class="bubble tutor-msg">Olá, Prof. Daniel! Como posso mediar a aula hoje?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Pergunte aqui...">
+            <input type="text" id="msg-input" placeholder="Dúvida...">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
 
-<footer class="footer-readme">
-    <p>📄 Documentação do Produto (README) | © 2026 CircuitosEdu</p>
+<footer class="footer-black">
+    <p>📄 <strong>Documentação do Projeto (README):</strong> Metodologia ABP aplicada ao ensino técnico de Automação Industrial.</p>
+    <p>© 2026 CircuitosEdu</p>
 </footer>
 
 <script>
@@ -95,6 +103,5 @@
         box.scrollTop = box.scrollHeight;
     }
 </script>
-
 </body>
 </html>
