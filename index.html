@@ -19,15 +19,14 @@
             <li><a href="#tipos-circuitos">🔌 Configurações de Circuitos</a></li>
             <li><a href="#phet">🔬 Laboratório Virtual</a></li>
             <li><a href="#ra-section">🕶️ Realidade Aumentada</a></li>
-            <li><a href="#atividades">🎯 Quiz e Mapas Mentais</a></li>
+            <li><a href="quiz.html">🎯 Quiz de Avaliação</a></li>
+            <li><a href="mapas.html">🧠 Mapas Mentais</a></li>
             <li><a href="#feedback-section">📊 Feedback dos Alunos</a></li>
-            <li><a href="#sobre-projeto">ℹ️ Sobre o Projeto</a></li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
     </nav>
 
     <main class="main-content">
-        
         <section class="section-box highlight-lab" id="phet">
             <h2>🔬 Simulação Interativa PHET</h2>
             <div class="iframe-container">
@@ -39,23 +38,22 @@
             <h2>🔌 Configurações de Circuitos</h2>
             <div class="circuit-grid">
                 <div class="circuit-item">
-                    <img src="assets/circuito-serie.png" alt="Série" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120?text=Circuito+Serie'">
-                    <h4>Série</h4>
+                    <img src="./assets/circuito-serie.png" alt="Série" class="circuit-img">
+                    <h4>Circuito Série</h4>
                 </div>
                 <div class="circuit-item">
-                    <img src="assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120?text=Circuito+Paralelo'">
-                    <h4>Paralelo</h4>
+                    <img src="./assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img">
+                    <h4>Circuito Paralelo</h4>
                 </div>
                 <div class="circuit-item">
-                    <img src="assets/circuito-misto.png" alt="Misto" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120?text=Circuito+Misto'">
-                    <h4>Misto</h4>
+                    <img src="./assets/circuito-misto.png" alt="Misto" class="circuit-img">
+                    <h4>Circuito Misto</h4>
                 </div>
             </div>
         </section>
 
         <section class="section-box" id="ra-section">
             <h2>🕶️ Realidade Aumentada (RA)</h2>
-            <p>Use os marcadores com o app <strong>SENAI Space</strong>:</p>
             <div class="activity-flex">
                 <div class="activity-card blue-card">📷 Marcador Resistor</div>
                 <div class="activity-card blue-card">📷 Marcador Indutor</div>
@@ -63,52 +61,34 @@
             </div>
         </section>
 
-        <section class="section-box" id="atividades">
-            <h2>🎯 Atividades Educativas</h2>
-            <div class="activity-flex">
-                <div class="activity-card dark-card" onclick="location.href='quiz.html'">🎯 Acessar Quiz</div>
-                <div class="activity-card dark-card" onclick="location.href='mapas.html'">🧠 Mapas Mentais</div>
-            </div>
-        </section>
-
         <section class="section-box" id="feedback-section">
             <h2>📊 Feedback: Mediação da IA</h2>
             <form class="feedback-form">
-                <p>O Tutor IA ajudou você a compreender melhor o circuito?</p>
+                <p>O Tutor IA auxiliou efetivamente no seu aprendizado?</p>
                 <div class="radio-group">
-                    <label><input type="radio" name="f" value="s"> Sim</label>
-                    <label><input type="radio" name="f" value="n"> Não</label>
+                    <label><input type="radio" name="f"> Sim</label>
+                    <label><input type="radio" name="f"> Não</label>
                 </div>
-                <textarea placeholder="Deixe sua sugestão ou dúvida..."></textarea>
-                <button type="button" class="btn-download" style="width:100%; border:none; cursor:pointer">Enviar Feedback</button>
+                <textarea placeholder="Comentários sobre a experiência com a IA..."></textarea>
+                <button type="button" class="btn-chat" style="width:100%; border-radius:5px; margin-top:10px;">Enviar Feedback</button>
             </form>
-        </section>
-
-        <section class="section-box" id="material-teorico">
-            <h2>📖 Material Teórico</h2>
-            <div class="activity-flex">
-                <div class="activity-card light-card" onclick="location.href='grandezas.html'">⚡ Grandezas</div>
-                <div class="activity-card light-card" onclick="location.href='fasores.html'">📈 Fasores</div>
-                <div class="activity-card light-card" onclick="location.href='impedancia.html'">🔋 Impedância</div>
-            </div>
         </section>
     </main>
 
     <aside class="chat-sidebar">
         <div class="chat-header">🤖 Tutor IA Mediador</div>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Como posso ajudar na sua prática hoje?</div>
+            <div class="bubble tutor-msg">Olá! Estou pronto para mediar sua prática. Qual sua dúvida?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Pergunte aqui...">
+            <input type="text" id="msg-input" placeholder="Pergunte ao Tutor...">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
 
-<footer class="footer-black" id="sobre-projeto">
-    <p>📄 <strong>README:</strong> Projeto de Mestrado - Daniel. Foco em ABP, IA e Realidade Aumentada.</p>
-    <p>© 2026 CircuitosEdu</p>
+<footer class="footer-black">
+    <p>📄 <strong>README:</strong> Projeto de Mestrado - Daniel | © 2026 CircuitosEdu</p>
 </footer>
 
 <script>
