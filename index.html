@@ -9,17 +9,18 @@
 </head>
 <body>
 
-<header class="black-header"></header>
+<header class="main-header"></header>
 
 <div class="main-layout">
     <nav class="sidebar">
         <h3 class="nav-title">Menu Principal</h3>
         <ul class="nav-list">
-            <li><a href="#material-teorico">📖 Base de Conhecimento</a></li>
-            <li><a href="#tipos-circuitos">🔌 Tipos de Ligação</a></li>
+            <li><a href="#material-teorico">📖 Material Teórico</a></li>
+            <li><a href="#tipos-circuitos">🔌 Configurações de Circuitos</a></li>
             <li><a href="#phet">🔬 Laboratório Virtual</a></li>
             <li><a href="#ra-section">🕶️ Realidade Aumentada</a></li>
-            <li><a href="#feedback">📊 Feedback</a></li>
+            <li><a href="#atividades">🎯 Quiz e Mapas Mentais</a></li>
+            <li><a href="#sobre-projeto">ℹ️ Sobre o Projeto</a></li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
     </nav>
@@ -27,39 +28,32 @@
     <main class="main-content">
         
         <section class="section-box highlight-lab" id="phet">
-            <div class="box-header">
-                <h2>🔬 Laboratório Virtual PHET</h2>
-                <span class="status-badge">Prática em Tempo Real</span>
-            </div>
+            <h2>🔬 Simulação Interativa PHET</h2>
             <div class="iframe-container">
                 <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" allowfullscreen></iframe>
             </div>
         </section>
 
         <section class="section-box" id="tipos-circuitos">
-            <h2>🔌 Configurações de Circuitos</h2>
+            <h2>🔌 Tipos de Ligação</h2>
             <div class="circuit-grid">
                 <div class="circuit-item">
-                    <div class="img-placeholder"><img src="assets/circuito-serie.png" onerror="this.style.display='none'"><span>SÉRIE</span></div>
-                    <h4>Ligação em Série</h4>
-                    <p>A corrente elétrica percorre um único caminho.</p>
+                    <img src="assets/circuito-serie.png" alt="Série" class="circuit-img" onerror="this.src='https://via.placeholder.com/150?text=Circuito+Serie'">
+                    <h4>Série</h4>
                 </div>
                 <div class="circuit-item">
-                    <div class="img-placeholder"><img src="assets/circuito-paralelo.png" onerror="this.style.display='none'"><span>PARALELO</span></div>
-                    <h4>Ligação em Paralelo</h4>
-                    <p>A corrente se divide entre os ramos do circuito.</p>
+                    <img src="assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img" onerror="this.src='https://via.placeholder.com/150?text=Circuito+Paralelo'">
+                    <h4>Paralelo</h4>
                 </div>
                 <div class="circuit-item">
-                    <div class="img-placeholder"><img src="assets/circuito-misto.png" onerror="this.style.display='none'"><span>MISTO</span></div>
-                    <h4>Ligação Mista</h4>
-                    <p>Associação de elementos em série e paralelo.</p>
+                    <img src="assets/circuito-misto.png" alt="Misto" class="circuit-img" onerror="this.src='https://via.placeholder.com/150?text=Circuito+Misto'">
+                    <h4>Misto</h4>
                 </div>
             </div>
         </section>
 
         <section class="section-box" id="ra-section">
-            <h2>🕶️ Realidade Aumentada (RA)</h2>
-            <p>Utilize os marcadores abaixo com o app <strong>SENAI Space</strong>:</p>
+            <h2>🕶️ Realidade Aumentada</h2>
             <div class="ra-flex">
                 <div class="ra-tag">Marcador Resistor</div>
                 <div class="ra-tag">Marcador Indutor</div>
@@ -67,40 +61,28 @@
             </div>
         </section>
 
-        <section class="section-box" id="feedback">
-            <h2>📊 Feedback dos Alunos</h2>
-            <form id="f-form">
-                <p>O Tutor IA facilitou sua compreensão dos circuitos?</p>
-                <div class="radio-group">
-                    <label><input type="radio" name="op" value="S"> Sim</label>
-                    <label><input type="radio" name="op" value="N"> Não</label>
-                </div>
-                <button type="submit" class="btn-send">Enviar Avaliação</button>
-            </form>
+        <section class="section-box" id="sobre-projeto">
+            <h2>ℹ️ Sobre o Projeto</h2>
+            <p>Produto Educacional desenvolvido como parte da pesquisa de mestrado, focado na mediação do ensino de circuitos elétricos CA utilizando Inteligência Artificial e Realidade Aumentada.</p>
         </section>
     </main>
 
     <aside class="chat-sidebar">
         <div class="chat-header">
             <h3>🤖 Tutor IA Mediador</h3>
-            <small>Atendimento de Suporte</small>
         </div>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Percebi que você está no laboratório. Como posso te orientar na montagem do circuito?</div>
+            <div class="bubble tutor-msg">Olá! Como posso te ajudar com a simulação de hoje?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Tire sua dúvida...">
+            <input type="text" id="msg-input" placeholder="Pergunte aqui...">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
 
 <footer class="footer-readme">
-    <div class="footer-container">
-        <h4>📄 Documentação do Produto (README)</h4>
-        <p>Desenvolvido para pesquisa de Mestrado - Ensino de Eletrotécnica via Metodologia ABP.</p>
-        <p>© 2026 CircuitosEdu</p>
-    </div>
+    <p>📄 Documentação do Produto (README) | © 2026 CircuitosEdu</p>
 </footer>
 
 <script>
