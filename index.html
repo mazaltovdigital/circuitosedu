@@ -23,7 +23,6 @@
 </header>
 
 <div class="main-layout">
-    
     <nav class="sidebar">
         <h3 class="nav-title">Navegação</h3>
         <ul class="nav-list">
@@ -41,14 +40,17 @@
                 <div class="teoria-card" onclick="location.href='grandezas.html'">
                     <div class="icon-circle">⚡</div>
                     <span class="teoria-titulo">Grandezas CA</span>
+                    <button class="btn-acesso">Acessar</button>
                 </div>
                 <div class="teoria-card" onclick="location.href='fasores.html'">
                     <div class="icon-circle">📈</div>
                     <span class="teoria-titulo">Fasores</span>
+                    <button class="btn-acesso">Acessar</button>
                 </div>
                 <div class="teoria-card" onclick="location.href='impedancia.html'">
                     <div class="icon-circle">🔋</div>
                     <span class="teoria-titulo">Impedância</span>
+                    <button class="btn-acesso">Acessar</button>
                 </div>
             </div>
         </section>
@@ -79,12 +81,10 @@
         const input = document.getElementById('msg-input');
         const box = document.getElementById('chat-content');
         if(!input.value.trim()) return;
-
         box.innerHTML += `<div class="bubble user-msg">${input.value}</div>`;
         const texto = input.value; 
         input.value = '';
         box.scrollTop = box.scrollHeight;
-
         try {
             const res = await fetch('/api/chat', {
                 method: 'POST',
@@ -94,7 +94,7 @@
             const data = await res.json();
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
         } catch(e) { 
-            box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão com o Tutor.</div>`; 
+            box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão.</div>`; 
         }
         box.scrollTop = box.scrollHeight;
     }
