@@ -2,48 +2,72 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Quiz Circuitos CA - CircuitosEdu</title>
+    <title>Quiz de Avaliação - CircuitosEdu</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="subpage-body">
-    <header class="main-header-black" style="height: 80px;"></header>
-    <main class="content-container">
-        <button onclick="history.back()" class="btn-chat" style="width: auto; padding: 10px 20px; margin-bottom: 20px; border:none; border-radius:5px; cursor:pointer;">← Voltar</button>
+    <header class="main-header-fixed" style="height: 100px;"></header>
+    <main class="content-container" style="max-width: 800px; margin: 40px auto; padding: 20px;">
+        <button onclick="location.href='index.html'" class="btn-chat" style="width: auto; padding: 10px 20px; border-radius: 5px; margin-bottom: 20px;">← Voltar</button>
         
-        <h2>🎯 Quiz de Avaliação: Circuitos CA</h2>
-        <p>Responda às questões abaixo para testar seus conhecimentos técnicos.</p>
+        <h2>🎯 Quiz: Teste seus Conhecimentos em CA</h2>
+        <div id="quiz-container">
+            <!-- Questão 1 -->
+            <div class="section-box" style="padding: 20px; margin-bottom: 20px;">
+                <p><strong>1. Se a frequência de um circuito é 60Hz, qual o período (T)?</strong></p>
+                <br>
+                <label><input type="radio" name="q1" value="A"> A) 16,67 ms</label><br><br>
+                <label><input type="radio" name="q1" value="B"> B) 60 ms</label><br><br>
+                <label><input type="radio" name="q1" value="C"> C) 0,6 s</label>
+            </div>
 
-        <div class="section-box" style="padding: 20px; margin-top: 20px;">
-            <p><strong>1. Qual a relação entre Frequência (f) e Período (T) em um sinal senoidal?</strong></p>
-            <br>
-            <label><input type="radio" name="q1"> a) f = T</label><br>
-            <label><input type="radio" name="q1"> b) f = 1 / T</label><br>
-            <label><input type="radio" name="q1"> c) f = T²</label>
+            <!-- Questão 2 -->
+            <div class="section-box" style="padding: 20px; margin-bottom: 20px;">
+                <p><strong>2. Em um circuito puramente resistivo em CA, a tensão e a corrente estão:</strong></p>
+                <br>
+                <label><input type="radio" name="q2" value="A"> A) Desfasadas em 90°</label><br><br>
+                <label><input type="radio" name="q2" value="B"> B) Em fase (0°)</label><br><br>
+                <label><input type="radio" name="q2" value="C"> C) Desfasadas em 180°</label>
+            </div>
+
+            <!-- Questão 3 -->
+            <div class="section-box" style="padding: 20px; margin-bottom: 20px;">
+                <p><strong>3. O valor RMS de uma tensão de pico de 100V é aproximadamente:</strong></p>
+                <br>
+                <label><input type="radio" name="q3" value="A"> A) 70,7 V</label><br><br>
+                <label><input type="radio" name="q3" value="B) B) 141,4 V</label><br><br>
+                <label><input type="radio" name="q3" value="C"> C) 50,0 V</label>
+            </div>
+
+            <button onclick="finalizarQuiz()" class="btn-download" style="width: 100%; border:none; cursor:pointer; font-size: 1.1rem;">Encerrar e Validar Quiz</button>
         </div>
 
-        <div class="section-box" style="padding: 20px; margin-top: 20px;">
-            <p><strong>2. Em um circuito puramente Indutivo, a corrente está:</strong></p>
-            <br>
-            <label><input type="radio" name="q2"> a) Em fase com a tensão.</label><br>
-            <label><input type="radio" name="q2"> b) Atrasada 90° em relação à tensão.</label><br>
-            <label><input type="radio" name="q2"> c) Adiantada 90° em relação à tensão.</label>
+        <div id="resultado" style="display:none; text-align: center; padding: 40px;" class="section-box">
+            <h3 id="score-text"></h3>
+            <p>Obrigado por participar!</p>
+            <button onclick="location.href='index.html'" class="btn-download" style="margin-top:20px; width: 200px; display:inline-block;">Voltar ao Início</button>
         </div>
-
-        <div class="section-box" style="padding: 20px; margin-top: 20px;">
-            <p><strong>3. O valor eficaz (RMS) de uma tensão de pico de 100V é aproximadamente:</strong></p>
-            <br>
-            <label><input type="radio" name="q3"> a) 70,7 V</label><br>
-            <label><input type="radio" name="q3"> b) 50,0 V</label><br>
-            <label><input type="radio" name="q3"> c) 141,4 V</label>
-        </div>
-
-        <button onclick="encerrarQuiz()" class="btn-download" style="border:none; cursor:pointer; margin-top: 30px;">Encerrar e Validar Quiz</button>
     </main>
 
     <script>
-        function encerrarQuiz() {
-            alert("Quiz finalizado com sucesso! Suas respostas foram enviadas para o banco de dados do professor.");
-            window.location.href = "index.html"; // Retorna para a página principal
+        function finalizarQuiz() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
+
+            if(!q1 || !q2 || !q3) {
+                alert("Por favor, responda todas as questões!");
+                return;
+            }
+
+            let acertos = 0;
+            if(q1.value === "A") acertos++;
+            if(q2.value === "B") acertos++;
+            if(q3.value === "A") acertos++;
+
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('resultado').style.display = 'block';
+            document.getElementById('score-text').innerText = "Você acertou " + acertos + " de 3 questões!";
         }
     </script>
 </body>
