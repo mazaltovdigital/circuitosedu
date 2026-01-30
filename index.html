@@ -10,16 +10,6 @@
 <body>
 
 <header class="main-header">
-    <div class="header-overlay">
-        <div class="header-content">
-            <img src="assets/logo-circular.png" alt="Logo" class="header-logo-icon">
-            <div class="logo-text-group">
-                <span class="logo-box">Circuitos</span>
-                <span class="logo-text-light">Edu</span>
-            </div>
-            <p class="header-subtitle">Mediação de Circuitos CA com IA e Realidade Aumentada</p>
-        </div>
-    </div>
 </header>
 
 <div class="main-layout">
@@ -37,86 +27,66 @@
 
     <main class="main-content">
         
-        <section class="section-box" id="material-teorico">
-            <h2>📖 Base de Conhecimento CA</h2>
-            <div class="teoria-grid">
-                <div class="teoria-card" onclick="location.href='grandezas.html'">
-                    <div class="icon-circle">⚡</div>
-                    <span class="teoria-titulo">Grandezas</span>
-                </div>
-                <div class="teoria-card" onclick="location.href='fasores.html'">
-                    <div class="icon-circle">📈</div>
-                    <span class="teoria-titulo">Fasores</span>
-                </div>
-                <div class="teoria-card" onclick="location.href='impedancia.html'">
-                    <div class="icon-circle">🔋</div>
-                    <span class="teoria-titulo">Impedância</span>
-                </div>
+        <section class="section-box highlight-box" id="phet">
+            <div class="box-header">
+                <h2>🔬 Laboratório Virtual PHET</h2>
+                <span class="badge">Ambiente de Prática</span>
             </div>
-        </section>
-
-        <section class="section-box" id="tipos-circuitos">
-            <h2>🔌 Configurações de Circuitos</h2>
-            <div class="flex-info-cards">
-                <div class="info-card">
-                    <h4>Circuito Série</h4>
-                    <p>A corrente é a mesma em todos os componentes. A tensão total é a soma das tensões.</p>
-                </div>
-                <div class="info-card">
-                    <h4>Circuito Paralelo</h4>
-                    <p>A tensão é a mesma. A corrente total é a soma das correntes nos ramos.</p>
-                </div>
-                <div class="info-card">
-                    <h4>Circuito Misto</h4>
-                    <p>Combinação de elementos em série e paralelo no mesmo circuito.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section-box" id="phet">
-            <h2>🔬 Laboratório Virtual (PHET)</h2>
             <div class="iframe-container">
                 <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" allowfullscreen></iframe>
             </div>
         </section>
 
+        <section class="section-box" id="tipos-circuitos">
+            <h2>🔌 Configurações de Circuitos</h2>
+            <div class="circuit-gallery">
+                <div class="circuit-item">
+                    <img src="assets/circuito-serie.png" alt="Circuito Série" class="circuit-img">
+                    <h4>Série</h4>
+                    <p>Corrente única em todos os componentes.</p>
+                </div>
+                <div class="circuit-item">
+                    <img src="assets/circuito-paralelo.png" alt="Circuito Paralelo" class="circuit-img">
+                    <h4>Paralelo</h4>
+                    <p>Tensão constante em todos os ramos.</p>
+                </div>
+                <div class="circuit-item">
+                    <img src="assets/circuito-misto.png" alt="Circuito Misto" class="circuit-img">
+                    <h4>Misto</h4>
+                    <p>Combinação de série e paralelo.</p>
+                </div>
+            </div>
+        </section>
+
         <section class="section-box" id="ra-section">
             <h2>🕶️ Realidade Aumentada</h2>
-            <p>Acesse os marcadores abaixo para visualizar os componentes com o <strong>SENAI Space</strong>.</p>
             <div class="flex-info-cards">
-                <div class="ra-card">📷 Marcador R</div>
-                <div class="ra-card">📷 Marcador L</div>
-                <div class="ra-card">📷 Marcador C</div>
+                <div class="ra-card">📷 Marcador Resistor</div>
+                <div class="ra-card">📷 Marcador Indutor</div>
+                <div class="ra-card">📷 Marcador Capacitor</div>
             </div>
         </section>
 
-        <section class="section-box" id="atividades">
-            <h2>🎯 Atividades e Quiz</h2>
-            <div class="flex-info-cards">
-                <div class="atv-card" onclick="location.href='quiz.html'">🎯 Abrir Quiz</div>
-                <div class="atv-card" onclick="location.href='mapas.html'">🧠 Mapas Mentais</div>
+        <section class="section-box" id="material-teorico">
+            <h2>📖 Base de Conhecimento CA</h2>
+            <div class="teoria-grid">
+                <div class="teoria-card" onclick="location.href='grandezas.html'">⚡ Grandezas</div>
+                <div class="teoria-card" onclick="location.href='fasores.html'">📈 Fasores</div>
+                <div class="teoria-card" onclick="location.href='impedancia.html'">🔋 Impedância</div>
             </div>
-        </section>
-
-        <section class="section-box">
-            <h2>📊 Pesquisa de Satisfação</h2>
-            <form id="feedback-form">
-                <p>O Tutor IA auxiliou efetivamente no seu aprendizado?</p>
-                <label><input type="radio" name="satisfacao" value="sim"> Sim</label>
-                <label style="margin-left: 20px;"><input type="radio" name="satisfacao" value="nao"> Não</label>
-                <br><br>
-                <button type="submit" class="btn-chat" style="width: 150px; border-radius: 5px;">Enviar Feedback</button>
-            </form>
         </section>
     </main>
 
-    <aside class="chat-sidebar">
-        <h3>Tutor IA Mediador</h3>
+    <aside class="chat-sidebar highlight-sidebar">
+        <div class="chat-header">
+            <h3>🤖 Tutor IA Mediador</h3>
+            <p>Suporte em Tempo Real</p>
+        </div>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Como posso ajudar na sua montagem de circuitos hoje?</div>
+            <div class="bubble tutor-msg">Olá! Estou aqui para mediar sua prática. Qual componente você pretende testar no PHET agora?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Sua dúvida...">
+            <input type="text" id="msg-input" placeholder="Pergunte ao Tutor...">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
@@ -125,25 +95,21 @@
 <footer class="main-footer">
     <div class="footer-grid">
         <div class="footer-info">
-            <h4>📄 Documentação (README)</h4>
-            <p>Projeto de Mestrado: Uso de IA e RA no ensino de Circuitos CA.</p>
-            <p>Metodologia: Aprendizagem Baseada em Problemas (ABP).</p>
+            <h4>📄 README do Projeto</h4>
+            <p>Pesquisa de Mestrado: Mediação em Circuitos CA com uso de IA e RA.</p>
         </div>
-        <div class="footer-info">
-            <p>© 2026 CircuitosEdu - Daniel</p>
-        </div>
+        <p>© 2026 CircuitosEdu</p>
     </div>
 </footer>
 
 <script>
-    async function enviarChat() {
+    function enviarChat() {
         const input = document.getElementById('msg-input');
         const box = document.getElementById('chat-content');
         if(!input.value.trim()) return;
         box.innerHTML += `<div class="bubble user-msg">${input.value}</div>`;
         input.value = '';
         box.scrollTop = box.scrollHeight;
-        // Lógica de resposta da API aqui
     }
 </script>
 
