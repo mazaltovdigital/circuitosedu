@@ -1,61 +1,66 @@
-/* RESET E FUNDO */
+/* --- RESET E TELA CHEIA --- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Roboto', sans-serif; background-color: #f0f2f5; }
+body { font-family: 'Roboto', sans-serif; background-color: #f4f6f8; color: #333; }
 
-/* CABEÇALHO: APENAS FUNDO PRETO */
-.main-header {
-    background-color: #000000;
-    height: 100px;
-    width: 100%;
-}
+/* HEADER PRETO LISO */
+.black-header { background: #000; height: 60px; width: 100%; }
 
-/* LAYOUT DE 3 COLUNAS */
+/* GRID PRINCIPAL BALANCEADO */
 .main-layout {
     display: grid;
-    grid-template-columns: 240px 1fr 350px;
+    grid-template-columns: 240px 1fr 320px;
     gap: 20px;
-    max-width: 1600px;
+    max-width: 1500px;
     margin: 20px auto;
-    padding: 0 20px;
+    padding: 0 15px;
 }
 
-/* DESTAQUE DO LABORATÓRIO (BOX CENTRAL MAIOR) */
-.highlight-box {
-    border-top: 5px solid #1a73e8;
+/* BOXES */
+.sidebar, .section-box, .chat-sidebar { background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; overflow: hidden; }
+
+/* DESTAQUE LABORATÓRIO (ALTURA CONTROLADA) */
+.highlight-lab { border-top: 4px solid #1a73e8; }
+.iframe-container { height: 450px; background: #eee; }
+iframe { width: 100%; height: 100%; border: none; }
+
+/* CONFIGURAÇÃO DE CIRCUITOS (COM PLACEHOLDERS) */
+.circuit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
+.circuit-item { text-align: center; background: #fff; border: 1px solid #eee; padding: 10px; border-radius: 8px; }
+.img-placeholder { 
+    height: 100px; background: #001529; color: white; display: flex; 
+    align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; margin-bottom: 10px; border-radius: 4px;
 }
-.box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.badge { background: #1a73e8; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
-.iframe-container { height: 600px; border-radius: 10px; overflow: hidden; border: 2px solid #ddd; }
+.img-placeholder img { width: 100%; height: 100%; object-fit: contain; }
 
-/* DESTAQUE DO TUTOR IA */
-.highlight-sidebar {
-    border: 2px solid #1a73e8;
-    box-shadow: 0 10px 25px rgba(26, 115, 232, 0.15) !important;
-}
-.chat-header { background: #1a73e8; color: white; padding: 20px; text-align: center; }
-.chat-header h3 { font-size: 1.2rem; }
-.chat-header p { font-size: 0.8rem; opacity: 0.9; }
+/* TUTOR IA (DESTAQUE E ALTURA PROPORCIONAL) */
+.chat-sidebar { border: 1px solid #1a73e8; display: flex; flex-direction: column; height: 650px; }
+.chat-header { background: #1a73e8; color: white; padding: 15px; text-align: center; }
+#chat-content { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
+.bubble { padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; max-width: 90%; }
+.tutor-msg { background: #e8f0fe; align-self: flex-start; }
+.user-msg { background: #1a73e8; color: white; align-self: flex-end; }
 
-/* CONFIGURAÇÕES DE CIRCUITOS COM IMAGENS */
-.circuit-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
-.circuit-item { background: white; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
-.circuit-img { width: 100%; height: 120px; object-fit: contain; background: #fafafa; margin-bottom: 10px; border-radius: 5px; }
+/* CHAT INPUT */
+.chat-input-area { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px; }
+.chat-input-area input { flex: 1; padding: 8px; border-radius: 20px; border: 1px solid #ddd; outline: none; }
+.btn-chat { background: #f39c12; border: none; color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
 
-/* COMPONENTES GERAIS */
-.sidebar, .section-box, .chat-sidebar { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; overflow: hidden; }
-.sidebar { padding: 20px; }
-.nav-list li a { text-decoration: none; color: #444; display: block; padding: 10px; border-radius: 5px; }
-.nav-list li a:hover { background: #e8f0fe; color: #1a73e8; }
+/* NAVEGAÇÃO */
+.sidebar { padding: 15px; }
+.nav-title { font-size: 1rem; color: #1a73e8; margin-bottom: 10px; border-bottom: 2px solid #f39c12; }
+.nav-list li { list-style: none; }
+.nav-list li a { text-decoration: none; color: #555; display: block; padding: 8px; border-radius: 4px; font-size: 0.9rem; }
+.nav-list li a:hover { background: #f0f7ff; color: #1a73e8; }
 
-/* CHAT INTERNO */
-#chat-content { height: 500px; overflow-y: auto; padding: 15px; background: #f9f9f9; }
-.bubble { padding: 12px; border-radius: 10px; margin-bottom: 10px; font-size: 0.9rem; max-width: 85%; }
-.tutor-msg { background: #e2eafc; align-self: flex-start; }
-.user-msg { background: #1a73e8; color: white; margin-left: auto; }
-.chat-input-area { padding: 15px; display: flex; gap: 5px; border-top: 1px solid #eee; }
-.chat-input-area input { flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #ddd; outline: none; }
-.btn-chat { background: #f39c12; border: none; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+/* RA E FEEDBACK */
+.ra-flex { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.ra-tag { background: #eef1f6; border: 1px dashed #1a73e8; padding: 8px 15px; border-radius: 5px; font-size: 0.85rem; }
+.radio-group { margin: 15px 0; }
+.btn-send { background: #1a73e8; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
 
-/* FOOTER */
-.main-footer { background: #000; color: #888; padding: 30px; margin-top: 40px; font-size: 0.9rem; }
-.footer-grid { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
+/* FOOTER README */
+.footer-readme { background: #000; color: #666; padding: 30px; text-align: center; font-size: 0.85rem; }
+.footer-container h4 { color: #f39c12; margin-bottom: 8px; }
+
+/* MOBILE */
+@media (max-width: 1100px) { .main-layout { grid-template-columns: 1fr; } .chat-sidebar { height: 500px; } }
