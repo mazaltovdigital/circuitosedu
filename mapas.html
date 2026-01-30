@@ -6,23 +6,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="subpage-body">
-    <header class="main-header-black" style="height: 80px;"></header>
-    <main class="content-container">
-        <button onclick="history.back()" class="btn-chat" style="width: auto; padding: 10px 20px; margin-bottom: 20px; border:none; border-radius:5px; cursor:pointer;">← Voltar</button>
+    <header class="main-header-fixed" style="height: 100px;"></header>
+    <main class="content-container" style="max-width: 1200px; margin: 40px auto; padding: 20px;">
+        <button onclick="location.href='index.html'" class="btn-chat" style="width: auto; padding: 10px 20px; border-radius: 5px; margin-bottom: 20px;">← Voltar</button>
         
-        <h2>🧠 Mapas Mentais Técnicos</h2>
-        <p>Clique nas imagens para ampliar os conceitos de Corrente Alternada.</p>
+        <h2>🧠 Mapas Mentais: Base de Conhecimento CA</h2>
+        <p style="margin-bottom: 30px;">Consulte os resumos técnicos abaixo para fortalecer sua compreensão teórica.</p>
 
-        <div class="circuit-grid" style="margin-top: 20px;">
-            <div class="circuit-item">
-                <img src="./assets/mapa-grandezas.png" alt="Mapa de Grandezas" class="circuit-img" style="height: 250px;">
-                <h4>Grandezas e Senoides</h4>
-                <p>Fórmulas de RMS, Pico, Frequência e Fase.</p>
+        <div class="circuit-grid">
+            <!-- Mapa 1 -->
+            <div class="circuit-item" style="height: auto;">
+                <h4 style="margin-bottom: 15px; color: var(--primary-blue);">Grandezas e Senoides</h4>
+                <img src="./assets/mapa-grandezas.png" alt="Mapa de Grandezas" class="circuit-img" style="height: auto; max-height: 400px;" onerror="this.src='https://via.placeholder.com/400x300?text=Aguardando+Upload+de+Assets'">
+                <div style="text-align: left; padding: 10px; font-size: 0.9rem;">
+                    <p>• Período (T) vs Frequência (f)</p>
+                    <p>• Valores Eficazes (RMS)</p>
+                    <p>• Representação de Fase (φ)</p>
+                </div>
             </div>
-            <div class="circuit-item">
-                <img src="./assets/mapa-ligacoes.png" alt="Mapa de Ligações" class="circuit-img" style="height: 250px;">
-                <h4>Série vs Paralelo em CA</h4>
-                <p>Análise de Impedância Equivalente e Fasores.</p>
+
+            <!-- Mapa 2 -->
+            <div class="circuit-item" style="height: auto;">
+                <h4 style="margin-bottom: 15px; color: var(--primary-blue);">Série vs Paralelo em CA</h4>
+                <img src="./assets/mapa-ligacoes.png" alt="Mapa de Ligações" class="circuit-img" style="height: auto; max-height: 400px;" onerror="this.src='https://via.placeholder.com/400x300?text=Aguardando+Upload+de+Assets'">
+                <div style="text-align: left; padding: 10px; font-size: 0.9rem;">
+                    <p>• Comportamento da Corrente (I)</p>
+                    <p>• Divisão de Tensão (V)</p>
+                    <p>• Triângulo de Potências (P, Q, S)</p>
+                </div>
             </div>
         </div>
     </main>
