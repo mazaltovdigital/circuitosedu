@@ -3,22 +3,22 @@
     --secondary-orange: #f39c12;
     --bg-light: #f4f6f8;
     --white: #ffffff;
-    --black-base: #000000;
+    --black: #000000;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scroll-behavior: smooth; }
 
-/* BANNER: CORREÇÃO DEFINITIVA */
+/* BANNER: MOSTRA A IMAGEM INTEIRA SEM CORTAR */
 .main-header-black {
-    background: var(--black-base) url('assets/cabecalho-anexo.png') no-repeat center center;
-    background-size: cover; 
-    height: 160px;
+    background: var(--black) url('./assets/cabecalho-anexo.png') no-repeat center center;
+    background-size: contain; 
+    height: 180px; 
     width: 100%;
     border-bottom: 4px solid var(--primary-blue);
 }
 
-/* LAYOUT 3 COLUNAS */
+/* GRID DE 3 COLUNAS */
 .main-layout {
     display: grid;
     grid-template-columns: 260px 1fr 320px;
@@ -28,38 +28,38 @@ body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scr
     padding: 0 15px;
 }
 
-/* BOXES */
 .sidebar, .section-box, .chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; overflow: hidden; }
 
 /* MENU */
 .sidebar { padding: 20px; height: fit-content; }
 .nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); margin-bottom: 10px; }
-.nav-list li { list-style: none; }
-.nav-list li a { text-decoration: none; color: #444; display: block; padding: 10px; border-radius: 5px; font-size: 0.9rem; }
+.nav-list li a { text-decoration: none; color: #444; display: block; padding: 10px; font-size: 0.9rem; border-radius: 5px; }
 .nav-list li a:hover { background: #e8f0fe; color: var(--primary-blue); }
 
-.btn-download { display: block; background: var(--secondary-orange); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }
-
-/* SIMULADOR */
+/* SIMULADOR PHET */
 .iframe-container { height: 480px; background: #fafafa; }
 iframe { width: 100%; height: 100%; border: none; }
 
-/* CIRCUITOS */
+/* CIRCUITOS: GARANTINDO CARREGAMENTO DAS IMAGENS */
 .circuit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; }
-.circuit-item { text-align: center; border: 1px solid #eee; border-radius: 10px; padding: 10px; }
-.circuit-img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 5px; }
+.circuit-item { text-align: center; border: 1px solid #eee; border-radius: 10px; padding: 15px; background: #fff; }
+.circuit-img { 
+    width: 100%; 
+    max-height: 120px; 
+    object-fit: contain; 
+    display: block; 
+    margin: 0 auto 10px;
+}
 
-/* RA E ATIVIDADES */
+/* CARDS RA E ATIVIDADES */
 .activity-flex { display: flex; gap: 15px; padding: 15px; flex-wrap: wrap; }
-.activity-card { flex: 1; padding: 15px; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.3s; min-width: 140px; font-weight: bold; }
+.activity-card { flex: 1; padding: 15px; text-align: center; border-radius: 8px; font-weight: bold; min-width: 140px; }
 .blue-card { background: #e8f0fe; color: var(--primary-blue); border: 1px dashed var(--primary-blue); }
-.dark-card { background: #001529; color: white; }
-.light-card { background: #f8f9fa; border: 1px solid #ddd; }
 
 /* FEEDBACK */
 .feedback-form { padding: 15px; }
 .radio-group { margin: 10px 0; display: flex; gap: 20px; }
-textarea { width: 100%; height: 60px; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ddd; }
+textarea { width: 100%; height: 70px; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ddd; }
 
 /* TUTOR IA */
 .chat-sidebar { display: flex; flex-direction: column; height: 620px; border: 1px solid var(--primary-blue); }
@@ -70,9 +70,8 @@ textarea { width: 100%; height: 60px; padding: 10px; margin-top: 10px; border-ra
 .user-msg { background: var(--primary-blue); color: white; align-self: flex-end; }
 .chat-input-area { display: flex; padding: 10px; border-top: 1px solid #eee; gap: 5px; }
 .chat-input-area input { flex: 1; border: 1px solid #ddd; border-radius: 20px; padding: 8px; outline: none; }
-.btn-chat { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
+.btn-chat { background: var(--secondary-orange); color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
 
-/* FOOTER */
 .footer-black { background: #000; color: #888; padding: 30px; text-align: center; font-size: 0.85rem; margin-top: 40px; }
 
 @media (max-width: 1100px) { .main-layout { grid-template-columns: 1fr; } }
