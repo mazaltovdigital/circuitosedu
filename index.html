@@ -17,18 +17,20 @@
                 <span class="logo-box">Circuitos</span>
                 <span class="logo-text-light">Edu</span>
             </div>
-            <p class="header-subtitle">Produto Educacional: Mediação de Circuitos CA com IA e Realidade Aumentada</p>
+            <p class="header-subtitle">Mediação de Circuitos CA com IA e Realidade Aumentada</p>
         </div>
     </div>
 </header>
 
 <div class="main-layout">
     <nav class="sidebar">
-        <h3 class="nav-title">Navegação</h3>
+        <h3 class="nav-title">Menu Principal</h3>
         <ul class="nav-list">
-            <li onclick="location.href='#material-teorico'">📖 Material Teórico</li>
-            <li onclick="location.href='#phet'">🔌 Simulações PHET</li>
-            <li onclick="location.href='#ra'">🕶️ Realidade Aumentada</li>
+            <li onclick="location.href='#material-teorico'">📖 Base de Conhecimento</li>
+            <li onclick="location.href='#circuitos-tipos'">🔌 Tipos de Ligação</li>
+            <li onclick="location.href='#phet'">🔬 Laboratório Virtual</li>
+            <li onclick="location.href='#ra-section'">🕶️ Realidade Aumentada</li>
+            <li onclick="location.href='#atividades'">📝 Quiz e Mapas Mentais</li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
     </nav>
@@ -39,42 +41,84 @@
             <div class="teoria-grid">
                 <div class="teoria-card" onclick="location.href='grandezas.html'">
                     <div class="icon-circle">⚡</div>
-                    <span class="teoria-titulo">Grandezas CA</span>
-                    <button class="btn-acesso">Acessar</button>
+                    <span class="teoria-titulo">Grandezas</span>
                 </div>
                 <div class="teoria-card" onclick="location.href='fasores.html'">
                     <div class="icon-circle">📈</div>
                     <span class="teoria-titulo">Fasores</span>
-                    <button class="btn-acesso">Acessar</button>
                 </div>
                 <div class="teoria-card" onclick="location.href='impedancia.html'">
                     <div class="icon-circle">🔋</div>
                     <span class="teoria-titulo">Impedância</span>
-                    <button class="btn-acesso">Acessar</button>
                 </div>
             </div>
         </section>
 
-        <section class="section-box" id="phet">
-            <h2>🔬 Laboratório Virtual (PHET)</h2>
-            <div class="iframe-container">
-                <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" 
-                        width="100%" height="100%" style="border:none;" allowfullscreen></iframe>
+        <section class="section-box" id="circuitos-tipos">
+            <h2>🔌 Configurações de Circuitos</h2>
+            <div class="circuitos-flex">
+                <div class="circuito-item"><strong>Série:</strong> Corrente única, tensões divididas.</div>
+                <div class="circuito-item"><strong>Paralelo:</strong> Tensão única, correntes divididas.</div>
+                <div class="circuito-item"><strong>Misto:</strong> Associação de série e paralelo.</div>
             </div>
+        </section>
+
+        <section class="section-box" id="phet">
+            <h2>🔬 Simulação Interativa</h2>
+            <div class="iframe-container">
+                <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section class="section-box" id="ra-section">
+            <h2>🕶️ Experiência em Realidade Aumentada</h2>
+            <p>Utilize o aplicativo **SENAI Space** para visualizar os componentes em 3D.</p>
+            <div class="ra-grid">
+                <div class="ra-card">📷 Marcador: Resistor</div>
+                <div class="ra-card">📷 Marcador: Indutor</div>
+                <div class="ra-card">📷 Marcador: Capacitor</div>
+            </div>
+        </section>
+
+        <section class="section-box" id="atividades">
+            <h2>📝 Atividades Avaliativas</h2>
+            <div class="atividades-grid">
+                <div class="atv-card" onclick="window.open('link-do-seu-quiz')">🎯 Iniciar Quiz CA</div>
+                <div class="atv-card" onclick="window.open('link-do-mapa')">🧠 Mapa Mental</div>
+            </div>
+        </section>
+
+        <section class="section-box">
+            <h2>📊 Feedback sobre o Tutor IA</h2>
+            <form id="feedback-form">
+                <p>O Tutor IA ajudou a sanar suas dúvidas?</p>
+                <input type="radio" name="f1" value="sim"> Sim 
+                <input type="radio" name="f1" value="não" style="margin-left:15px"> Não
+                <br><br>
+                <button type="submit" class="btn-chat" style="width:150px; border-radius:5px">Enviar</button>
+            </form>
         </section>
     </main>
 
     <aside class="chat-sidebar">
         <h3>Tutor IA Mediador</h3>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Sou seu assistente de circuitos. Como posso ajudar na sua análise hoje?</div>
+            <div class="bubble tutor-msg">Olá! Como posso ajudar na sua análise de circuitos hoje?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Digite sua dúvida...">
+            <input type="text" id="msg-input" placeholder="Dúvida...">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
+
+<footer class="main-footer">
+    <div class="footer-content">
+        <h4>Documentação do Projeto (README)</h4>
+        <p>Este produto educacional utiliza a metodologia ABP integrada à IA e RA para o ensino de eletrotécnica.</p>
+        <p>© 2026 CircuitosEdu - Pesquisa de Mestrado em Tecnologias Educativas.</p>
+    </div>
+</footer>
 
 <script>
     async function enviarChat() {
@@ -93,9 +137,7 @@
             });
             const data = await res.json();
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
-        } catch(e) { 
-            box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão.</div>`; 
-        }
+        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão.</div>`; }
         box.scrollTop = box.scrollHeight;
     }
 </script>
