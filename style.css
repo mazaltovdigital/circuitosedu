@@ -1,217 +1,78 @@
-/* --- VARIÁVEIS E CONFIGURAÇÕES GERAIS --- */
 :root {
     --primary-blue: #1a73e8;
     --secondary-orange: #f39c12;
     --bg-light: #f4f6f8;
     --white: #ffffff;
-    --text-main: #333;
     --black-base: #000000;
 }
 
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scroll-behavior: smooth; }
 
-body { 
-    font-family: 'Roboto', sans-serif; 
-    background-color: var(--bg-light); 
-    color: var(--text-main); 
-    line-height: 1.4;
-    scroll-behavior: smooth;
-}
-
-/* --- CABEÇALHO: BANNER COM IMAGEM EM ASSETS --- */
+/* BANNER: CORREÇÃO DEFINITIVA */
 .main-header-black {
-    /* Busca a imagem diretamente da sua pasta assets */
     background: var(--black-base) url('assets/cabecalho-anexo.png') no-repeat center center;
     background-size: cover; 
-    height: 180px; /* Altura equilibrada para não esticar o site */
+    height: 160px;
     width: 100%;
     border-bottom: 4px solid var(--primary-blue);
-    display: block;
 }
 
-/* --- LAYOUT DE 3 COLUNAS (Navegação | Conteúdo | Tutor) --- */
+/* LAYOUT 3 COLUNAS */
 .main-layout {
     display: grid;
-    grid-template-columns: 260px 1fr 340px;
+    grid-template-columns: 260px 1fr 320px;
     gap: 20px;
     max-width: 1600px;
     margin: 20px auto;
     padding: 0 15px;
 }
 
-/* --- COMPONENTES (BOXES) --- */
-.sidebar, .section-box, .chat-sidebar { 
-    background: var(--white); 
-    border-radius: 12px; 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-    margin-bottom: 20px;
-}
+/* BOXES */
+.sidebar, .section-box, .chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; overflow: hidden; }
 
-/* --- MENU LATERAL (NAVEGAÇÃO) --- */
+/* MENU */
 .sidebar { padding: 20px; height: fit-content; }
-.nav-title { 
-    font-size: 1.1rem; 
-    color: var(--primary-blue); 
-    margin-bottom: 15px; 
-    border-bottom: 2px solid var(--secondary-orange);
-    padding-bottom: 5px;
-}
-.nav-list { list-style: none; }
-.nav-list li a { 
-    text-decoration: none; 
-    color: #444; 
-    display: block; 
-    padding: 10px; 
-    border-radius: 6px; 
-    transition: 0.3s;
-    font-size: 0.95rem;
-}
-.nav-list li a:hover { 
-    background: #e8f0fe; 
-    color: var(--primary-blue); 
-    padding-left: 15px;
-}
+.nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); margin-bottom: 10px; }
+.nav-list li { list-style: none; }
+.nav-list li a { text-decoration: none; color: #444; display: block; padding: 10px; border-radius: 5px; font-size: 0.9rem; }
+.nav-list li a:hover { background: #e8f0fe; color: var(--primary-blue); }
 
-.btn-download { 
-    display: block; 
-    background: var(--secondary-orange); 
-    color: white; 
-    text-align: center; 
-    padding: 12px; 
-    border-radius: 8px; 
-    text-decoration: none; 
-    font-weight: bold; 
-    margin-top: 25px; 
-}
+.btn-download { display: block; background: var(--secondary-orange); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }
 
-/* --- ÁREA CENTRAL: LABORATÓRIO VIRTUAL --- */
-.highlight-lab { border-top: 5px solid var(--primary-blue); }
-.iframe-container { 
-    height: 480px; /* Altura ajustada para não ficar muito comprido */
-    background: #fafafa;
-    border-radius: 0 0 10px 10px;
-    overflow: hidden;
-}
+/* SIMULADOR */
+.iframe-container { height: 480px; background: #fafafa; }
 iframe { width: 100%; height: 100%; border: none; }
 
-/* --- CONFIGURAÇÕES DE CIRCUITOS (Série, Paralelo, Misto) --- */
-.circuit-grid { 
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 15px; 
-    margin-top: 15px; 
-    padding: 15px;
-}
-.circuit-item { 
-    text-align: center; 
-    border: 1px solid #eee; 
-    padding: 15px; 
-    border-radius: 10px;
-    background: #fff;
-}
-.circuit-img { 
-    width: 100%; 
-    height: 110px; /* Altura fixa para manter o alinhamento visual */
-    object-fit: contain; 
-    margin-bottom: 10px;
-}
+/* CIRCUITOS */
+.circuit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; }
+.circuit-item { text-align: center; border: 1px solid #eee; border-radius: 10px; padding: 10px; }
+.circuit-img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 5px; }
 
-/* --- ATIVIDADES (QUIZ, MAPAS, RA) --- */
-.activity-flex { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
-.activity-card { 
-    flex: 1; 
-    padding: 20px; 
-    text-align: center; 
-    border-radius: 10px; 
-    cursor: pointer; 
-    transition: 0.3s; 
-    min-width: 160px;
-    font-weight: 500;
-}
+/* RA E ATIVIDADES */
+.activity-flex { display: flex; gap: 15px; padding: 15px; flex-wrap: wrap; }
+.activity-card { flex: 1; padding: 15px; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.3s; min-width: 140px; font-weight: bold; }
 .blue-card { background: #e8f0fe; color: var(--primary-blue); border: 1px dashed var(--primary-blue); }
 .dark-card { background: #001529; color: white; }
-.activity-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.light-card { background: #f8f9fa; border: 1px solid #ddd; }
 
-/* --- FORMULÁRIO DE FEEDBACK --- */
+/* FEEDBACK */
 .feedback-form { padding: 15px; }
-.radio-group { display: flex; gap: 20px; margin: 15px 0; }
-.feedback-form textarea { 
-    width: 100%; 
-    height: 80px; 
-    padding: 10px; 
-    border-radius: 6px; 
-    border: 1px solid #ddd; 
-    margin-top: 10px;
-    font-family: inherit;
-}
+.radio-group { margin: 10px 0; display: flex; gap: 20px; }
+textarea { width: 100%; height: 60px; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ddd; }
 
-/* --- TUTOR IA (DESTAQUE LATERAL) --- */
-.chat-sidebar { 
-    display: flex; 
-    flex-direction: column; 
-    height: 650px; /* Altura alinhada ao conjunto central */
-    border: 1px solid var(--primary-blue); 
-}
-.chat-header { 
-    background: var(--primary-blue); 
-    color: white; 
-    padding: 15px; 
-    text-align: center; 
-    font-weight: bold; 
-}
-#chat-content { 
-    flex: 1; 
-    padding: 15px; 
-    overflow-y: auto; 
-    background: #fdfdfd; 
-    display: flex; 
-    flex-direction: column; 
-}
-.bubble { padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 0.88rem; max-width: 90%; }
-.tutor-msg { background: #e8f0fe; align-self: flex-start; border-bottom-left-radius: 2px; }
-.user-msg { background: var(--primary-blue); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+/* TUTOR IA */
+.chat-sidebar { display: flex; flex-direction: column; height: 620px; border: 1px solid var(--primary-blue); }
+.chat-header { background: var(--primary-blue); color: white; padding: 15px; text-align: center; font-weight: bold; }
+#chat-content { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
+.bubble { padding: 10px; border-radius: 10px; margin-bottom: 12px; font-size: 0.85rem; max-width: 90%; }
+.tutor-msg { background: #e8f0fe; align-self: flex-start; }
+.user-msg { background: var(--primary-blue); color: white; align-self: flex-end; }
+.chat-input-area { display: flex; padding: 10px; border-top: 1px solid #eee; gap: 5px; }
+.chat-input-area input { flex: 1; border: 1px solid #ddd; border-radius: 20px; padding: 8px; outline: none; }
+.btn-chat { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
 
-.chat-input-area { 
-    display: flex; 
-    padding: 12px; 
-    border-top: 1px solid #eee; 
-    gap: 8px; 
-}
-.chat-input-area input { 
-    flex: 1; 
-    padding: 10px 15px; 
-    border-radius: 25px; 
-    border: 1px solid #ddd; 
-    outline: none; 
-}
-.btn-chat { 
-    background: var(--secondary-orange); 
-    border: none; 
-    color: white; 
-    border-radius: 50%; 
-    width: 40px; 
-    height: 40px; 
-    cursor: pointer; 
-}
+/* FOOTER */
+.footer-black { background: #000; color: #888; padding: 30px; text-align: center; font-size: 0.85rem; margin-top: 40px; }
 
-/* --- RODAPÉ (README E SOBRE) --- */
-.footer-black { 
-    background: var(--black-base); 
-    color: #999; 
-    padding: 40px 20px; 
-    text-align: center; 
-    font-size: 0.85rem; 
-    margin-top: 40px; 
-}
-.footer-black strong { color: var(--secondary-orange); }
-
-/* --- RESPONSIVIDADE --- */
-@media (max-width: 1100px) {
-    .main-layout { grid-template-columns: 1fr; }
-    .chat-sidebar { height: 500px; }
-    .iframe-container { height: 350px; }
-}
+@media (max-width: 1100px) { .main-layout { grid-template-columns: 1fr; } }
