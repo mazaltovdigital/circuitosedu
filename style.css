@@ -1,17 +1,17 @@
 :root {
     --primary-blue: #0047B6;
     --secondary-orange: #E84910;
-    --bg-light: #f4f7f9;
+    --bg-page: #f4f7f9;
     --white: #ffffff;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scroll-behavior: smooth; }
+body { font-family: 'Roboto', sans-serif; background-color: var(--bg-page); scroll-behavior: smooth; }
 
-/* BANNER: CORREÇÃO INTEGRAL (SEM CORTES) */
-.main-banner-container {
+/* BANNER: PREENCHIMENTO TOTAL SEM CORTES */
+.main-banner-fixed-total {
     background: #000 url('./assets/cabecalho-anexo.png') no-repeat center center;
-    background-size: contain; /* Exibe a imagem completa */
+    background-size: 100% 100%; /* Ajusta a imagem exatamente ao container */
     height: 180px; 
     width: 100%;
     border-bottom: 4px solid var(--primary-blue);
@@ -22,12 +22,12 @@ body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scr
     grid-template-columns: 260px 1fr 340px;
     gap: 20px;
     max-width: 1600px;
-    margin: 25px auto;
+    margin: 20px auto;
     padding: 0 15px;
 }
 
 /* MENU LATERAL LIMPO */
-.sidebar,.section-box,.chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; overflow: hidden; }
+.sidebar,.section-box,.chat-sidebar-compact { background: var(--white); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 20px; overflow: hidden; }
 .sidebar { padding: 20px; }
 .nav-title { color: var(--primary-blue); font-weight: 700; border-bottom: 2px solid var(--secondary-orange); margin-bottom: 12px; padding-bottom: 5px; }
 .nav-list li { list-style: none!important; }
@@ -42,44 +42,43 @@ body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scr
 }
 .nav-list li a:hover { background: #e8f0fe; color: var(--primary-blue); padding-left: 20px; }
 
-/* CARDS INTERATIVOS PADRONIZADOS */
+/* CARDS INTERATIVOS */
 .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
-.edu-card-btn,.circuit-technical-box { 
+.edu-card-interactive,.circuit-technical-box { 
     background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; 
     text-align: center; cursor: pointer; transition: 0.3s;
 }
-.edu-card-btn:hover { transform: translateY(-4px); border-color: var(--primary-blue); box-shadow: 0 8px 16px rgba(0,0,0,0.06); }
-.card-icon { font-size: 2.2rem; display: block; margin-bottom: 10px; }
+.edu-card-interactive:hover { transform: translateY(-4px); border-color: var(--primary-blue); box-shadow: 0 8px 16px rgba(0,0,0,0.06); }
+.icon-lg { font-size: 2.2rem; display: block; margin-bottom: 10px; }
 .blue-highlight { background: #f0f9ff; border: 1px dashed var(--primary-blue); }
 
 /* IMAGENS CIRCUITOS */
 .img-circuit { width: 100%; height: 180px; object-fit: contain; }
 
 /* FEEDBACK ESTILIZADO */
-.feedback-pro-form { padding: 20px; background: #fafafa; border-radius: 10px; border: 1px solid #eee; }
-.radio-group-pro { display: flex; gap: 30px; margin: 15px 0; }
-.radio-label { font-size: 0.9rem; font-weight: 500; cursor: pointer; }
+.feedback-box-pro { padding: 25px; border-top: 4px solid var(--primary-blue); }
+.radio-group-final { display: flex; gap: 30px; margin: 15px 0; }
+.radio-item { font-size: 0.9rem; font-weight: 500; cursor: pointer; }
 textarea { width: 100%; height: 100px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; margin: 10px 0; font-family: inherit; resize: none; outline: none; }
-.btn-send-data { background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
-.btn-send-data:hover { background: #00378d; }
-.status-indicator { text-align: center; margin-top: 10px; font-size: 0.85rem; height: 20px; }
+.btn-send-professional { background: var(--primary-blue); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
+.btn-send-professional:hover { background: #00378d; }
+.ui-status { text-align: center; margin-top: 10px; font-size: 0.85rem; font-weight: 600; min-height: 20px; }
 
-/* TUTOR IA COMPACTO (550PX) */
-.chat-sidebar { display: flex; flex-direction: column; height: 550px; border: 1px solid var(--primary-blue); }
+/* TUTOR IA COMPACTO (500PX) */
+.chat-sidebar-compact { display: flex; flex-direction: column; height: 500px; border: 1px solid var(--primary-blue); }
 .chat-header-pro { background: var(--primary-blue); color: white; padding: 15px; text-align: center; font-weight: 700; }
 .chat-scroll-area { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
 .bubble { padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 0.88rem; line-height: 1.4; max-width: 90%; }
 .tutor-msg { background: #f0f9ff; border: 1px solid #bae6fd; align-self: flex-start; border-bottom-left-radius: 2px; }
 .user-msg { background: var(--primary-blue); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
 
-/* PHET */
-.iframe-container-phet { height: 550px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
+/* LABORATÓRIO PHET */
+.highlight-lab { border-top: 4px solid var(--secondary-orange); }
+.iframe-phet-wrapper { height: 500px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
 iframe { width: 100%; height: 100%; border: none; }
-
-/* TEXTO ACADÊMICO */
-.text-justified p { text-align: justify; margin-bottom: 12px; line-height: 1.6; }
 
 .btn-download { display: block; background: var(--secondary-orange); color: white; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 15px; }
 .btn-send-icon { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
 
-.footer-pro { background: #000; color: #777; padding: 40px 20px; text-align: center; font-size: 0.85rem; margin-top: 40px; }
+.footer-simple-black { background: #000; color: #777; padding: 40px 20px; text-align: center; font-size: 0.85rem; margin-top: 40px; }
+.academic-text div { text-align: justify; line-height: 1.6; }
