@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CircuitosEdu - Plataforma de Aprendizagem CA</title>
+    <title>CircuitosEdu - Plataforma CA</title>
     <link rel="stylesheet" href="style.css">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-676V40J9RX"></script>
     <script>
@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<header class="main-header-black"></header>
+<header class="main-header-fixed"></header>
 
 <div class="main-layout">
     <nav class="sidebar">
@@ -34,60 +34,67 @@
     </nav>
 
     <main class="main-content">
-        
         <section class="section-box highlight-lab" id="phet">
-            <h2>🔬 Simulação Interativa PHET</h2>
+            <h2>🔬 Laboratório Virtual PHET (CA)</h2>
             <div class="iframe-container">
                 <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" allowfullscreen></iframe>
             </div>
-        </section>
+        </article>
 
         <section class="section-box" id="tipos-circuitos">
-            <h2>🔌 Tipos de Ligação</h2>
-            <div class="circuit-grid">
-                <div class="circuit-item">
-                    <img src="./assets/circuito-serie.png" alt="Série" class="circuit-img" onerror="this.src='https://via.placeholder.com/150?text=Série'">
-                    <h4>Circuito Série</h4>
+            <h2>🔌 Configurações de Circuitos</h2>
+            <div class="circuit-grid-large">
+                <div class="circuit-item-large">
+                    <img src="./assets/circuito-serie.png" alt="Série" class="circuit-img-large">
+                    <h4>Associação em Série</h4>
+                    <p>Corrente constante e soma fasorial de tensões.</p>
                 </div>
-                <div class="circuit-item">
-                    <img src="./assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img" onerror="this.src='https://via.placeholder.com/150?text=Paralelo'">
-                    <h4>Circuito Paralelo</h4>
+                <div class="circuit-item-large">
+                    <img src="./assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img-large">
+                    <h4>Associação em Paralelo</h4>
+                    <p>Tensão constante e divisão de correntes nos ramos.</p>
                 </div>
-                <div class="circuit-item">
-                    <img src="./assets/circuito-misto.png" alt="Misto" class="circuit-img" onerror="this.src='https://via.placeholder.com/150?text=Misto'">
-                    <h4>Circuito Misto</h4>
+                <div class="circuit-item-large">
+                    <img src="./assets/circuito-misto.png" alt="Misto" class="circuit-img-large">
+                    <h4>Associação Mista</h4>
+                    <p>Combinação de topologias para análise complexa.</p>
                 </div>
             </div>
         </section>
 
-        <section class="section-box" id="ra-section">
-            <h2>🕶️ Realidade Aumentada (RA)</h2>
-            <p>Utilize os marcadores abaixo com o app <strong>SENAI Space</strong> para visualizar fasores em 3D.</p>
+        <section class="section-box" id="material-teorico">
+            <h2>📖 Base de Conhecimento CA</h2>
             <div class="activity-flex">
-                <div class="activity-card blue-card">📷 Marcador Resistor</div>
-                <div class="activity-card blue-card">📷 Marcador Indutor</div>
-                <div class="activity-card blue-card">📷 Marcador Capacitor</div>
+                <div class="activity-card light-card" onclick="location.href='grandezas.html'">⚡ Grandezas</div>
+                <div class="activity-card light-card" onclick="location.href='fasores.html'">📈 Fasores</div>
+                <div class="activity-card light-card" onclick="location.href='impedancia.html'">🔋 Impedância</div>
             </div>
         </section>
 
         <section class="section-box" id="feedback-section">
             <h2>📊 Feedback: Mediação da IA</h2>
-            <form class="feedback-form" id="f-form">
-                <p>O Tutor IA auxiliou efetivamente no seu aprendizado?</p>
-                <div class="radio-group" style="display:flex; gap:20px; margin: 15px 0;">
-                    <label><input type="radio" name="f" value="sim"> Sim</label>
-                    <label><input type="radio" name="f" value="nao"> Não</label>
+            <div class="feedback-form">
+                <p>O Tutor IA mediou seu aprendizado de forma significativa?</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="f" value="Sim"> Sim</label>
+                    <label><input type="radio" name="f" value="Não"> Não</label>
                 </div>
-                <textarea id="feedback-txt" placeholder="Deixe seu comentário para a pesquisa..."></textarea>
-                <button type="button" onclick="enviarFeedback()" class="btn-download" style="border:none; cursor:pointer">Enviar Avaliação</button>
-            </form>
+                <textarea id="feedback-comment" placeholder="Escreva sua experiência..."></textarea>
+                <button type="button" onclick="salvarFeedback()" class="btn-chat" style="width:100%; border-radius:5px; margin-top:10px;">Enviar Avaliação</button>
+            </div>
+        </section>
+
+        <section class="section-box" id="sobre-projeto">
+            <h2>ℹ️ Sobre o Produto Educacional</h2>
+            <p>O <strong>CircuitosEdu</strong> é um Ambiente Virtual de Aprendizagem desenvolvido no âmbito do Mestrado Profissional em Ensino Tecnológico (UEA/IFAM).</p>
+            <p>Este produto integra <strong>Aprendizagem Baseada em Projetos (ABP)</strong> com tecnologias de fronteira como <strong>Realidade Aumentada</strong> (SENAI Space) e <strong>Inteligência Artificial</strong> para reduzir a carga cognitiva no ensino de circuitos de Corrente Alternada.</p>
         </section>
     </main>
 
-    <aside class="chat-sidebar">
+    <aside class="chat-sidebar highlight-ai">
         <div class="chat-header">🤖 Tutor IA Mediador</div>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Sou seu assistente para circuitos CA. Como posso te orientar hoje?</div>
+            <div class="bubble tutor-msg">Olá! Estou pronto para mediar sua prática. Qual sua dúvida sobre os circuitos de hoje?</div>
         </div>
         <div class="chat-input-area">
             <input type="text" id="msg-input" placeholder="Pergunte ao Tutor..." onkeydown="if(event.key==='Enter') enviarChat()">
@@ -96,8 +103,8 @@
     </aside>
 </div>
 
-<footer class="footer-black" id="sobre-projeto">
-    <p>📄 <strong>README:</strong> Projeto de Mestrado - Daniel Sandoval | UEA/IFAM | © 2026</p>
+<footer class="footer-black">
+    <p>📄 <strong>Documentação:</strong> Pesquisa de Mestrado - Daniel Sandoval | © 2026 CircuitosEdu</p>
 </footer>
 
 <script>
@@ -107,35 +114,34 @@
         if(!input.value.trim()) return;
 
         box.innerHTML += `<div class="bubble user-msg">${input.value}</div>`;
-        const texto = input.value; input.value = '';
+        const text = input.value; input.value = '';
         box.scrollTop = box.scrollHeight;
 
         try {
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({message: texto})
+                body: JSON.stringify({message: text})
             });
             const data = await res.json();
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
-        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão com a IA.</div>`; }
+        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão com a IA. Verifique as configurações de cota da API.</div>`; }
         box.scrollTop = box.scrollHeight;
     }
 
-    async function enviarFeedback() {
+    async function salvarFeedback() {
         const radio = document.querySelector('input[name="f"]:checked');
-        const texto = document.getElementById('feedback-txt').value;
-        if(!radio) { alert("Selecione uma opção!"); return; }
-
+        const comment = document.getElementById('feedback-comment').value;
+        if(!radio) { alert("Selecione uma opção."); return; }
+        
         try {
             await fetch('/api/feedback', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ ajudou: radio.value, comentario: texto })
+                body: JSON.stringify({ ajudou: radio.value, texto: comment })
             });
-            alert("Feedback enviado! Obrigado por participar da pesquisa.");
-            document.getElementById('f-form').reset();
-        } catch(e) { alert("Erro ao enviar."); }
+            alert("Obrigado pelo feedback!");
+        } catch(e) { alert("Erro ao enviar feedback."); }
     }
 </script>
 </body>
