@@ -8,7 +8,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scroll-behavior: smooth; }
 
-/* BANNER SEM BORDAS */
+/* BANNER COMPLETO 100% LARGURA */
 .main-header-fixed {
     background: #000 url('./assets/cabecalho-anexo.png') no-repeat center center;
     background-size: cover; 
@@ -26,40 +26,48 @@ body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scr
     padding: 0 15px;
 }
 
-/* MENU SEM LINHAS */
-.sidebar,.section-box,.chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
+/* MENU PRINCIPAL SEM LINHAS E SEM BULLETS */
+.sidebar,.section-box,.chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; overflow: hidden; }
 .sidebar { padding: 20px; height: fit-content; }
-.nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); margin-bottom: 10px; }
-.nav-list li { list-style: none; }
+.nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); margin-bottom: 10px; padding-bottom: 5px; }
+.nav-list { list-style: none; padding: 0; }
+.nav-list li { padding: 0; margin-bottom: 5px; }
 .nav-list li a { 
     text-decoration: none; /* REMOVE AS LINHAS */
-    color: #444; 
+    color: var(--primary-blue); 
     display: block; 
     padding: 10px; 
     font-size: 0.95rem;
+    border-radius: 6px;
     transition: 0.3s;
 }
-.nav-list li a:hover { background: #e8f0fe; color: var(--primary-blue); padding-left: 15px; }
+.nav-list li a:hover { background: #e8f0fe; padding-left: 15px; }
 
-/* BASE DE CONHECIMENTO - CARDS */
+/* CARDS INTERATIVOS (IGUAIS PARA BASE CA E RA) */
 .teoria-grid-modern { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
 .teoria-card-modern { 
-    background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 20px; 
-    text-align: center; cursor: pointer; transition: 0.3s;
+    background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 25px; 
+    text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column;
 }
-.teoria-card-modern:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary-blue); }
+.teoria-card-modern:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); border-color: var(--primary-blue); }
 
-/* IMAGENS CIRCUITOS */
+.icon-box-modern { 
+    width: 60px; height: 60px; background: #e8f0fe; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; margin: 0 auto 15px; color: var(--primary-blue); border: 2px solid var(--primary-blue);
+}
+
+/* IMAGENS CIRCUITOS AMPLIADAS */
 .circuit-grid-large { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 15px; }
 .circuit-item-large { text-align: center; border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px; }
 .circuit-img-large { width: 100%; height: 180px; object-fit: contain; }
 
-/* TUTOR IA PROPORCIONAL */
+/* TUTOR IA PROPORCIONAL AO PHET */
 .chat-sidebar { display: flex; flex-direction: column; height: 600px; border: 1px solid var(--primary-blue); }
-.chat-header { background: var(--primary-blue); color: white; padding: 15px; text-align: center; }
+.chat-header { background: var(--primary-blue); color: white; padding: 15px; text-align: center; font-weight: bold; }
 #chat-content { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
 .bubble { padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 0.85rem; max-width: 90%; }
-.tutor-msg { background: #e8f0fe; align-self: flex-start; }
+.tutor-msg { background: #e8f0fe; align-self: flex-start; border-bottom-left-radius: 2px; }
 .user-msg { background: var(--primary-blue); color: white; align-self: flex-end; }
 
 /* PHET */
@@ -70,3 +78,5 @@ iframe { width: 100%; height: 100%; border: none; }
 .btn-chat { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
 
 .footer-black { background: #000; color: #999; padding: 40px 20px; text-align: center; font-size: 0.85rem; }
+
+@media (max-width: 1100px) {.main-layout { grid-template-columns: 1fr; } }
