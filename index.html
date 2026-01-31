@@ -43,44 +43,84 @@
 
         <section class="section-box" id="material-teorico">
             <h2>📖 Base de Conhecimento CA</h2>
-            <p>Selecione um módulo para fundamentação teórica:</p>
             <div class="teoria-grid-modern">
                 <div class="teoria-card-modern" onclick="location.href='grandezas.html'">
-                    <div class="icon-box-modern">⚡</div>
+                    <div class="icon-circle">⚡</div>
                     <h4>Grandezas</h4>
                 </div>
                 <div class="teoria-card-modern" onclick="location.href='fasores.html'">
-                    <div class="icon-box-modern">📈</div>
+                    <div class="icon-circle">📈</div>
                     <h4>Fasores</h4>
                 </div>
                 <div class="teoria-card-modern" onclick="location.href='impedancia.html'">
-                    <div class="icon-box-modern">🔋</div>
+                    <div class="icon-circle">🔋</div>
                     <h4>Impedância</h4>
                 </div>
             </div>
         </section>
 
+        <section class="section-box" id="tipos-circuitos">
+            <h2>🔌 Configurações de Circuitos</h2>
+            <div class="circuit-grid-large">
+                <div class="circuit-item-large">
+                    <img src="./assets/circuito-serie.png" alt="Série" class="circuit-img-large" onerror="this.src='https://via.placeholder.com/200x120?text=Série'">
+                    <h4>Circuito Série</h4>
+                </div>
+                <div class="circuit-item-large">
+                    <img src="./assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img-large" onerror="this.src='https://via.placeholder.com/200x120?text=Paralelo'">
+                    <h4>Circuito Paralelo</h4>
+                </div>
+                <div class="circuit-item-large">
+                    <img src="./assets/circuito-misto.png" alt="Misto" class="circuit-img-large" onerror="this.src='https://via.placeholder.com/200x120?text=Misto'">
+                    <h4>Circuito Misto</h4>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-box" id="ra-section">
+            <h2>🕶️ Realidade Aumentada (RA)</h2>
+            <p>Utilize os marcadores do app SENAI Space para visualização holográfica.</p>
+            <div class="activity-flex">
+                <div class="activity-card blue-card">📷 Marcador Resistor</div>
+                <div class="activity-card blue-card">📷 Marcador Indutor</div>
+                <div class="activity-card blue-card">📷 Marcador Capacitor</div>
+            </div>
+        </section>
+
+        <section class="section-box" id="feedback-section">
+            <h2>📊 Feedback dos Estudantes</h2>
+            <div class="feedback-form">
+                <p>O Tutor IA facilitou sua compreensão teórica?</p>
+                <div class="radio-group" style="display:flex; gap:20px; margin: 10px 0;">
+                    <label><input type="radio" name="f" value="sim"> Sim</label>
+                    <label><input type="radio" name="f" value="nao"> Não</label>
+                </div>
+                <textarea id="feedback-comment" placeholder="Escreva aqui sua percepção sobre a mediação da IA..."></textarea>
+                <button type="button" onclick="salvarFeedback()" class="btn-chat" style="width:100%; border-radius:5px; margin-top:10px;">Enviar Avaliação</button>
+            </div>
+        </section>
+
         <section class="section-box" id="sobre-projeto">
             <h2>ℹ️ Sobre o Produto Educacional</h2>
-            <p>O <strong>CircuitosEdu</strong> é um protótipo tecnológico desenvolvido como produto do Mestrado Profissional em Ensino Tecnológico (UEA/IFAM) pelo pesquisador Daniel Sandoval.</p>
-            <p>A plataforma integra <strong>Inteligência Artificial</strong> e <strong>Realidade Aumentada</strong> (SENAI Space) para mediar o ensino de circuitos de corrente alternada, visando facilitar a visualização de fenômenos eletromagnéticos abstratos.</p>
+            <p>O <strong>CircuitosEdu</strong> é um protótipo tecnológico desenvolvido pelo pesquisador Daniel Sandoval como produto do Mestrado Profissional em Ensino Tecnológico (UEA/IFAM).</p>
+            <p>Integra <strong>Inteligência Artificial</strong> e <strong>Realidade Aumentada</strong> para facilitar a aprendizagem significativa em circuitos de corrente alternada.</p>
         </section>
     </main>
 
     <aside class="chat-sidebar highlight-ai">
         <div class="chat-header">🤖 Tutor IA Mediador</div>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Estou pronto para mediar sua prática. Qual sua dúvida técnica sobre os circuitos de hoje?</div>
+            <div class="bubble tutor-msg">Olá! Estou pronto para mediar sua prática. Qual sua dúvida técnica?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Dúvida?">
+            <input type="text" id="msg-input" placeholder="Pergunte ao Tutor..." onkeydown="if(event.key==='Enter') enviarChat()">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
 
 <footer class="footer-black">
-    <p>📄 <strong>Projeto CircuitosEdu:</strong> Mediação Pedagógica com IA e RA | © 2026 Daniel Sandoval</p>
+    <p>© 2026 CircuitosEdu - Mediação Pedagógica com IA e RA | Daniel Sandoval</p>
 </footer>
 
 <script>
@@ -102,8 +142,23 @@
             });
             const data = await res.json();
             box.innerHTML += `<div class="bubble tutor-msg">${data.reply}</div>`;
-        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão com a IA.</div>`; }
+        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro na conexão.</div>`; }
         box.scrollTop = box.scrollHeight;
+    }
+
+    async function salvarFeedback() {
+        const radio = document.querySelector('input[name="f"]:checked');
+        const comment = document.getElementById('feedback-comment').value;
+        if(!radio) { alert("Selecione uma opção."); return; }
+        
+        try {
+            await fetch('/api/feedback', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ ajudou: radio.value, texto: comment })
+            });
+            alert("Feedback enviado com sucesso!");
+        } catch(e) { alert("Erro ao enviar."); }
     }
 </script>
 </body>
