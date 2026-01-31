@@ -3,60 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CircuitosEdu - Plataforma CA</title>
+    <title>CircuitosEdu - Plataforma de Aprendizagem CA</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #f8fafc; }
+        body { font-family: 'Roboto', sans-serif; background-color: #f1f5f9; scroll-behavior: smooth; }
         
-        /* Banner ocupando 100% da largura real */
-       .header-banner {
+        /* Banner ocupando 100% da largura sem espaços */
+       .banner-header {
             background: #000 url('./assets/cabecalho-anexo.png') no-repeat center center;
             background-size: cover;
             height: 220px;
             width: 100%;
-            border-bottom: 4px solid #1e40af;
+            border-bottom: 4px solid #1a73e8;
         }
 
-        /* Menu lateral limpo e sem linhas sublinhadas */
+        /* Menu Sidebar Limpo e Profissional */
        .sidebar-nav ul { list-style: none!important; padding: 0; margin: 0; }
-       .sidebar-nav li { border: none!important; }
+       .sidebar-nav li { border: none!important; margin-bottom: 2px; }
        .sidebar-nav a { 
             display: block; 
-            padding: 12px 16px; 
+            padding: 12px 18px; 
             color: #334155; 
             text-decoration: none!important; 
-            border-radius: 8px;
+            border-radius: 10px;
             transition: all 0.2s;
         }
-       .sidebar-nav a:hover { background-color: #f1f5f9; color: #1e40af; padding-left: 20px; }
+       .sidebar-nav a:hover { background-color: #eff6ff; color: #1a73e8; padding-left: 24px; }
 
-        /* Cards interativos padronizados (Base de Conhecimento e RA) */
-       .edu-action-card {
+        /* Cards Interativos (Material Teórico e RA) */
+       .edu-interactive-card {
             background: white;
             border: 2px solid #f1f5f9;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 24px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-       .edu-action-card:hover {
+       .edu-interactive-card:hover {
             border-color: #3b82f6;
             transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Bolhas de Conversa do Tutor */
-       .chat-bubble { padding: 12px 16px; border-radius: 18px; margin-bottom: 12px; max-width: 85%; font-size: 0.95rem; line-height: 1.5; }
-       .tutor-msg { background: #f0f9ff; color: #075985; align-self: flex-start; border: 1px solid #bae6fd; border-bottom-left-radius: 4px; }
-       .user-msg { background: #1e40af; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        /* Chat do Tutor */
+       .bubble { padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; max-width: 85%; font-size: 0.92rem; line-height: 1.5; }
+       .tutor-bubble { background: #f0f9ff; color: #075985; align-self: flex-start; border: 1px solid #bae6fd; border-bottom-left-radius: 2px; }
+       .user-bubble { background: #1a73e8; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
         
-        #chat-window::-webkit-scrollbar { width: 5px; }
+        #chat-window::-webkit-scrollbar { width: 4px; }
         #chat-window::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 
@@ -65,43 +65,47 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Inicialização automática do ambiente
+        // Configuração Automática
         const firebaseConfig = JSON.parse(__firebase_config);
-        const appId = typeof __app_id!== 'undefined'? __app_id : 'circuitosedu-v7';
-        const apiKey = ""; // Chave Gemini injetada
+        const appId = typeof __app_id!== 'undefined'? __app_id : 'circuitosedu-v8';
+        const apiKey = ""; // Chave do Gemini
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        let currentUser = null;
 
-        // Login Silencioso (REGRA 3)
-        const initSession = async () => {
-            if (typeof __initial_auth_token!== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
-        };
-        onAuthStateChanged(auth, (u) => currentUser = u);
-        initSession();
+        let userAccount = null;
 
-        // --- EXPOSIÇÃO GLOBAL PARA BOTÕES ---
-        window.enviarAoTutor = async function() {
+        // Login (Regra 3)
+        async function startSession() {
+            try {
+                if (typeof __initial_auth_token!== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) { console.error("Erro na Autenticação:", err); }
+        }
+
+        onAuthStateChanged(auth, (u) => { userAccount = u; });
+        startSession();
+
+        // --- FUNÇÃO DO TUTOR IA (GEMINI 2.0 FLASH) ---
+        window.enviarDuvidaTutor = async function() {
             const input = document.getElementById('chat-input');
             const chatBox = document.getElementById('chat-window');
             const text = input.value.trim();
             if (!text) return;
 
-            chatBox.innerHTML += `<div class="flex flex-col"><div class="chat-bubble user-msg shadow-sm">${text}</div></div>`;
+            chatBox.innerHTML += `<div class="flex flex-col"><div class="bubble user-bubble shadow-sm">${text}</div></div>`;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
             const resId = 'ai-' + Date.now();
-            chatBox.innerHTML += `<div class="flex flex-col"><div class="chat-bubble tutor-msg shadow-sm" id="${resId}">Mediando resposta...</div></div>`;
+            chatBox.innerHTML += `<div class="flex flex-col"><div class="bubble tutor-bubble shadow-sm" id="${resId}">Mediando resposta...</div></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            const systemPrompt = "Você é o Tutor IA Mediador da plataforma CircuitosEdu. Seu objetivo é auxiliar alunos de nível técnico em circuitos de Corrente Alternada (CA). Use a metodologia de andaimes pedagógicos (scaffolding): não dê a resposta pronta, incentive a reflexão e o uso do simulador PHET.";
+            const systemMsg = "Você é o Tutor IA Mediador da plataforma CircuitosEdu. Seu objetivo é auxiliar alunos técnicos de eletricidade. Não dê respostas diretas; use andaimes pedagógicos para guiar o aluno no simulador PHET e na Realidade Aumentada.";
 
             try {
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
@@ -109,47 +113,53 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: text }] }],
-                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                        systemInstruction: { parts: [{ text: systemMsg }] }
                     })
                 });
                 const data = await res.json();
                 const reply = data.candidates?.?.content?.parts?.?.text |
 
-| "Ocorreu um erro no processamento. Pode reformular sua dúvida?";
+| "Ocorreu um erro no processamento. Tente novamente.";
                 document.getElementById(resId).innerText = reply;
             } catch (err) {
-                document.getElementById(resId).innerText = "🔌 Erro de conexão com o Tutor. Verifique sua rede ou o faturamento da API Google.";
+                document.getElementById(resId).innerText = "🔌 Erro: Verifique a ligação à internet ou o faturamento da API Google.";
             }
             chatBox.scrollTop = chatBox.scrollHeight;
         };
 
-        window.salvarFeedbackMestrado = async function() {
-            if (!currentUser) { alert("Conectando ao banco de dados..."); return; }
+        // --- FUNÇÃO DE FEEDBACK (GRAVAÇÃO NO FIRESTORE) ---
+        window.enviarFeedbackPesquisa = async function() {
+            const statusLabel = document.getElementById('feedback-status');
+            if (!userAccount) { 
+                statusLabel.innerText = "❌ Aguarde a ligação ao servidor...";
+                return; 
+            }
             
-            const btn = document.getElementById('btn-feedback-action');
-            const comment = document.getElementById('fb-comment').value;
+            const btn = document.getElementById('btn-fb-send');
             const help = document.querySelector('input[name="help"]:checked');
+            const text = document.getElementById('fb-comment').value;
 
-            if (!help) { alert("Por favor, selecione se a IA ajudou."); return; }
+            if (!help) { alert("Indique se a IA ajudou."); return; }
 
             try {
                 btn.disabled = true;
-                btn.innerText = "Enviando...";
+                btn.innerText = "Gravando...";
+                statusLabel.innerText = "⏳ A gravar no banco de dados...";
 
-                // Gravação obrigatória no Firestore (REGRA 1)
+                // Gravação (REGRA 1)
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'feedbacks'), {
-                    alunoUid: currentUser.uid,
-                    comentario: comment,
-                    ia_ajudou: help.value,
+                    uid: userAccount.uid,
+                    comentario: text,
+                    utilidade: help.value,
                     timestamp: serverTimestamp()
                 });
 
-                alert("Feedback enviado com sucesso! Obrigado por colaborar com a pesquisa.");
+                statusLabel.innerText = "✅ Feedback gravado com sucesso no Firebase!";
                 document.getElementById('fb-comment').value = '';
                 btn.disabled = false;
                 btn.innerText = "Enviar Feedback";
             } catch (e) {
-                alert("Erro ao gravar. Verifique a ativação do Login Anônimo no Firebase.");
+                statusLabel.innerText = "❌ Erro ao gravar. Verifique as regras do Firestore.";
                 btn.disabled = false;
                 btn.innerText = "Enviar Feedback";
             }
@@ -158,16 +168,16 @@
 </head>
 <body class="bg-slate-50">
 
-    <header class="header-banner shadow-lg"></header>
+    <header class="banner-header shadow-lg"></header>
 
-    <div class="max-w-[1600px] mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="max-w-[1500px] mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         <aside class="lg:col-span-3">
-            <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-8 border border-slate-200">
+            <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-8 border border-slate-100">
                 <h3 class="text-blue-800 font-bold text-lg mb-6 border-l-4 border-orange-500 pl-3">Menu Principal</h3>
                 <nav class="sidebar-nav">
                     <ul>
-                        <li><a href="#material-teorico">📖 Material de Estudo</a></li>
+                        <li><a href="#material-estudo">📖 Material de Estudo</a></li>
                         <li><a href="#phet">🔬 Laboratório Virtual</a></li>
                         <li><a href="#circuitos">🔌 Configurações de Circuitos</a></li>
                         <li><a href="#ra">🕶️ Realidade Aumentada</a></li>
@@ -176,7 +186,7 @@
                         <li><a href="#sobre">ℹ️ Sobre o Projeto</a></li>
                     </ul>
                 </nav>
-                <div class="mt-10">
+                <div class="mt-8">
                     <a href="assets/roteiro_pratica.pdf" class="block bg-orange-500 hover:bg-orange-600 text-white text-center font-bold py-4 rounded-xl shadow-lg transition-all" download>
                         📥 Baixar Roteiro PDF
                     </a>
@@ -186,36 +196,34 @@
 
         <main class="lg:col-span-6 space-y-8">
             
-            <section id="material-teorico" class="bg-white rounded-xl shadow-sm p-8">
+            <section id="material-estudo" class="bg-white rounded-2xl shadow-sm p-8">
                 <h2 class="text-2xl font-bold mb-6 text-slate-800 flex items-center gap-3">📖 Material de Estudo CA</h2>
                 <div class="grid grid-cols-3 gap-4">
-                    <div class="edu-action-card" onclick="location.href='grandezas.html'">
+                    <div class="edu-interactive-card" onclick="location.href='grandezas.html'">
                         <span class="text-4xl">⚡</span>
                         <span class="font-bold text-slate-700 text-xs uppercase">Grandezas</span>
                     </div>
-                    <div class="edu-action-card" onclick="location.href='fasores.html'">
+                    <div class="edu-interactive-card" onclick="location.href='fasores.html'">
                         <span class="text-4xl">📈</span>
                         <span class="font-bold text-slate-700 text-xs uppercase">Fasores</span>
                     </div>
-                    <div class="edu-action-card" onclick="location.href='impedancia.html'">
+                    <div class="edu-interactive-card" onclick="location.href='impedancia.html'">
                         <span class="text-4xl">🔋</span>
                         <span class="font-bold text-slate-700 text-xs uppercase">Impedância</span>
                     </div>
                 </div>
             </section>
 
-            <section id="phet" class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200">
-                <div class="bg-slate-50 p-5 border-b font-bold text-slate-700 flex items-center gap-3">
-                    <span class="text-blue-600 text-2xl">🔬</span> Laboratório Interativo PHET
-                </div>
-                <div class="h-[500px]">
+            <section id="phet" class="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100">
+                <div class="bg-slate-50 p-5 border-b font-bold text-slate-700">🔬 Laboratório Interativo PHET</div>
+                <div class="h-[480px]">
                     <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" class="w-full h-full border-none" allowfullscreen></iframe>
                 </div>
             </section>
 
-            <section id="circuitos" class="bg-white rounded-xl shadow-sm p-8">
+            <section id="circuitos" class="bg-white rounded-2xl shadow-sm p-8">
                 <h2 class="text-2xl font-bold mb-8 text-slate-800">🔌 Configurações de Circuitos</h2>
-                <div class="grid grid-cols-3 gap-6">
+                <div class="grid grid-cols-3 gap-8">
                     <div class="text-center">
                         <img src="./assets/circuito-serie.png" alt="Série" class="h-44 w-full object-contain mb-4 border rounded-2xl p-4 bg-slate-50 transition hover:border-blue-300" onerror="this.src='https://placehold.co/400x300?text=Série'">
                         <span class="font-bold text-slate-600">Circuito Série</span>
@@ -231,66 +239,66 @@
                 </div>
             </section>
 
-            <section id="ra" class="bg-white rounded-xl shadow-sm p-8">
+            <section id="ra" class="bg-white rounded-2xl shadow-sm p-8">
                 <h2 class="text-2xl font-bold mb-4 text-slate-800">🕶️ Realidade Aumentada (RA)</h2>
-                <p class="text-sm text-slate-500 mb-8 italic text-center">Interaja com os componentes 3D no SENAI Space:</p>
                 <div class="grid grid-cols-3 gap-4">
-                    <div class="edu-action-card border-blue-50 bg-blue-50/50 text-blue-900 border-dashed border-2">
+                    <div class="edu-interactive-card border-blue-50 bg-blue-50/50 text-blue-900 border-dashed border-2">
                         <span class="text-4xl">📷</span>
-                        <span class="text-[10px] font-black uppercase">Resistor RA</span>
+                        <span class="text-[10px] font-black uppercase">Marcador Resistor</span>
                     </div>
-                    <div class="edu-action-card border-blue-50 bg-blue-50/50 text-blue-900 border-dashed border-2">
+                    <div class="edu-interactive-card border-blue-50 bg-blue-50/50 text-blue-900 border-dashed border-2">
                         <span class="text-4xl">📷</span>
-                        <span class="text-[10px] font-black uppercase">Indutor RA</span>
+                        <span class="text-[10px] font-black uppercase">Marcador Indutor</span>
                     </div>
-                    <div class="edu-action-card border-blue-100 bg-blue-50/50 text-blue-900 border-dashed border-2">
+                    <div class="edu-interactive-card border-blue-50 bg-blue-50/50 text-blue-900 border-dashed border-2">
                         <span class="text-4xl">📷</span>
-                        <span class="text-[10px] font-black uppercase">Capacitor RA</span>
+                        <span class="text-[10px] font-black uppercase">Marcador Capacitor</span>
                     </div>
                 </div>
             </section>
 
-            <section id="feedback" class="bg-white rounded-xl shadow-sm p-8">
-                <h2 class="text-2xl font-bold mb-6 text-slate-800">📊 Feedback da Mediação</h2>
+            <section id="feedback" class="bg-white rounded-2xl shadow-sm p-8">
+                <h2 class="text-2xl font-bold mb-6 text-slate-800">📊 Pesquisa de Validação</h2>
                 <div class="space-y-6">
-                    <p class="text-slate-600 font-medium">O Tutor IA mediou sua aprendizagem de forma significativa?</p>
+                    <p class="text-slate-600 font-medium">O Tutor IA mediou seu aprendizado hoje?</p>
                     <div class="flex gap-10">
                         <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="help" value="Sim" class="w-5 h-5 accent-blue-600"> <span class="font-bold text-slate-700">Sim</span></label>
                         <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="help" value="Não" class="w-5 h-5 accent-blue-600"> <span class="font-bold text-slate-700">Não</span></label>
                     </div>
-                    <textarea id="fb-comment" class="w-full border-2 border-slate-100 rounded-2xl p-4 h-32 focus:border-blue-400 outline-none transition-all" placeholder="Escreva sua experiência pedagógica com a IA..."></textarea>
-                    <button id="btn-feedback-action" onclick="salvarFeedbackMestrado()" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-black py-4 rounded-2xl shadow-xl transition-all">
-                        Enviar Feedback
+                    <textarea id="fb-comment" class="w-full border-2 border-slate-100 rounded-2xl p-4 h-32 focus:border-blue-400 outline-none transition-all" placeholder="Dê a sua opinião sobre a mediação por IA..."></textarea>
+                    <button id="btn-fb-send" onclick="enviarFeedbackPesquisa()" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-black py-4 rounded-2xl shadow-xl transition-all">
+                        Enviar Feedback para a Pesquisa
                     </button>
+                    <p id="feedback-status" class="text-center font-bold"></p>
                 </div>
             </section>
 
             <section id="sobre" class="bg-white rounded-xl shadow-sm p-8 border-l-8 border-blue-800">
-                <h2 class="text-xl font-bold text-blue-900 mb-4 uppercase tracking-tighter">ℹ️ Sobre o Produto Educacional</h2>
+                <h2 class="text-xl font-bold text-blue-900 mb-4">ℹ️ Sobre o Projeto</h2>
                 <div class="text-slate-600 text-sm leading-relaxed space-y-4">
-                    <p>O <strong>CircuitosEdu</strong> é um protótipo tecnológico desenvolvido pelo pesquisador Daniel Sandoval como produto do Mestrado Profissional em Ensino Tecnológico (UEA/IFAM).</p>
-                    <p>Este AVA integra **Inteligência Artificial** e **Realidade Aumentada** no ensino técnico de Automação Industrial, promovendo a aprendizagem significativa em circuitos de corrente alternada.</p>
+                    <p>O <strong>CircuitosEdu</strong> é um protótipo educacional desenvolvido pelo pesquisador Daniel Sandoval (UEA/IFAM) como produto de seu mestrado profissional.</p>
+                    <p>Utiliza <strong>IA Generativa</strong> e <strong>Realidade Aumentada</strong> para mitigar a abstração dos circuitos de corrente alternada.</p>
                 </div>
             </section>
         </main>
 
         <aside class="lg:col-span-3">
-            <div class="bg-white rounded-xl shadow-2xl border-t-8 border-blue-700 h-[680px] flex flex-col sticky top-8 overflow-hidden">
+            <div class="bg-white rounded-xl shadow-2xl border-t-8 border-blue-700 h-[650px] flex flex-col sticky top-8 overflow-hidden">
                 <div class="p-5 border-b bg-blue-50/50 flex items-center gap-3">
-                    <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
-                    <span class="font-black text-blue-900 text-xs uppercase tracking-widest">Tutor IA Mediador</span>
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="font-black text-blue-900 text-[10px] uppercase tracking-widest">Tutor IA Mediador</span>
                 </div>
                 
                 <div id="chat-window" class="flex-1 overflow-y-auto p-5 flex flex-col gap-3">
                     <div class="chat-bubble tutor-msg shadow-sm">
-                        Olá! Sou o seu mediador pedagógico. Como posso auxiliar nos seus cálculos de CA hoje?
+                        Olá! Sou o seu mediador pedagógico. Como posso auxiliar nos seus cálculos de circuitos CA agora?
                     </div>
                 </div>
 
                 <div class="p-5 border-t bg-slate-50">
                     <div class="flex gap-2 bg-white border-2 border-slate-100 rounded-full p-1 pl-5 shadow-inner pr-1">
-                        <input type="text" id="chat-input" placeholder="Dúvida técnica?" class="flex-1 outline-none text-sm bg-transparent" onkeydown="if(event.key==='Enter') enviarAoTutor()">
-                        <button onclick="enviarAoTutor()" class="bg-orange-500 hover:bg-orange-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95">
+                        <input type="text" id="chat-input" placeholder="Dúvida técnica?" class="flex-1 outline-none text-sm bg-transparent" onkeydown="if(event.key==='Enter') enviarDuvidaTutor()">
+                        <button onclick="enviarDuvidaTutor()" class="bg-orange-500 hover:bg-orange-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95">
                             ➤
                         </button>
                     </div>
@@ -301,7 +309,7 @@
     </div>
 
     <footer class="bg-slate-900 text-slate-500 py-16 mt-16 text-center text-xs">
-        <p class="font-black text-slate-300 mb-2 uppercase tracking-widest">CircuitosEdu 2026</p>
+        <p class="font-black text-slate-300 mb-2">CircuitosEdu 2026</p>
         <p>© Daniel Sandoval | Pesquisa de Mestrado UEA</p>
     </footer>
 
