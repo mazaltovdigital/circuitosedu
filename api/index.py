@@ -12,23 +12,23 @@ def chat():
     user_msg = data.get('message', '')
     api_key = os.environ.get('GEMINI_API_KEY', '').strip()
     
-    # URL Estável para Gemini 1.5 Flash (v1) para evitar erro 404
-    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={api_key}"
+    # Migração para Gemini 3 Flash (GA 2026) para evitar erros de descontinuação
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key={api_key}"
     payload = {
-        "contents": [{"parts": [{"text": f"Você é o mediador pedagógico do CircuitosEdu. Use andaimes pedagógicos: {user_msg}"}]}]
+        "contents": [{"parts": [{"text": f"Você é o tutor mediador do CircuitosEdu. Use scaffolding pedagógico para ensinar: {user_msg}"}]}]
     }
     
     try:
         response = requests.post(url, json=payload, timeout=20)
-        # Se retornar 429, significa que o Google exige Billing ativo
+        # Tratamento de faturamento/Billing
         if response.status_code == 429:
-            return jsonify({"reply": "Cota excedida. Verifique se o Billing está ativo no Google Cloud."}), 200
+            return jsonify({"reply": "Limite atingido. Verifique o Billing no Google AI Studio."}), 200
             
         result = response.json()
         reply = result['candidates']['content']['parts']['text']
         return jsonify({"reply": reply}), 200
     except Exception:
-        return jsonify({"reply": "Tutor IA temporariamente offline para manutenção."}), 200
+        return jsonify({"reply": "Mediador IA temporariamente offline."}), 200
 
 @app.route('/')
 def home():
