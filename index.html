@@ -1,15 +1,128 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CircuitosEdu - Plataforma CA</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Configurações globais providenciadas pelo ambiente
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const apiKey = ""; // API Key para o Gemini
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let userUid = null;
+
+        // Autenticação Silenciosa
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Erro na autenticação:", error);
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) userUid = user.uid;
+        });
+
+        initAuth();
+
+        // --- LÓGICA DO TUTOR IA ---
+        window.enviarChat = async function() {
+            const input = document.getElementById('msg-input');
+            const chatBox = document.getElementById('chat-content');
+            const userMsg = input.value.trim();
+            
+            if (!userMsg) return;
+
+            // Mostrar mensagem do usuário
+            chatBox.innerHTML += `<div class="bubble user-msg">${userMsg}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Indicador de "Pensando"
+            const typingId = "typing-" + Date.now();
+            chatBox.innerHTML += `<div class="bubble tutor-msg" id="${typingId}">...</div>`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: userMsg }] }],
+                        systemInstruction: { 
+                            parts: [{ text: "Você é o Tutor IA Mediador da plataforma CircuitosEdu. Seu papel é ajudar alunos de Engenharia/Automação a entender circuitos de Corrente Alternada (CA). Seja didático, use analogias e incentive o uso do simulador PHET. Responda em Português de Portugal se o aluno usar termos técnicos de lá, ou Português do Brasil conforme o contexto." }] 
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Desculpe, tive um problema ao processar. Pode repetir?";
+                
+                document.getElementById(typingId).innerText = aiResponse;
+            } catch (error) {
+                document.getElementById(typingId).innerText = "Erro ao conectar com o Tutor IA. Verifique sua conexão.";
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        };
+
+        // --- LÓGICA DO FEEDBACK (SALVAR NO FIRESTORE) ---
+        window.salvarFeedback = async function() {
+            const radio = document.querySelector('input[name="f"]:checked');
+            const texto = document.querySelector('.feedback-form textarea').value;
+            const statusMsg = document.getElementById('feedback-status');
+
+            if (!radio) {
+                statusMsg.innerText = "Por favor, selecione Sim ou Não.";
+                statusMsg.style.color = "red";
+                return;
+            }
+
+            if (!userUid) {
+                statusMsg.innerText = "Erro: Usuário não autenticado.";
+                return;
+            }
+
+            try {
+                statusMsg.innerText = "A enviar...";
+                // Caminho rigoroso conforme RULE 1: /artifacts/{appId}/public/data/{collection}
+                const feedbackCol = collection(db, 'artifacts', appId, 'public', 'data', 'feedbacks');
+                await addDoc(feedbackCol, {
+                    usuario: userUid,
+                    ajudou: radio.value,
+                    comentario: texto,
+                    data: serverTimestamp()
+                });
+
+                statusMsg.innerText = "Feedback enviado com sucesso! Obrigado.";
+                statusMsg.style.color = "green";
+                document.querySelector('.feedback-form').reset();
+            } catch (e) {
+                console.error("Erro ao salvar:", e);
+                statusMsg.innerText = "Erro ao enviar. Tente mais tarde.";
+                statusMsg.style.color = "red";
+            }
+        };
+    </script>
 </head>
 <body>
 
-<header class="main-header-black"></header>
+<header class="main-header-fixed"></header>
 
 <div class="main-layout">
     <nav class="sidebar">
@@ -38,15 +151,15 @@
             <h2>🔌 Configurações de Circuitos</h2>
             <div class="circuit-grid">
                 <div class="circuit-item">
-                    <img src="./assets/circuito-serie.png" alt="Circuito Série" class="circuit-img">
+                    <img src="./assets/circuito-serie.png" alt="Série" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120?text=Série'">
                     <h4>Circuito Série</h4>
                 </div>
                 <div class="circuit-item">
-                    <img src="./assets/circuito-paralelo.png" alt="Circuito Paralelo" class="circuit-img">
+                    <img src="./assets/circuito-paralelo.png" alt="Paralelo" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120?text=Paralelo'">
                     <h4>Circuito Paralelo</h4>
                 </div>
                 <div class="circuit-item">
-                    <img src="./assets/circuito-misto.png" alt="Circuito Misto" class="circuit-img">
+                    <img src="./assets/circuito-misto.png" alt="Misto" class="circuit-img" onerror="this.src='https://via.placeholder.com/200x120?text=Misto'">
                     <h4>Circuito Misto</h4>
                 </div>
             </div>
@@ -63,14 +176,15 @@
 
         <section class="section-box" id="feedback-section">
             <h2>📊 Feedback: Mediação da IA</h2>
-            <form class="feedback-form">
-                <p>O Tutor IA ajudou na compreensão?</p>
+            <form class="feedback-form" onsubmit="event.preventDefault(); salvarFeedback();">
+                <p>O Tutor IA auxiliou efetivamente no seu aprendizado?</p>
                 <div class="radio-group">
-                    <label><input type="radio" name="f"> Sim</label>
-                    <label><input type="radio" name="f"> Não</label>
+                    <label><input type="radio" name="f" value="Sim"> Sim</label>
+                    <label><input type="radio" name="f" value="Não"> Não</label>
                 </div>
-                <textarea placeholder="Deixe seu comentário..."></textarea>
-                <button type="button" class="btn-download" style="width:100%; border:none; cursor:pointer; margin-top:10px;">Enviar Feedback</button>
+                <textarea placeholder="Deixe seu comentário sobre a experiência com a IA..."></textarea>
+                <button type="submit" class="btn-download" style="margin-top:10px;">Enviar Feedback</button>
+                <p id="feedback-status" style="margin-top:10px; font-weight:bold;"></p>
             </form>
         </section>
     </main>
@@ -78,28 +192,18 @@
     <aside class="chat-sidebar">
         <div class="chat-header">🤖 Tutor IA Mediador</div>
         <div id="chat-content">
-            <div class="bubble tutor-msg">Olá! Sou seu assistente para circuitos CA. Como posso te orientar?</div>
+            <div class="bubble tutor-msg">Olá! Estou pronto para mediar sua prática. Qual sua dúvida sobre os circuitos CA?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Pergunte ao Tutor...">
+            <input type="text" id="msg-input" placeholder="Pergunte ao Tutor..." onkeypress="if(event.key==='Enter') enviarChat()">
             <button onclick="enviarChat()" class="btn-chat">➤</button>
         </div>
     </aside>
 </div>
 
 <footer class="footer-black">
-    <p>📄 <strong>Projeto de Mestrado:</strong> Daniel | Tecnologias Educativas | © 2026</p>
+    <p>📄 <strong>README:</strong> Projeto de Mestrado - Daniel | © 2026 CircuitosEdu</p>
 </footer>
 
-<script>
-    function enviarChat() {
-        const input = document.getElementById('msg-input');
-        const box = document.getElementById('chat-content');
-        if(!input.value.trim()) return;
-        box.innerHTML += `<div class="bubble user-msg">${input.value}</div>`;
-        input.value = '';
-        box.scrollTop = box.scrollHeight;
-    }
-</script>
 </body>
 </html>
