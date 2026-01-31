@@ -10,7 +10,7 @@
       window.dataLayer = window.dataLayer ||;
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-676V40J9RX');
+      gtag('config', 'G-676V40J9RX', { 'debug_mode': true });
     </script>
 
     <link rel="stylesheet" href="style.css">
@@ -18,121 +18,123 @@
 </head>
 <body>
 
-<header class="main-banner-fixed"></header>
+<header class="main-banner-container"></header>
 
 <div class="main-layout">
     <nav class="sidebar">
         <h3 class="nav-title">Menu Principal</h3>
         <ul class="nav-list">
-            <li><a href="#teoria-mestre">📖 Material de Estudo</a></li>
-            <li><a href="#phet-section">🔬 Laboratório Virtual</a></li>
-            <li><a href="#circuitos-galeria">🔌 Configurações de Circuitos</a></li>
-            <li><a href="#ra-area">🕶️ Realidade Aumentada</a></li>
+            <li><a href="#teoria">📖 Material de Estudo</a></li>
+            <li><a href="#phet">🔬 Laboratório Virtual</a></li>
+            <li><a href="#circuitos">🔌 Configurações de Circuitos</a></li>
+            <li><a href="#ra">🕶️ Realidade Aumentada</a></li>
             <li><a href="quiz.html">🎯 Quiz de Avaliação</a></li>
             <li><a href="mapas.html">🧠 Mapas Mentais</a></li>
-            <li><a href="#feedback-area">📊 Feedback dos Alunos</a></li>
-            <li><a href="#sobre-box">ℹ️ Sobre o Projeto</a></li>
+            <li><a href="#feedback">📊 Feedback dos Alunos</a></li>
+            <li><a href="#sobre">ℹ️ Sobre o Projeto</a></li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
     </nav>
 
     <main class="main-content">
         
-        <section id="teoria-mestre" class="section-box">
+        <section id="teoria" class="section-box">
             <h2>📖 Material de Estudo CA</h2>
-            <p class="text-sm mb-4">Base teórica fundamentada na Aprendizagem Significativa:</p>
-            <div class="activity-grid">
-                <div class="edu-card-interactive" onclick="location.href='grandezas.html'">
-                    <span class="icon-lg">⚡</span> <h4>Grandezas</h4>
+            <div class="card-grid">
+                <div class="edu-card-btn" onclick="location.href='grandezas.html'">
+                    <span class="card-icon">⚡</span> <h4>Grandezas</h4>
                 </div>
-                <div class="edu-card-interactive" onclick="location.href='fasores.html'">
-                    <span class="icon-lg">📈</span> <h4>Fasores</h4>
+                <div class="edu-card-btn" onclick="location.href='fasores.html'">
+                    <span class="card-icon">📈</span> <h4>Fasores</h4>
                 </div>
-                <div class="edu-card-interactive" onclick="location.href='impedancia.html'">
-                    <span class="icon-lg">🔋</span> <h4>Impedância</h4>
+                <div class="edu-card-btn" onclick="location.href='impedancia.html'">
+                    <span class="card-icon">🔋</span> <h4>Impedância</h4>
                 </div>
             </div>
         </section>
 
-        <section id="phet-section" class="section-box highlight-phet">
+        <section id="phet" class="section-box highlight-lab">
             <h2>🔬 Laboratório Virtual PHET</h2>
-            <div class="iframe-wrapper">
+            <div class="iframe-container-phet">
                 <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" allowfullscreen></iframe>
             </div>
         </section>
 
-        <section id="circuitos-galeria" class="section-box">
+        <section id="circuitos" class="section-box">
             <h2>🔌 Configurações de Circuitos</h2>
-            <div class="activity-grid">
+            <div class="card-grid">
                 <div class="circuit-technical-box">
-                    <img src="./assets/circuito-serie.png" alt="Série" class="img-circuit-v16" onerror="this.src='https://via.placeholder.com/280x160?text=Circuito+Série'">
+                    <img src="./assets/circuito-serie.png" alt="Série" class="img-circuit" onerror="this.src='https://via.placeholder.com/300x180?text=Série'">
                     <h4>Circuito Série</h4>
                 </div>
                 <div class="circuit-technical-box">
-                    <img src="./assets/circuito-paralelo.png" alt="Paralelo" class="img-circuit-v16" onerror="this.src='https://via.placeholder.com/280x160?text=Circuito+Paralelo'">
+                    <img src="./assets/circuito-paralelo.png" alt="Paralelo" class="img-circuit" onerror="this.src='https://via.placeholder.com/300x180?text=Paralelo'">
                     <h4>Circuito Paralelo</h4>
                 </div>
                 <div class="circuit-technical-box">
-                    <img src="./assets/circuito-misto.png" alt="Misto" class="img-circuit-v16" onerror="this.src='https://via.placeholder.com/280x160?text=Circuito+Misto'">
+                    <img src="./assets/circuito-misto.png" alt="Misto" class="img-circuit" onerror="this.src='https://via.placeholder.com/300x180?text=Misto'">
                     <h4>Circuito Misto</h4>
                 </div>
             </div>
         </section>
 
-        <section id="ra-area" class="section-box">
+        <section id="ra" class="section-box">
             <h2>🕶️ Realidade Aumentada (RA)</h2>
-            <div class="activity-grid">
-                <div class="edu-card-interactive blue-style">
-                    <span class="icon-lg">📷</span> <h4>Marcador R</h4>
+            <div class="card-grid">
+                <div class="edu-card-btn blue-highlight">
+                    <span class="card-icon">📷</span> <h4>Marcador R</h4>
                 </div>
-                <div class="edu-card-interactive blue-style">
-                    <span class="icon-lg">📷</span> <h4>Marcador L</h4>
+                <div class="edu-card-btn blue-highlight">
+                    <span class="card-icon">📷</span> <h4>Marcador L</h4>
                 </div>
-                <div class="edu-card-interactive blue-style">
-                    <span class="icon-lg">📷</span> <h4>Marcador C</h4>
+                <div class="edu-card-btn blue-highlight">
+                    <span class="card-icon">📷</span> <h4>Marcador C</h4>
                 </div>
             </div>
         </section>
 
-        <section id="feedback-area" class="section-box">
+        <section id="feedback" class="section-box">
             <h2>📊 Feedback: Mediação da IA</h2>
-            <div class="feedback-professional-box">
-                <p class="text-sm font-bold">O Tutor IA mediou seu aprendizado de forma eficaz?</p>
-                <div class="radio-group-final">
-                    <label class="radio-option"><input type="radio" name="mestrado_feedback" value="Sim"> Sim</label>
-                    <label class="radio-option"><input type="radio" name="mestrado_feedback" value="Não"> Não</label>
+            <div class="feedback-pro-form">
+                <p class="text-sm font-bold">O Tutor IA auxiliou-te a compreender os conceitos físicos de CA?</p>
+                <div class="radio-group-pro">
+                    <label class="radio-label"><input type="radio" name="feedback_rating" value="Sim"> Sim</label>
+                    <label class="radio-label"><input type="radio" name="feedback_rating" value="Não"> Não</label>
                 </div>
-                <textarea id="comment-final" placeholder="Escreva sua experiência pedagógica para a pesquisa..."></textarea>
-                <button type="button" onclick="dispararFeedbackGA()" class="btn-confirm-feedback">Confirmar e Enviar para o Analytics</button>
-                <p id="msg-sucesso" style="display:none; color: #166534; font-weight: bold; margin-top: 10px; text-align: center;">✅ Feedback enviado com sucesso!</p>
+                <textarea id="feedback-message" placeholder="Escreva aqui a sua percepção pedagógica sobre o uso da IA para esta pesquisa de mestrado..."></textarea>
+                <button type="button" onclick="confirmarEnvioFeedback()" class="btn-send-data">Confirmar e Enviar para o Analytics</button>
+                <div id="status-feedback-ui" class="status-indicator"></div>
             </div>
         </section>
 
-        <section id="sobre-box" class="section-box">
+        <section id="sobre" class="section-box academic-alignment">
             <h2>ℹ️ Sobre o Produto Educacional</h2>
-            <p class="text-sm">Desenvolvido no <strong>Mestrado Profissional em Ensino Tecnológico (IFAM)</strong> pelo pesquisador Daniel Sandoval. O produto utiliza mediação tecnológica para reduzir a carga cognitiva no ensino de circuitos CA. [1]</p>
+            <div class="text-justified">
+                <p>O <strong>CircuitosEdu</strong> é o produto educacional resultante de uma investigação do <strong>Mestrado Profissional em Ensino Tecnológico (MPET)</strong> do <strong>IFAM</strong>, desenvolvido pelo pesquisador Daniel Albino Sandoval sob orientação do Prof. Dr. José Anglada Rivera.</p>
+                <p>Este ambiente virtual fundamenta-se na **Teoria da Aprendizagem Significativa** e utiliza a **Inteligência Artificial Mediadora** e a **Realidade Aumentada** como andaimes pedagógicos para mitigar a natureza abstrata de fenômenos dinâmicos em circuitos de Corrente Alternada. [3]</p>
+            </div>
         </section>
     </main>
 
     <aside class="chat-sidebar">
         <div class="chat-header-pro">🤖 Tutor IA Mediador</div>
-        <div id="chat-content" class="chat-display">
-            <div class="bubble tutor-msg">Olá! Sou seu mediador. Como posso ajudar na sua prática de circuitos CA hoje?</div>
+        <div id="chat-content" class="chat-scroll-area">
+            <div class="bubble tutor-msg shadow-xs">Olá! Sou seu mediador pedagógico. Qual sua dúvida sobre a simulação de hoje?</div>
         </div>
-        <div class="chat-input-container">
-            <input type="text" id="msg-input" placeholder="Dúvida?" onkeydown="if(event.key==='Enter') enviarMensagemIA()">
-            <button onclick="enviarMensagemIA()" class="btn-send-pro">➤</button>
+        <div class="chat-input-bar">
+            <input type="text" id="msg-input" placeholder="Dúvida?" onkeydown="if(event.key==='Enter') enviarDuvidaIA()">
+            <button onclick="enviarDuvidaIA()" class="btn-send-icon">➤</button>
         </div>
     </aside>
 </div>
 
-<footer class="footer-final">
+<footer class="footer-pro">
     <p>© 2026 CircuitosEdu - Pesquisa de Mestrado UEA/IFAM | Daniel Sandoval</p>
 </footer>
 
 <script>
-    // --- LÓGICA DO TUTOR IA (GEMINI VIA BACKEND VERCEL) ---
-    async function enviarMensagemIA() {
+    // --- LÓGICA DO TUTOR IA ---
+    async function enviarDuvidaIA() {
         const input = document.getElementById('msg-input');
         const box = document.getElementById('chat-content');
         const text = input.value.trim();
@@ -150,30 +152,38 @@
             });
             const data = await res.json();
             box.innerHTML += `<div class="flex flex-col"><div class="bubble tutor-msg">${data.reply}</div></div>`;
-        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão com o servidor da IA.</div>`; }
+        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão com o servidor.</div>`; }
         box.scrollTop = box.scrollHeight;
     }
 
-    // --- LÓGICA DO FEEDBACK (GOOGLE ANALYTICS 4) ---
-    window.dispararFeedbackGA = function() {
-        const utilidade = document.querySelector('input[name="mestrado_feedback"]:checked');
-        const comentario = document.getElementById('comment-final').value;
-        const msgSucesso = document.getElementById('msg-sucesso');
+    // --- LÓGICA DO FEEDBACK (VINCULADO AO GOOGLE ANALYTICS) ---
+    window.confirmarEnvioFeedback = function() {
+        const rating = document.querySelector('input[name="feedback_rating"]:checked');
+        const comment = document.getElementById('feedback-message').value;
+        const statusUi = document.getElementById('status-feedback-ui');
 
-        if(!utilidade) { alert("Por favor, indique se a IA ajudou."); return; }
+        if(!rating) { alert("Por favor, selecione se a IA ajudou."); return; }
 
-        // Enviar evento ao painel Google Analytics
-        gtag('event', 'feedback_aluno_pesquisa', {
-            'utilidade_ia': utilidade.value,
-            'comentario': comentario,
-            'projeto': 'CircuitosEdu_Mestrado'
-        });
+        statusUi.innerText = "⏳ Enviando dados...";
+        statusUi.style.color = "#1d4ed8";
 
-        // Feedback visual para o aluno
-        msgSucesso.style.display = "block";
-        document.getElementById('comment-final').value = '';
-        
-        setTimeout(() => { msgSucesso.style.display = "none"; }, 5000);
+        // Verifica se o gtag existe antes de enviar (Robustez técnica)
+        if (typeof gtag === 'function') {
+            gtag('event', 'feedback_aluno_mestrado', {
+                'utilidade_ia': rating.value,
+                'comentario_texto': comment,
+                'projeto': 'CircuitosEdu_UEA'
+            });
+            
+            setTimeout(() => {
+                statusUi.innerText = "✅ Feedback registrado com sucesso no painel Analytics!";
+                statusUi.style.color = "#166534";
+                document.getElementById('feedback-message').value = '';
+            }, 800);
+        } else {
+            statusUi.innerText = "❌ Erro: Bloqueador de anúncios detectado. Desative-o para enviar.";
+            statusUi.style.color = "#991b1b";
+        }
     };
 </script>
 </body>
