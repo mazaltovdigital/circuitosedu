@@ -1,6 +1,6 @@
 :root {
-    --primary-blue: #0047B6; /* Azul SENAI */
-    --secondary-orange: #E84910; /* Laranja SENAI */
+    --primary-blue: #0047B6;
+    --secondary-orange: #E84910;
     --bg-light: #f4f6f8;
     --white: #ffffff;
 }
@@ -8,7 +8,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scroll-behavior: smooth; }
 
-/* BANNER INTEGRAL SEM BORDAS */
+/* BANNER SEM BORDAS */
 .main-header-fixed {
     background: #000 url('./assets/cabecalho-anexo.png') no-repeat center center;
     background-size: cover; 
@@ -26,10 +26,10 @@ body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scr
     padding: 0 15px;
 }
 
-/* SIDEBAR E MENU SEM LINHAS */
+/* MENU SEM LINHAS */
 .sidebar,.section-box,.chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
 .sidebar { padding: 20px; height: fit-content; }
-.nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); margin-bottom: 10px; padding-bottom: 5px; }
+.nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); margin-bottom: 10px; }
 .nav-list li { list-style: none; }
 .nav-list li a { 
     text-decoration: none; /* REMOVE AS LINHAS */
@@ -41,25 +41,32 @@ body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scr
 }
 .nav-list li a:hover { background: #e8f0fe; color: var(--primary-blue); padding-left: 15px; }
 
-/* BASE DE CONHECIMENTO - CARDS MODERNOS */
+/* BASE DE CONHECIMENTO - CARDS */
 .teoria-grid-modern { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
 .teoria-card-modern { 
     background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 20px; 
     text-align: center; cursor: pointer; transition: 0.3s;
 }
 .teoria-card-modern:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary-blue); }
-.icon-box-modern { font-size: 2rem; margin-bottom: 10px; }
+
+/* IMAGENS CIRCUITOS */
+.circuit-grid-large { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 15px; }
+.circuit-item-large { text-align: center; border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px; }
+.circuit-img-large { width: 100%; height: 180px; object-fit: contain; }
 
 /* TUTOR IA PROPORCIONAL */
-.chat-sidebar { display: flex; flex-direction: column; height: 500px; /* REDUZIDO PARA PROPORÇÃO */ border: 1px solid var(--primary-blue); }
-.chat-header { background: var(--primary-blue); color: white; padding: 15px; text-align: center; font-weight: bold; }
+.chat-sidebar { display: flex; flex-direction: column; height: 600px; border: 1px solid var(--primary-blue); }
+.chat-header { background: var(--primary-blue); color: white; padding: 15px; text-align: center; }
 #chat-content { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
 .bubble { padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 0.85rem; max-width: 90%; }
 .tutor-msg { background: #e8f0fe; align-self: flex-start; }
 .user-msg { background: var(--primary-blue); color: white; align-self: flex-end; }
 
 /* PHET */
-.iframe-container { height: 450px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
+.iframe-container { height: 480px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
 iframe { width: 100%; height: 100%; border: none; }
+
+.btn-download { display: block; background: var(--secondary-orange); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; cursor: pointer; border: none; }
+.btn-chat { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
 
 .footer-black { background: #000; color: #999; padding: 40px 20px; text-align: center; font-size: 0.85rem; }
