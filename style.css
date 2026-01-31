@@ -1,74 +1,84 @@
 :root {
     --primary-blue: #0047B6;
     --secondary-orange: #E84910;
-    --bg-light: #f4f6f8;
+    --bg-light: #f8f9fa;
     --white: #ffffff;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scroll-behavior: smooth; }
 
-/* HEADER PRETO LISO */
-.clean-black-header {
-    background-color: #000;
-    height: 100px;
+/* BANNER: OCUPA 100% DA LARGURA E ALTURA SEM CORTES (ANEXO 3) */
+.main-banner-header {
+    background: #000 url('./assets/cabecalho-anexo.png') no-repeat center center;
+    background-size: cover; 
+    height: 220px; 
     width: 100%;
     border-bottom: 4px solid var(--primary-blue);
 }
 
+/* LAYOUT GRID 3 COLUNAS */
 .main-layout {
     display: grid;
     grid-template-columns: 260px 1fr 340px;
     gap: 20px;
     max-width: 1600px;
-    margin: 20px auto;
+    margin: 25px auto;
     padding: 0 15px;
 }
 
-/* SIDEBAR SEM LINHAS */
-.sidebar,.section-box,.chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; overflow: hidden; }
-.sidebar { padding: 20px; }
-.nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); margin-bottom: 10px; padding-bottom: 5px; }
+/* SIDEBAR E MENU LIMPO (SEM LINHAS) */
+.sidebar,.section-box,.chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); margin-bottom: 20px; overflow: hidden; }
+.sidebar { padding: 20px; height: fit-content; }
+.nav-title { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-orange); margin-bottom: 12px; padding-bottom: 5px; }
 .nav-list li { list-style: none!important; }
 .nav-list li a { 
-    text-decoration: none!important; /* REMOVE LINHAS AZUIS */
-    color: #444; 
+    text-decoration: none!important; /* REMOVE AS LINHAS AZUIS */
+    color: #334155; 
     display: block; 
-    padding: 10px; 
+    padding: 10px 15px; 
     font-size: 0.95rem;
-    border-radius: 5px;
+    border-radius: 8px;
     transition: 0.3s;
 }
-.nav-list li a:hover { background: #e8f0fe; color: var(--primary-blue); padding-left: 15px; }
+.nav-list li a:hover { background: #eff6ff; color: var(--primary-blue); padding-left: 20px; }
 
-/* CARDS DINÂMICOS (ESTUDO E RA) */
+/* CARDS DINÂMICOS (MATERIAL E RA) */
 .dynamic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
 .edu-card { 
-    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; 
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; 
     text-align: center; cursor: pointer; transition: 0.3s;
 }
 .edu-card:hover { transform: translateY(-4px); border-color: var(--primary-blue); box-shadow: 0 8px 16px rgba(0,0,0,0.06); }
 .card-icon { font-size: 2.2rem; display: block; margin-bottom: 10px; }
-.blue-theme { background: #f0f9ff; border: 1px dashed #3b82f6; }
+.blue-theme { background: #f0f9ff; border: 1px dashed var(--primary-blue); color: var(--primary-blue); }
 
 /* CIRCUITOS AMPLIADOS */
-.circuit-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-.circuit-item { text-align: center; background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 15px; }
+.circuit-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; }
+.circuit-item { text-align: center; border: 1px solid #eee; border-radius: 12px; padding: 15px; }
 .img-circuit-large { width: 100%; height: 180px; object-fit: contain; }
+
+/* FEEDBACK ESTILIZADO */
+.feedback-form-box { padding: 20px; background: #fafafa; border-radius: 10px; border: 1px solid #eee; }
+.radio-group-modern { display: flex; gap: 30px; margin: 15px 0; }
+.radio-label { font-size: 0.9rem; cursor: pointer; font-weight: 500; }
+textarea { width: 100%; height: 100px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; margin-top: 10px; font-family: inherit; resize: none; outline: none; }
+.btn-primary-action { background: var(--primary-blue); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.3s; width: 100%; }
+.btn-primary-action:hover { background: #1e40af; }
 
 /* TUTOR IA PROPORCIONAL AO PHET */
 .chat-sidebar { display: flex; flex-direction: column; height: 600px; border: 1px solid var(--primary-blue); }
 .chat-header { background: var(--primary-blue); color: white; padding: 15px; text-align: center; font-weight: bold; }
-#chat-content { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
-.bubble { padding: 10px; border-radius: 10px; margin-bottom: 12px; font-size: 0.88rem; max-width: 90%; }
-.tutor-msg { background: #e8f0fe; align-self: flex-start; }
-.user-msg { background: var(--primary-blue); color: white; align-self: flex-end; }
+.chat-messages-container { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
+.bubble { padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 0.88rem; line-height: 1.4; max-width: 90%; }
+.tutor-msg { background: #f0f9ff; border: 1px solid #bae6fd; align-self: flex-start; border-bottom-left-radius: 2px; }
+.user-msg { background: var(--primary-blue); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
 
-/* LABORATÓRIO AMPLIADO */
-.iframe-container { height: 550px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
+/* PHET */
+.iframe-container { height: 500px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
 iframe { width: 100%; height: 100%; border: none; }
 
-.btn-download { display: block; background: var(--secondary-orange); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; cursor: pointer; border: none; }
-.btn-chat { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+.btn-download { display: block; background: var(--secondary-orange); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px; }
+.btn-send-chat { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; }
 
-.footer-black { background: #000; color: #888; padding: 40px 20px; text-align: center; font-size: 0.85rem; margin-top: 50px; }
+.footer-black { background: #000; color: #777; padding: 40px 20px; text-align: center; font-size: 0.85rem; margin-top: 40px; }
