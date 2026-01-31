@@ -8,11 +8,11 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scroll-behavior: smooth; }
 
-/* BANNER: OCUPA 100% DA LARGURA (ANEXO 3) */
+/* BANNER: CORREÇÃO DEFINITIVA (SEM CORTES) */
 .main-banner-fixed {
     background: #000 url('./assets/cabecalho-anexo.png') no-repeat center center;
-    background-size: cover; 
-    height: 180px; 
+    background-size: contain; /* Exibe a imagem inteira contra fundo preto */
+    height: 250px; 
     width: 100%;
     border-bottom: 4px solid var(--primary-blue);
 }
@@ -26,8 +26,8 @@ body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scr
     padding: 0 15px;
 }
 
-/* MENU LIMPO E PROFISSIONAL */
-.sidebar,.section-box,.chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 20px; overflow: hidden; }
+/* MENU LATERAL LIMPO */
+.sidebar,.section-box,.chat-sidebar { background: var(--white); border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; overflow: hidden; }
 .sidebar { padding: 20px; }
 .nav-title { color: var(--primary-blue); font-weight: 700; border-bottom: 2px solid var(--secondary-orange); margin-bottom: 12px; padding-bottom: 5px; }
 .nav-list li { list-style: none!important; }
@@ -42,39 +42,40 @@ body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); scr
 }
 .nav-list li a:hover { background: #e8f0fe; color: var(--primary-blue); padding-left: 20px; }
 
-/* CARDS DINÂMICOS PADRONIZADOS */
+/* CARDS INTERATIVOS (PADRÃO ÚNICO) */
 .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
-.dynamic-edu-card,.circuit-item { 
+.edu-card-btn,.circuit-box { 
     background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; 
     text-align: center; cursor: pointer; transition: 0.3s;
 }
-.dynamic-edu-card:hover { transform: translateY(-4px); border-color: var(--primary-blue); box-shadow: 0 8px 16px rgba(0,0,0,0.06); }
-.icon { font-size: 2.2rem; display: block; margin-bottom: 10px; }
-.blue-theme { background: #f0f9ff; border: 1px dashed var(--primary-blue); color: var(--primary-blue); }
+.edu-card-btn:hover { transform: translateY(-3px); border-color: var(--primary-blue); box-shadow: 0 6px 15px rgba(0,0,0,0.05); }
+.card-icon { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+.blue-accent { background: #f0f9ff; border: 1px dashed var(--primary-blue); }
 
 /* IMAGENS CIRCUITOS */
-.img-circuit { width: 100%; height: 180px; object-fit: contain; }
+.img-fluid-technical { width: 100%; height: 180px; object-fit: contain; }
 
-/* FEEDBACK FORM */
-.feedback-container { padding: 15px; background: #fafafa; border-radius: 10px; }
-.radio-group { margin: 15px 0; display: flex; gap: 30px; }
+/* FEEDBACK ESTILIZADO */
+.form-container-clean { padding: 20px; background: #fafafa; border-radius: 10px; border: 1px solid #eee; }
+.radio-flex { display: flex; gap: 30px; margin: 15px 0; }
+.radio-item { font-size: 0.9rem; font-weight: 500; cursor: pointer; }
 textarea { width: 100%; height: 100px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; margin: 10px 0; font-family: inherit; resize: none; outline: none; }
-.btn-primary { background: var(--primary-blue); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; }
+.btn-primary-blue { background: var(--primary-blue); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
+.btn-primary-blue:hover { background: #00378d; }
 
 /* TUTOR IA PROPORCIONAL AO LABORATÓRIO */
-.chat-sidebar { display: flex; flex-direction: column; height: 650px; border: 1px solid var(--primary-blue); }
-.chat-header { background: var(--primary-blue); color: white; padding: 15px; text-align: center; font-weight: 700; }
-.chat-box { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
-.bubble { padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 0.88rem; max-width: 90%; }
+.chat-sidebar { display: flex; flex-direction: column; height: 550px; border: 1px solid var(--primary-blue); }
+.chat-head-blue { background: var(--primary-blue); color: white; padding: 15px; text-align: center; font-weight: 700; }
+.chat-messages-area { flex: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; display: flex; flex-direction: column; }
+.bubble { padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 0.88rem; line-height: 1.4; max-width: 90%; }
 .tutor-msg { background: #e8f0fe; align-self: flex-start; border-bottom-left-radius: 2px; }
 .user-msg { background: var(--primary-blue); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
 
 /* PHET */
-.phet-container { height: 600px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
+.phet-iframe-box { height: 550px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
 iframe { width: 100%; height: 100%; border: none; }
 
 .btn-download { display: block; background: var(--secondary-orange); color: white; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 15px; }
-.btn-send { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+.btn-send-technical { background: var(--secondary-orange); border: none; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
 
-.footer-black { background: #000; color: #888; padding: 40px 20px; text-align: center; font-size: 0.85rem; margin-top: 50px; }
-.about-text p { margin-bottom: 12px; line-height: 1.6; text-align: justify; }
+.footer-dark-simple { background: #000; color: #777; padding: 40px 20px; text-align: center; font-size: 0.85rem; margin-top: 40px; }
