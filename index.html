@@ -22,113 +22,109 @@
     <nav class="sidebar">
         <h3 class="nav-title">Menu Principal</h3>
         <ul class="nav-list">
-            <li><a href="#teoria">📖 Material de Estudo</a></li>
-            <li><a href="#phet">🔬 Laboratório Virtual</a></li>
-            <li><a href="#circuitos">🔌 Configurações de Circuitos</a></li>
-            <li><a href="#ra">🕶️ Realidade Aumentada</a></li>
+            <li><a href="#teoria-section">📖 Material de Estudo</a></li>
+            <li><a href="#phet-section">🔬 Laboratório Virtual</a></li>
+            <li><a href="#circuitos-section">🔌 Configurações de Circuitos</a></li>
+            <li><a href="#ra-section">🕶️ Realidade Aumentada</a></li>
             <li><a href="quiz.html">🎯 Quiz de Avaliação</a></li>
             <li><a href="mapas.html">🧠 Mapas Mentais</a></li>
-            <li><a href="#feedback">📊 Feedback dos Alunos</a></li>
-            <li><a href="#sobre">ℹ️ Sobre o Projeto</a></li>
+            <li><a href="#feedback-section">📊 Feedback dos Alunos</a></li>
+            <li><a href="#sobre-section">ℹ️ Sobre o Projeto</a></li>
         </ul>
         <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
     </nav>
 
     <main class="main-content">
-        
-        <section id="teoria" class="section-box">
+        <section id="teoria-section" class="section-box">
             <h2>📖 Material de Estudo CA</h2>
-            <p class="text-sm italic mb-4">Ponto de ancoragem pedagógica para a sua prática experimental:</p>
+            <p class="text-sm mb-4">Módulos fundamentais para a sua aprendizagem significativa:</p>
             <div class="card-grid">
-                <div class="dynamic-edu-card" onclick="location.href='grandezas.html'">
-                    <span class="icon">⚡</span> <h4>Grandezas</h4>
+                <div class="edu-card-btn" onclick="location.href='grandezas.html'">
+                    <span class="card-icon">⚡</span> <h4>Grandezas</h4>
                 </div>
-                <div class="dynamic-edu-card" onclick="location.href='fasores.html'">
-                    <span class="icon">📈</span> <h4>Fasores</h4>
+                <div class="edu-card-btn" onclick="location.href='fasores.html'">
+                    <span class="card-icon">📈</span> <h4>Fasores</h4>
                 </div>
-                <div class="dynamic-edu-card" onclick="location.href='impedancia.html'">
-                    <span class="icon">🔋</span> <h4>Impedância</h4>
+                <div class="edu-card-btn" onclick="location.href='impedancia.html'">
+                    <span class="card-icon">🔋</span> <h4>Impedância</h4>
                 </div>
             </div>
         </section>
 
-        <section id="phet" class="section-box highlight-lab">
+        <section id="phet-section" class="section-box highlight-lab">
             <h2>🔬 Laboratório Virtual PHET</h2>
-            <div class="phet-container">
+            <div class="phet-iframe-box">
                 <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" allowfullscreen></iframe>
             </div>
         </section>
 
-        <section id="circuitos" class="section-box">
+        <section id="circuitos-section" class="section-box">
             <h2>🔌 Configurações de Circuitos</h2>
             <div class="card-grid">
-                <div class="circuit-item">
-                    <img src="./assets/circuito-serie.png" alt="Série" class="img-circuit" onerror="this.src='https://via.placeholder.com/300x180?text=Série'">
+                <div class="circuit-box">
+                    <img src="./assets/circuito-serie.png" alt="Série" class="img-fluid-technical" onerror="this.src='https://via.placeholder.com/300x180?text=Série'">
                     <h4>Circuito Série</h4>
                 </div>
-                <div class="circuit-item">
-                    <img src="./assets/circuito-paralelo.png" alt="Paralelo" class="img-circuit" onerror="this.src='https://via.placeholder.com/300x180?text=Paralelo'">
+                <div class="circuit-box">
+                    <img src="./assets/circuito-paralelo.png" alt="Paralelo" class="img-fluid-technical" onerror="this.src='https://via.placeholder.com/300x180?text=Paralelo'">
                     <h4>Circuito Paralelo</h4>
                 </div>
-                <div class="circuit-item">
-                    <img src="./assets/circuito-misto.png" alt="Misto" class="img-circuit" onerror="this.src='https://via.placeholder.com/300x180?text=Misto'">
+                <div class="circuit-box">
+                    <img src="./assets/circuito-misto.png" alt="Misto" class="img-fluid-technical" onerror="this.src='https://via.placeholder.com/300x180?text=Misto'">
                     <h4>Circuito Misto</h4>
                 </div>
             </div>
         </section>
 
-        <section id="ra" class="section-box">
+        <section id="ra-section" class="section-box">
             <h2>🕶️ Realidade Aumentada (RA)</h2>
-            <p class="text-sm mb-4">Interaja com os fenômenos eletromagnéticos via SENAI Space:</p>
+            <p class="text-sm mb-4 italic">Visualize fasores e campos magnéticos com o app SENAI Space:</p>
             <div class="card-grid">
-                <div class="dynamic-edu-card blue-theme">
-                    <span class="icon">📷</span> <h4>Marcador R</h4>
+                <div class="edu-card-btn blue-accent">
+                    <span class="card-icon">📷</span> <h4>Marcador R</h4>
                 </div>
-                <div class="dynamic-edu-card blue-theme">
-                    <span class="icon">📷</span> <h4>Marcador L</h4>
+                <div class="edu-card-btn blue-accent">
+                    <span class="card-icon">📷</span> <h4>Marcador L</h4>
                 </div>
-                <div class="dynamic-edu-card blue-theme">
-                    <span class="icon">📷</span> <h4>Marcador C</h4>
+                <div class="edu-card-btn blue-accent">
+                    <span class="card-icon">📷</span> <h4>Marcador C</h4>
                 </div>
             </div>
         </section>
 
-        <section id="feedback" class="section-box">
+        <section id="feedback-section" class="section-box">
             <h2>📊 Feedback: Mediação da IA</h2>
-            <div class="feedback-container">
-                <p class="text-sm font-bold">O Tutor IA mediou seu aprendizado de forma significativa?</p>
-                <div class="radio-group">
-                    <label><input type="radio" name="ia_feedback" value="Sim"> Sim</label>
-                    <label><input type="radio" name="ia_feedback" value="Não"> Não</label>
+            <div class="form-container-clean">
+                <p class="text-sm font-bold">O Tutor IA auxiliou seu processo de aprendizagem?</p>
+                <div class="radio-flex">
+                    <label class="radio-item"><input type="radio" name="ia_feedback" value="Sim"> Sim</label>
+                    <label class="radio-item"><input type="radio" name="ia_feedback" value="Não"> Não</label>
                 </div>
-                <textarea id="feedback-comment" placeholder="Escreva aqui sua percepção sobre a mediação da IA para a nossa pesquisa..."></textarea>
-                <button type="button" id="btn-enviar-feedback" class="btn-primary">Enviar Avaliação</button>
+                <textarea id="student-comment" placeholder="Deixe suas observações para a pesquisa de mestrado..."></textarea>
+                <button type="button" onclick="enviarFeedbackPesquisa()" class="btn-primary-blue">Enviar Avaliação</button>
             </div>
         </section>
 
-        <section id="sobre" class="section-box">
-            <h2>ℹ️ Sobre o Produto Educacional</h2>
-            <div class="about-text">
-                <p>O <strong>CircuitosEdu</strong> é o produto educacional desenvolvido no âmbito do <strong>Mestrado Profissional em Ensino Tecnológico (MPET)</strong> do <strong>IFAM</strong> pelo pesquisador Daniel Albino Sandoval, sob orientação do Prof. Dr. José Anglada Rivera.</p>
-                <p>Alinhado à linha de pesquisa <em>"Alternativas Mediadoras para Eficácia do Ensino e Aprendizagem em Contextos Tecnológicos"</em>, o projeto integra IA e RA para reduzir a carga cognitiva no ensino técnico de circuitos elétricos CA na Escola SENAI Antônio Simões.</p>
-            </div>
+        <section id="sobre-section" class="section-box">
+            <h2>ℹ️ Sobre o Projeto</h2>
+            <p class="text-sm">Desenvolvido no <strong>Mestrado Profissional em Ensino Tecnológico (IFAM)</strong> pelo pesquisador Daniel Sandoval. O produto utiliza mediação tecnológica para facilitar o ensino de circuitos CA na Escola SENAI Antônio Simões. </p>
         </section>
     </main>
 
     <aside class="chat-sidebar">
-        <div class="chat-header">🤖 Tutor IA Mediador</div>
-        <div id="chat-content" class="chat-box">
-            <div class="bubble tutor-msg shadow-sm">Olá! Sou o seu mediador. Como posso auxiliar nos seus cálculos de impedância ou fasores agora?</div>
+        <div class="chat-head-blue">🤖 Tutor IA Mediador</div>
+        <div id="chat-content" class="chat-messages-area">
+            <div class="bubble tutor-msg shadow-xs">Olá! Sou seu mediador de circuitos. Como posso ajudar com a prática de hoje?</div>
         </div>
-        <div class="chat-input-area">
-            <input type="text" id="msg-input" placeholder="Dúvida técnica?" onkeydown="if(event.key==='Enter') enviarMensagemTutor()">
-            <button id="btn-enviar-chat" class="btn-send">➤</button>
+        <div class="chat-input-bar">
+            <input type="text" id="msg-input" placeholder="Dúvida?" onkeydown="if(event.key==='Enter') enviarMensagemTutor()">
+            <button onclick="enviarMensagemTutor()" class="btn-send-technical">➤</button>
         </div>
     </aside>
 </div>
 
-<footer class="footer-black">
-    <p>© 2026 CircuitosEdu - Pesquisa de Mestrado UEA/IFAM | Daniel Sandoval</p>
+<footer class="footer-dark-simple">
+    <p>© 2026 CircuitosEdu - Pesquisa de Mestrado | Daniel Sandoval</p>
 </footer>
 
 <script>
@@ -151,36 +147,26 @@
             });
             const data = await res.json();
             box.innerHTML += `<div class="flex flex-col"><div class="bubble tutor-msg">${data.reply}</div></div>`;
-        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">🔌 Erro de conexão com o mediador.</div>`; }
+        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro de rede. Verifique sua conexão.</div>`; }
         box.scrollTop = box.scrollHeight;
     }
 
-    // --- VINCULANDO BOTÕES (GARANTE OPERAÇÃO) ---
-    document.addEventListener('DOMContentLoaded', () => {
-        const btnChat = document.getElementById('btn-enviar-chat');
-        const btnFeedback = document.getElementById('btn-enviar-feedback');
+    // --- LÓGICA DO FEEDBACK (VINCULADO AO GLOBAL) ---
+    window.enviarFeedbackPesquisa = function() {
+        const rad = document.querySelector('input[name="ia_feedback"]:checked');
+        const comment = document.getElementById('student-comment').value;
 
-        if(btnChat) btnChat.onclick = enviarMensagemTutor;
-        
-        if(btnFeedback) {
-            btnFeedback.onclick = function() {
-                const util = document.querySelector('input[name="ia_feedback"]:checked');
-                const comment = document.getElementById('feedback-comment').value;
+        if(!rad) { alert("Por favor, selecione uma opção!"); return; }
 
-                if(!util) { alert("Selecione uma opção!"); return; }
+        // Enviar evento ao Google Analytics
+        gtag('event', 'feedback_mestrado', {
+            'ajuda_ia': rad.value,
+            'comentario': comment
+        });
 
-                // Disparar Evento para o Google Analytics 4 (GA4)
-                gtag('event', 'feedback_aluno_pesquisa', {
-                    'utilidade_mediador': util.value,
-                    'percepcao_estudante': comment,
-                    'projeto': 'CircuitosEdu_Mestrado'
-                });
-
-                alert("Feedback enviado! Dados registados no painel do pesquisador (Google Analytics).");
-                document.getElementById('feedback-comment').value = '';
-            };
-        }
-    });
+        alert("Feedback enviado com sucesso! Dados registrados no Google Analytics.");
+        document.getElementById('student-comment').value = '';
+    };
 </script>
 </body>
 </html>
