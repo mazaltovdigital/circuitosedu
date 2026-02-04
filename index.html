@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CircuitosEdu - Produto de Mestrado</title>
     
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-676V40J9RX"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-983VEPKZNW"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-676V40J9RX');
-    </script>
 
+      // Configuração com o seu ID oficial
+      gtag('config', 'G-983VEPKZNW');
+    </script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
@@ -21,6 +22,7 @@
 <header class="main-banner-fixed-total"></header>
 
 <div class="main-layout">
+    
     <nav class="sidebar">
         <h3 class="nav-title">Menu Principal</h3>
         <ul class="nav-list">
@@ -37,173 +39,10 @@
     </nav>
 
     <main class="main-content">
+        
         <section id="teoria" class="section-box">
             <h2>📖 Material de Estudo CA</h2>
             <div class="card-grid">
                 <div class="edu-card-interactive" onclick="location.href='grandezas.html'">
                     <span class="icon-lg">⚡</span> <h4>Grandezas</h4>
                 </div>
-                <div class="edu-card-interactive" onclick="location.href='fasores.html'">
-                    <span class="icon-lg">📈</span> <h4>Fasores</h4>
-                </div>
-                <div class="edu-card-interactive" onclick="location.href='impedancia.html'">
-                    <span class="icon-lg">🔋</span> <h4>Impedância</h4>
-                </div>
-            </div>
-        </section>
-
-        <section id="phet" class="section-box highlight-lab">
-            <h2>🔬 Laboratório Virtual PHET</h2>
-            <div class="iframe-phet-wrapper">
-                <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" allowfullscreen></iframe>
-            </div>
-        </section>
-
-        <section id="circuitos" class="section-box">
-            <h2>🔌 Configurações de Circuitos</h2>
-            <p style="padding: 15px;">Clique nos diagramas abaixo para ampliar:</p>
-            <div class="card-grid">
-                <div class="edu-card-interactive" onclick="abrirZoom(this.querySelector('img'))">
-                    <img src="assets/circuito_serie.png" alt="Série (RLC)" class="img-circuit">
-                    <h4>Série (RLC)</h4>
-                </div>
-                <div class="edu-card-interactive" onclick="abrirZoom(this.querySelector('img'))">
-                    <img src="assets/circuito_paralelo.png" alt="Paralelo" class="img-circuit">
-                    <h4>Paralelo</h4>
-                </div>
-                <div class="edu-card-interactive" onclick="abrirZoom(this.querySelector('img'))">
-                    <img src="assets/circuito_misto.png" alt="Misto" class="img-circuit">
-                    <h4>Misto</h4>
-                </div>
-            </div>
-        </section>
-
-        <section id="ra" class="section-box">
-            <h2>🕶️ Realidade Aumentada</h2>
-            <div style="padding: 20px; text-align: center;">
-                <p>Aponte a câmera para os marcadores.</p>
-                <div class="edu-card-interactive blue-highlight" style="max-width: 300px; margin: 20px auto;">
-                    <span class="icon-lg">📱</span> <h4>Ativar Câmera AR</h4>
-                </div>
-            </div>
-        </section>
-
-        <section id="feedback" class="section-box feedback-box-pro">
-            <h2>📊 Feedback: Mediação da IA</h2>
-            <div style="padding-top: 10px;">
-                <p class="text-sm font-bold">O Tutor IA auxiliou-te a compreender os conceitos?</p>
-                <div class="radio-group-final">
-                    <label class="radio-item"><input type="radio" name="feedback_val" value="Sim"> Sim</label>
-                    <label class="radio-item"><input type="radio" name="feedback_val" value="Não"> Não</label>
-                </div>
-                <textarea id="feedback-comment-pro" placeholder="Descreva sua experiência pedagógica..."></textarea>
-                <button type="button" onclick="enviarDadosPesquisa()" class="btn-send-professional" style="margin-top: 15px;">Confirmar e Enviar Feedback</button>
-                <div id="ui-status-msg" class="ui-status"></div>
-            </div>
-        </section>
-
-        <section id="sobre" class="section-box academic-text">
-            <h2>ℹ️ Sobre o Produto Educacional</h2>
-            <p>O <strong>CircuitosEdu</strong> é um protótipo tecnológico desenvolvido no Mestrado Profissional em Ensino Tecnológico.</p>
-        </section>
-    </main>
-
-    <aside class="chat-sidebar-compact">
-        <div class="chat-header-pro">🤖 Tutor IA Mediador</div>
-        <div id="chat-content" class="chat-scroll-area">
-            <div class="bubble tutor-msg">Olá! Sou seu mediador pedagógico. Como posso auxiliar na sua prática de hoje?</div>
-        </div>
-        <div class="chat-input-bar">
-            <input type="text" id="msg-input" placeholder="Dúvida?" onkeydown="if(event.key==='Enter') enviarDuvidaIA()">
-            <button onclick="enviarDuvidaIA()" class="btn-send-icon">➤</button>
-        </div>
-    </aside>
-
-</div>
-
-<div id="imageModal" class="modal-overlay" onclick="fecharZoom()">
-    <span class="modal-close">&times;</span>
-    <img class="modal-content" id="imgZoom">
-    <div id="caption" class="modal-caption"></div>
-</div>
-
-<footer class="footer-simple-black">
-    <p>© 2026 CircuitosEdu - Pesquisa de Mestrado UEA/IFAM | Daniel Sandoval</p>
-</footer>
-
-<script>
-    // --- FUNÇÃO DE ZOOM ---
-    function abrirZoom(element) {
-        if (!element) return;
-        const modal = document.getElementById("imageModal");
-        const modalImg = document.getElementById("imgZoom");
-        const captionText = document.getElementById("caption");
-        
-        modal.style.display = "flex";
-        modalImg.src = element.src;
-        captionText.innerHTML = element.alt;
-    }
-
-    function fecharZoom() {
-        document.getElementById("imageModal").style.display = "none";
-    }
-
-    // --- FUNÇÃO TUTOR IA ---
-    async function enviarDuvidaIA() {
-        const input = document.getElementById('msg-input');
-        const box = document.getElementById('chat-content');
-        const text = input.value.trim();
-        if(!text) return;
-        
-        box.innerHTML += `<div class="flex flex-col"><div class="bubble user-msg">${text}</div></div>`;
-        input.value = '';
-        box.scrollTop = box.scrollHeight;
-        
-        try {
-            const res = await fetch('https://circuitosedu-backend.vercel.app/api/chat', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({message: text})
-            });
-            const data = await res.json();
-            box.innerHTML += `<div class="flex flex-col"><div class="bubble tutor-msg">${data.reply}</div></div>`;
-        } catch(e) { 
-            box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão com a IA.</div>`; 
-        }
-        box.scrollTop = box.scrollHeight;
-    }
-
-    // --- FUNÇÃO FEEDBACK ---
-    window.enviarDadosPesquisa = async function() {
-        const rating = document.querySelector('input[name="feedback_val"]:checked');
-        const comment = document.getElementById('feedback-comment-pro').value;
-        const statusUi = document.getElementById('ui-status-msg');
-
-        if(!rating) { alert("Por favor, selecione uma opção."); return; }
-        statusUi.innerText = "⏳ Processando...";
-        statusUi.style.color = "#1d4ed8";
-
-        if (typeof gtag === 'function') {
-            gtag('event', 'feedback_mestrado_ga4', { 'utilidade': rating.value, 'comentario': comment });
-        }
-
-        try {
-            const response = await fetch('https://circuitosedu-backend.vercel.app/api/feedback', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ ajudou: rating.value, texto: comment })
-            });
-            if (response.ok) {
-                statusUi.innerText = "✅ Feedback enviado com sucesso!";
-                statusUi.style.color = "#166534";
-                document.getElementById('feedback-comment-pro').value = '';
-                rating.checked = false;
-            } else { throw new Error('Erro server'); }
-        } catch (err) {
-            statusUi.innerText = "✅ Dados registrados (Analytics).";
-            statusUi.style.color = "#166534";
-        }
-    };
-</script>
-</body>
-</html>
