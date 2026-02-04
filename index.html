@@ -7,7 +7,7 @@
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-676V40J9RX"></script>
     <script>
-      window.dataLayer = window.dataLayer ||;
+      window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-676V40J9RX');
@@ -59,6 +59,33 @@
             </div>
         </section>
 
+        <section id="circuitos" class="section-box">
+            <h2>🔌 Configurações de Circuitos</h2>
+            <p style="padding: 15px; line-height: 1.5;">Selecione o tipo de configuração para visualizar a análise fasorial:</p>
+            <div class="card-grid">
+                <div class="edu-card-interactive">
+                    <span class="icon-lg">🔗</span> <h4>Série (RLC)</h4>
+                </div>
+                <div class="edu-card-interactive">
+                    <span class="icon-lg">∥</span> <h4>Paralelo</h4>
+                </div>
+                <div class="edu-card-interactive">
+                    <span class="icon-lg">🔀</span> <h4>Misto</h4>
+                </div>
+            </div>
+        </section>
+
+        <section id="ra" class="section-box">
+            <h2>🕶️ Realidade Aumentada</h2>
+            <div style="padding: 20px; text-align: center;">
+                <p style="margin-bottom: 15px;">Utilize a câmera do seu dispositivo para interagir com os componentes 3D.</p>
+                <div class="edu-card-interactive blue-highlight" style="max-width: 300px; margin: 0 auto;">
+                    <span class="icon-lg">📱</span> <h4>Ativar Câmera AR</h4>
+                    <p style="font-size: 0.8rem; color: #666;">Clique para iniciar a experiência</p>
+                </div>
+            </div>
+        </section>
+
         <section id="feedback" class="section-box feedback-box-pro">
             <h2>📊 Feedback: Mediação da IA</h2>
             <div class="form-pro">
@@ -67,88 +94,4 @@
                     <label class="radio-item"><input type="radio" name="feedback_val" value="Sim"> Sim</label>
                     <label class="radio-item"><input type="radio" name="feedback_val" value="Não"> Não</label>
                 </div>
-                <textarea id="feedback-comment-pro" placeholder="Descreva sua experiência pedagógica..."></textarea>
-                <button type="button" onclick="enviarDadosPesquisa()" class="btn-send-professional">Confirmar e Enviar Feedback</button>
-                <div id="ui-status-msg" class="ui-status"></div>
-            </div>
-        </section>
-
-        <section id="sobre" class="section-box academic-text">
-            <h2>ℹ️ Sobre o Produto Educacional</h2>
-            <p>O <strong>CircuitosEdu</strong> é um protótipo tecnológico desenvolvido no Mestrado Profissional em Ensino Tecnológico (UEA/IFAM). Integra IA e RA para promover a <strong>aprendizagem significativa</strong> em circuitos de Corrente Alternada, reduzindo a carga cognitiva e facilitando a visualização de fasores.[3]</p>
-        </section>
-    </main>
-
-    <aside class="chat-sidebar-compact">
-        <div class="chat-header-pro">🤖 Tutor IA Mediador</div>
-        <div id="chat-content" class="chat-scroll-area">
-            <div class="bubble tutor-msg">Olá! Sou seu mediador pedagógico. Como posso auxiliar na sua prática de hoje?</div>
-        </div>
-        <div class="chat-input-bar">
-            <input type="text" id="msg-input" placeholder="Dúvida?" onkeydown="if(event.key==='Enter') enviarDuvidaIA()">
-            <button onclick="enviarDuvidaIA()" class="btn-send-icon">➤</button>
-        </div>
-    </aside>
-</div>
-
-<footer class="footer-simple-black">
-    <p>© 2026 CircuitosEdu - Pesquisa de Mestrado UEA/IFAM | Daniel Sandoval</p>
-</footer>
-
-<script>
-    // --- LÓGICA DO TUTOR IA ---
-    async function enviarDuvidaIA() {
-        const input = document.getElementById('msg-input');
-        const box = document.getElementById('chat-content');
-        const text = input.value.trim();
-        if(!text) return;
-        box.innerHTML += `<div class="flex flex-col"><div class="bubble user-msg">${text}</div></div>`;
-        input.value = '';
-        box.scrollTop = box.scrollHeight;
-        try {
-            const res = await fetch('https://circuitosedu-backend.vercel.app/api/chat', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({message: text})
-            });
-            const data = await res.json();
-            box.innerHTML += `<div class="flex flex-col"><div class="bubble tutor-msg">${data.reply}</div></div>`;
-        } catch(e) { box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão com a IA.</div>`; }
-        box.scrollTop = box.scrollHeight;
-    }
-
-    // --- LÓGICA DO FEEDBACK (ROBUSTA) ---
-    window.enviarDadosPesquisa = async function() {
-        const rating = document.querySelector('input[name="feedback_val"]:checked');
-        const comment = document.getElementById('feedback-comment-pro').value;
-        const statusUi = document.getElementById('ui-status-msg');
-
-        if(!rating) { alert("Por favor, selecione uma opção."); return; }
-
-        statusUi.innerText = "⏳ Processando...";
-        statusUi.style.color = "#1d4ed8";
-
-        // 1. Tenta enviar para o Google Analytics
-        if (typeof gtag === 'function') {
-            gtag('event', 'feedback_mestrado_ga4', { 'utilidade': rating.value, 'comentario': comment });
-        }
-
-        // 2. Tenta enviar para o Backend (Redundância Profissional)
-        try {
-            await fetch('https://circuitosedu-backend.vercel.app/api/feedback', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ ajudou: rating.value, texto: comment })
-            });
-            
-            statusUi.innerText = "✅ Feedback enviado com sucesso para a pesquisa!";
-            statusUi.style.color = "#166534";
-            document.getElementById('feedback-comment-pro').value = '';
-        } catch (err) {
-            statusUi.innerText = "✅ Dados registrados (Analytics).";
-            statusUi.style.color = "#166534";
-        }
-    };
-</script>
-</body>
-</html>
+                <textarea id="feedback-comment-pro" placeholder="Descreva sua experiência pedagógica..."></textarea
