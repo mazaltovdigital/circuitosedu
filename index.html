@@ -21,7 +21,6 @@
 <header class="main-banner-fixed-total"></header>
 
 <div class="main-layout">
-    
     <nav class="sidebar">
         <h3 class="nav-title">Menu Principal</h3>
         <ul class="nav-list">
@@ -62,17 +61,17 @@
 
         <section id="circuitos" class="section-box">
             <h2>🔌 Configurações de Circuitos</h2>
-            <p style="padding: 15px;">Selecione para ver a topologia:</p>
+            <p style="padding: 15px;">Clique nos diagramas abaixo para ampliar:</p>
             <div class="card-grid">
-                <div class="edu-card-interactive">
-                    <img src="assets/circuito_serie.png" alt="Série" class="img-circuit">
+                <div class="edu-card-interactive" onclick="abrirZoom(this.querySelector('img'))">
+                    <img src="assets/circuito_serie.png" alt="Série (RLC)" class="img-circuit">
                     <h4>Série (RLC)</h4>
                 </div>
-                <div class="edu-card-interactive">
+                <div class="edu-card-interactive" onclick="abrirZoom(this.querySelector('img'))">
                     <img src="assets/circuito_paralelo.png" alt="Paralelo" class="img-circuit">
                     <h4>Paralelo</h4>
                 </div>
-                <div class="edu-card-interactive">
+                <div class="edu-card-interactive" onclick="abrirZoom(this.querySelector('img'))">
                     <img src="assets/circuito_misto.png" alt="Misto" class="img-circuit">
                     <h4>Misto</h4>
                 </div>
@@ -97,13 +96,8 @@
                     <label class="radio-item"><input type="radio" name="feedback_val" value="Sim"> Sim</label>
                     <label class="radio-item"><input type="radio" name="feedback_val" value="Não"> Não</label>
                 </div>
-                
                 <textarea id="feedback-comment-pro" placeholder="Descreva sua experiência pedagógica..."></textarea>
-                
-                <button type="button" onclick="enviarDadosPesquisa()" class="btn-send-professional" style="margin-top: 15px;">
-                    Confirmar e Enviar Feedback
-                </button>
-                
+                <button type="button" onclick="enviarDadosPesquisa()" class="btn-send-professional" style="margin-top: 15px;">Confirmar e Enviar Feedback</button>
                 <div id="ui-status-msg" class="ui-status"></div>
             </div>
         </section>
@@ -112,7 +106,9 @@
             <h2>ℹ️ Sobre o Produto Educacional</h2>
             <p>O <strong>CircuitosEdu</strong> é um protótipo tecnológico desenvolvido no Mestrado Profissional em Ensino Tecnológico.</p>
         </section>
-    </main> <aside class="chat-sidebar-compact">
+    </main>
+
+    <aside class="chat-sidebar-compact">
         <div class="chat-header-pro">🤖 Tutor IA Mediador</div>
         <div id="chat-content" class="chat-scroll-area">
             <div class="bubble tutor-msg">Olá! Sou seu mediador pedagógico. Como posso auxiliar na sua prática de hoje?</div>
@@ -123,11 +119,36 @@
         </div>
     </aside>
 
-</div> <footer class="footer-simple-black">
+</div>
+
+<div id="imageModal" class="modal-overlay" onclick="fecharZoom()">
+    <span class="modal-close">&times;</span>
+    <img class="modal-content" id="imgZoom">
+    <div id="caption" class="modal-caption"></div>
+</div>
+
+<footer class="footer-simple-black">
     <p>© 2026 CircuitosEdu - Pesquisa de Mestrado UEA/IFAM | Daniel Sandoval</p>
 </footer>
 
 <script>
+    // --- FUNÇÃO DE ZOOM ---
+    function abrirZoom(element) {
+        if (!element) return;
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("imgZoom");
+        const captionText = document.getElementById("caption");
+        
+        modal.style.display = "flex";
+        modalImg.src = element.src;
+        captionText.innerHTML = element.alt;
+    }
+
+    function fecharZoom() {
+        document.getElementById("imageModal").style.display = "none";
+    }
+
+    // --- FUNÇÃO TUTOR IA ---
     async function enviarDuvidaIA() {
         const input = document.getElementById('msg-input');
         const box = document.getElementById('chat-content');
@@ -152,13 +173,13 @@
         box.scrollTop = box.scrollHeight;
     }
 
+    // --- FUNÇÃO FEEDBACK ---
     window.enviarDadosPesquisa = async function() {
         const rating = document.querySelector('input[name="feedback_val"]:checked');
         const comment = document.getElementById('feedback-comment-pro').value;
         const statusUi = document.getElementById('ui-status-msg');
 
         if(!rating) { alert("Por favor, selecione uma opção."); return; }
-
         statusUi.innerText = "⏳ Processando...";
         statusUi.style.color = "#1d4ed8";
 
