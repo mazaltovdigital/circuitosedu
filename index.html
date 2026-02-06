@@ -154,7 +154,14 @@
         const box = document.getElementById('chat-content');
         const text = input.value.trim();
         if(!text) return;
-        
+	
+        // --- ADICIONE ESTA LINHA AQUI ---
+        // Isso conta "1 ponto" no Analytics cada vez que o aluno fala com a IA
+        if (typeof gtag === 'function') {
+            gtag('event', 'uso_chat_ia', { 'pergunta_aluno': text });
+        }
+        // ---------------------------------
+
         box.innerHTML += `<div class="flex flex-col"><div class="bubble user-msg">${text}</div></div>`;
         input.value = '';
         box.scrollTop = box.scrollHeight;
