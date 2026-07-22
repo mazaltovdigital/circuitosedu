@@ -278,35 +278,51 @@
             }, 300);
         };
 
-        // BASE DE CONHECIMENTO DO TUTOR MEDIADOR
+        // BASE DE CONHECIMENTO AMPLIADA E UNIVERSAL DO TUTOR MEDIADOR (SEM FORÇAR SAs)
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase();
 
-            if (texto.includes('sondagem') || texto.includes('conhecimento previo') || texto.includes('kirchhoff') || texto.includes('lei de ohm')) {
-                return "<strong>Sondagem Cognitiva (CC e Kirchhoff):</strong><br>• <strong>Lei de Ohm:</strong> V = R · I em CC, ou V = Z · I em CA.<br>• <strong>Lei dos Nós (LKC):</strong> ∑ I_entra = ∑ I_sai.<br>• <strong>Lei das Malhas (LKV):</strong> ∑ V = 0 numa malha fechada.<br><br>💡 <em>Teste no PhET:</em> Monte um circuito simples em CC e meça as correntes antes de passar para a fonte de CA!";
+            // Thévenin / Norton / Superposição
+            if (texto.includes('thevenin') || texto.includes('thévenin') || texto.includes('norton') || texto.includes('superposi')) {
+                return "<strong>Teoremas de Análise de Circuitos:</strong><br>• <strong>Teorema de Thévenin:</strong> Simplifica qualquer rede linear num circuito equivalente com uma fonte de tensão V_th em série com uma impedância Z_th.<br>• <strong>Teorema de Norton:</strong> Transforma a rede numa fonte de corrente I_N em paralelo com a mesma Z_th.<br>• <strong>Superposição:</strong> Em circuitos com múltiplas fontes, analisa-se o efeito de uma fonte por vez (desligando as outras) e somam-se os resultados fasorialmente.<br><br>💡 <em>Dica de estudo:</em> Qual o procedimento que você costuma utilizar para determinar a impedância equivalente Z_th vista pelos terminais da carga?";
             }
 
-            if (texto.includes('sa1') || texto.includes('fator de pot') || texto.includes('correção')) {
-                return "<strong>SA1 - Correção do Fator de Potência no PhET:</strong><br>Configure no PhET: Fonte CA V = 20 V RMS, f = 0,50 Hz. Carga indutiva: R = 10 Ω, L = 3,18 H (X_L = 10 Ω).<br>1. Sem capacitor: I = 1,41 A, FP = 0,707.<br>2. Adicione C = 0,032 F (32 mF) em paralelo.<br>3. Resultado no PhET: A corrente total da fonte cai para 1,00 A e o FP sobe para 1,00!";
+            // Sondagem / Kirchhoff / Ohm
+            if (texto.includes('sondagem') || texto.includes('kirchhoff') || texto.includes('lei de ohm') || texto.includes('malha') || texto.includes('nó')) {
+                return "<strong>Leis Fundamentais de Circuitos (CC e CA):</strong><br>• <strong>Lei de Ohm:</strong> V = R · I em CC, ou V = Z · I em CA.<br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram num nó é igual à soma das correntes que saem (conservação de carga).<br>• <strong>Lei das Malhas (LKV):</strong> A soma algébrica das diferenças de potencial ao longo de uma malha fechada é igual a zero (conservação de energia).<br><br>💡 <em>Desafio analítico:</em> Como a presença de elementos reativos (L e C) altera a aplicação da Lei das Malhas quando usamos fasores?";
             }
 
-            if (texto.includes('sa2') || texto.includes('filtro') || texto.includes('ressonan')) {
-                return "<strong>SA2 - Ressonância RLC Série no PhET:</strong><br>Configure no PhET: Fonte V = 10 V RMS, R = 10 Ω, L = 1,0 H e C = 0,10 F.<br>• Varie a frequência de 0,10 Hz até 2,00 Hz.<br>• Na frequência f_0 ≈ 0,50 Hz, X_L = X_C ≈ 3,14 Ω (Ressonância), e a corrente atinge seu pico máximo de 1,00 A!";
+            // Potência e Fator de Potência
+            if (texto.includes('potenc') || texto.includes('potênc') || texto.includes('fator de pot') || texto.includes('watt') || texto.includes('var') || texto.includes('triangulo de pot')) {
+                return "<strong>Triângulo de Potências em CA:</strong><br>• <strong>Potência Ativa (P):</strong> Medida em Watts (W), realiza trabalho útil real.<br>• <strong>Potência Reativa (Q):</strong> Medida em VAr, mantém os campos elétricos e magnéticos dos capacitores e indutores.<br>• <strong>Potência Aparente (S):</strong> Medida em VA, é a potência total fornecida (S = V · I).<br>• <strong>Fator de Potência (FP = P / S = cos φ):</strong> Indica a eficiência do aproveitamento da energia elétrica.<br><br>💡 <em>Reflexão:</em> Por que cargas indutivas provocam um Fator de Potência atrasado?";
             }
 
+            // Capacitância
             if (texto.includes('capacit') || texto.includes('farad')) {
-                return "<strong>Capacitância (C) no PhET:</strong> Armazena energia em campo elétrico.<br>• Em CC: Atua como circuito aberto em regime permanente.<br>• Em CA no PhET: Apresenta Reatância Capacitiva X_C = 1 / (2·π·f·C). Com f = 0,50 Hz e C = 0,10 F, X_C = 3,18 Ω.";
+                return "<strong>Capacitância (C):</strong> É a propriedade física de armazenar energia num campo elétrico.<br>• <strong>Em Corrente Contínua (CC):</strong> O capacitor carrega-se até à tensão da fonte e bloqueia o fluxo de corrente contínua em regime permanente (circuito aberto).<br>• <strong>Em Corrente Alternada (CA):</strong> Oferece a Reatância Capacitiva <strong>X_C = 1 / (2·π·f·C)</strong>. A corrente I(t) fica adiantada 90° em relação à tensão V(t).";
             }
 
+            // Indutância
             if (texto.includes('indut') || texto.includes('henry')) {
-                return "<strong>Indutância (L) no PhET:</strong> Armazena energia em campo magnético.<br>• Em CC: Atua como curto-circuito em regime permanente.<br>• Em CA no PhET: Apresenta Reatância Indutiva X_L = 2·π·f·L. Com f = 0,50 Hz e L = 1,0 H, X_L = 3,14 Ω.";
+                return "<strong>Indutância (L):</strong> É a propriedade de se opor às variações bruscas de corrente armazenando energia num campo magnético.<br>• <strong>Em Corrente Contínua (CC):</strong> Comporta-se como um curto-circuito em regime permanente.<br>• <strong>Em Corrente Alternada (CA):</strong> Oferece a Reatância Indutiva <strong>X_L = 2·π·f·L</strong>. A tensão V(t) fica adiantada 90° em relação à corrente I(t).";
             }
 
-            if (texto.includes('impedan') || texto.includes('z')) {
-                return "<strong>Impedância (Z):</strong> Oposição total à corrente em CA.<br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br>No PhET, quando X_L = X_C, Z torna-se puramente resistiva (Z = R).";
+            // Impedância
+            if (texto.includes('impedan') || texto.includes('impedân') || texto.includes('z')) {
+                return "<strong>Impedância (Z):</strong> É a oposição TOTAL que um circuito oferece ao fluxo de Corrente Alternada (CA), combinando a parte real (Resistência R) e a parte imaginária (Reatância X_L - X_C).<br><br>📐 <em>Fórmula fundamental em módulo:</em><br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br>O ângulo φ = arctan((X_L - X_C) / R) representa o ângulo de defasagem entre a tensão e a corrente.";
             }
 
-            return "Excelente pergunta pedagógica sobre a prática de Circuitos no PhET!<br><br>Como seu <strong>Tutor Mediador</strong>, lembre-se que no PhET a frequência varia de <strong>0,10 Hz a 2,00 Hz</strong> e a tensão varia de <strong>0 V a 120 V</strong>. Teste esses parâmetros no simulador e compartilhe suas observações comigo!";
+            // Ressonância
+            if (texto.includes('ressonan')) {
+                return "<strong>Ressonância Elétrica:</strong> Ocorre num circuito RLC quando a Reatância Indutiva iguala a Reatância Capacitiva (X_L = X_C).<br>• <strong>Frequência de Ressonância:</strong> f_0 = 1 / (2 · π · √(L · C)).<br>• <strong>Em Série:</strong> A impedância Z torna-se mínima (Z = R) e a corrente no circuito atinge seu valor máximo absoluto!";
+            }
+
+            // Situações de Aprendizagem (Apenas se o aluno perguntar expressamente sobre SA)
+            if (texto.includes('sa1') || texto.includes('sa2') || texto.includes('sa3') || texto.includes('situação de aprendizagem')) {
+                return "<strong>Situações de Aprendizagem (SA):</strong> São desafios práticos de bancada disponíveis no menu da plataforma:<br>• <strong>SA1:</strong> Correção do Fator de Potência de carga indutiva usando capacitor em paralelo.<br>• <strong>SA2:</strong> Análise de Ressonância RLC Série e resposta em frequência.<br>• <strong>SA3:</strong> Análise da defasagem fasorial dos componentes puros (R, L, C).";
+            }
+
+            return "Excelente pergunta sobre a teoria de Circuitos Elétricos (CC/CA)!<br><br>Como seu <strong>Tutor Mediador Pedagógico</strong>, estou aqui para apoiar a sua análise técnica. Para aprofundar esse conceito: como você equacionaria esse circuito considerando as leis de Ohm e Kirchhoff ou a relação fasorial dos componentes?";
         }
 
         async function fetchGeminiWithBackoff(prompt, systemPrompt) {
@@ -337,7 +353,7 @@
             return null;
         }
 
-        // 2. TUTOR IA MEDIADOR
+        // 2. TUTOR IA MEDIADOR (SISTEMA DE PROMPT AMPLO E UNIVERSAL)
         window.enviarTutorIa = async function(event) {
             event.preventDefault();
 
@@ -361,12 +377,13 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             const aiTempId = 'tutor-reply-' + Date.now();
-            chatBox.innerHTML += `<div class="flex flex-col"><div class="chat-bubble tutor-msg" id="${aiTempId}"><em>Analisando dúvida pedagógica...</em></div></div>`;
+            chatBox.innerHTML += `<div class="flex flex-col"><div class="chat-bubble tutor-msg" id="${aiTempId}"><em>Analisando dúvida técnica...</em></div></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             let respostaTexto = null;
 
-            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA) e Corrente Contínua (CC). Considere que no simulador PhET a frequência da fonte varia de 0.10 Hz a 2.00 Hz e a tensão de 0 V a 120 V. Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso das Situações de Aprendizagem (SA) e do simulador PhET. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente símbolos e variáveis em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π) para correta exibição no navegador.";
+            // Prompt Amplo para Responder QUALQUER questão de circuitos sem prender a SAs
+            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu papel é responder a QUALQUER dúvida técnica, conceitual ou matemática sobre Circuitos Elétricos em Corrente Contínua (CC) e Corrente Alternada (CA), incluindo leis de Ohm e Kirchhoff, teoremas de análise de circuitos (Thévenin, Norton, Superposição), componentes (R, L, C), potência, fasores, impedância, filtros, etc. Responda diretamente e com clareza à dúvida apresentada, utilizando o método de scaffolding pedagógico (explique os conceitos e fórmulas, incentivando a reflexão do aluno). Mencione as Situações de Aprendizagem (SA) ou o simulador PhET APENAS se a pergunta do aluno for especificamente sobre eles ou se um teste prático for útil como complemento. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente todas as variáveis e equações em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π, ω) para correta exibição no navegador.";
             
             respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
 
@@ -381,7 +398,7 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         };
 
-        // LÓGICA DO PADRÃO LUPA (ZOOM DINÂMICO QUE ACOMPANHA O RATO)
+        // LÓGICA DO PADRÃO LUPA
         window.moverLupa = function(e, container) {
             const target = container.querySelector('.lupa-target');
             const rect = container.getBoundingClientRect();
@@ -402,7 +419,6 @@
             document.getElementById('topologia-desc').innerText = desc;
             const imgBox = document.getElementById('topologia-img-box');
             
-            // Exibe a imagem de alta definição com fallback automático para esquema SVG
             imgBox.innerHTML = `
                 <img src="${imgSrc}" class="max-h-[320px] max-w-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/600x350/0f172a/ffffff?text=${encodeURIComponent(titulo)}';">
             `;
@@ -508,7 +524,7 @@
                 </div>
             </section>
 
-            <!-- ETAPA 3: SITUAÇÕES DE APRENDIZAGEM (SA) TOTALMENTE CALIBRADAS PARA O PHET -->
+            <!-- ETAPA 3: SITUAÇÕES DE APRENDIZAGEM (SA) EM ENGENHARIA -->
             <section id="sa-engenharia" class="bg-white rounded-xl shadow-sm p-6 border-l-8 border-indigo-600">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="bg-indigo-100 text-indigo-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">Etapa 3: Experimentação Prática & SA (100% Calibradas para o PhET)</span>
@@ -545,7 +561,7 @@
                         </div>
                         <p class="text-xs text-slate-700 leading-relaxed mb-3">
                             <strong>Problema:</strong> Um filtro RLC série é alimentado por uma fonte CA PhET de <strong>V = 10 V RMS</strong> com frequência ajustável de 0,10 Hz a 2,00 Hz, utilizando <strong>R = 10 Ω</strong>, <strong>L = 1,0 H</strong> e <strong>C = 0,10 F</strong>.
-                            <br><strong>Desafio no PhET:</strong> Varie a frequência da fonte noPhET até identificar experimentalmente a frequência de ressonância (f_0) na qual a corrente atinge seu MÁXIMO absoluto (1,00 A).
+                            <br><strong>Desafio no PhET:</strong> Varie a frequência da fonte no PhET até identificar experimentalmente a frequência de ressonância (f_0) na qual a corrente atinge seu MÁXIMO absoluto (1,00 A).
                         </p>
                         <button onclick="toggleGabarito('sa2-gab')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-1.5 px-3 rounded shadow transition">
                             👁️ Exibir Roteiro & Solução da SA2
@@ -649,7 +665,7 @@
                 </div>
             </section>
 
-            <!-- MODAL DE AMPLIAÇÃO DAS TOPOLOGIAS (AO CLICAR) -->
+            <!-- MODAL DE AMPLIAÇÃO DAS TOPOLOGIAS -->
             <div id="modal-topologia-zoom" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
                 <div class="bg-white rounded-2xl max-w-2xl w-full p-6 text-center shadow-2xl relative">
                     <button onclick="document.getElementById('modal-topologia-zoom').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-800 font-bold text-xl p-2 transition">✕</button>
@@ -661,7 +677,7 @@
                 </div>
             </div>
 
-            <!-- REALIDADE AUMENTADA (RA): DUPLA ABORDAGEM -->
+            <!-- REALIDADE AUMENTADA (RA) -->
             <section id="ra" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                 <div class="flex items-center justify-between mb-2">
                     <h2 class="text-xl font-bold text-slate-800">🕶️ Realidade Aumentada (RA) e Visualizador 3D</h2>
@@ -671,7 +687,6 @@
                     Você pode interagir de duas formas: apontando a câmera do app <strong>SENAI Space</strong> para os Marcadores Impressos de Bancada (Opção A) ou navegando diretamente pelo <strong>Visualizador 3D WebAR Nativo</strong> na tela (Opção B):
                 </p>
 
-                <!-- Painel de Baixar PDF para App SENAI Space -->
                 <div class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                     <div>
                         <p class="font-bold text-amber-900">📲 Opção A: Aplicativo SENAI Space (Câmera do Celular)</p>
@@ -682,7 +697,6 @@
                     </a>
                 </div>
 
-                <!-- Cards com Botão de Visualização WebAR Direct na Tela -->
                 <p class="text-xs font-bold text-slate-700 mb-2">💻 Opção B: Visualizador 3D Nativo (Sem depender de app ou câmera):</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
                     <!-- Marcador R -->
@@ -731,7 +745,6 @@
                         <button onclick="document.getElementById('modal-ra-3d').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 font-bold text-lg p-1">✕</button>
                         <h3 id="ra-title" class="text-lg font-bold text-blue-900 mb-1">Projeção Fasorial 3D</h3>
                         
-                        <!-- Container Gráfico do Modelo 3D / Fasorial Dinâmico -->
                         <div id="ra-graphics-container" class="w-full bg-slate-900 rounded-xl min-h-[170px] flex items-center justify-center my-4 overflow-hidden relative border border-slate-800">
                         </div>
                         
@@ -853,7 +866,7 @@
                     <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">Etapa 4: Fechamento & Quiz Completo</span>
                 </div>
                 <h2 class="text-xl font-bold mb-2 text-slate-800">🧠 Quiz de Avaliação Síncrona de Aprendizagem</h2>
-                <p class="text-xs text-slate-600 mb-4">Banco de questões alinhado às Situações de Aprendizagem de CC e CA:</p>
+                <p class="text-xs text-slate-600 mb-4">Banco de questões alinhado à teoria e práticas de CC e CA:</p>
 
                 <div id="quiz-container" class="bg-slate-50 p-5 rounded-xl border border-slate-200">
                     <div id="quiz-header" class="flex justify-between items-center mb-3">
@@ -871,28 +884,28 @@
                 <script>
                     const questoesQuiz = [
                         {
-                            q: "1. No simulador PhET com circuito RLC série, a frequência de ressonância (f_0) é caracterizada por:",
+                            q: "1. No circuito RLC série, a frequência de ressonância (f_0) é caracterizada por:",
                             opts: ["Reatância Indutiva maior que Reatância Capacitiva", "X_L igual a X_C, tornando a corrente MÁXIMA e Z = R", "Frequência f igual a zero", "Resistência R ser infinita"],
                             correct: 1,
                             exp: "Na ressonância (X_L = X_C), as reatâncias anulam-se mutuamente, resultando em Z = R e pico máximo de corrente."
                         },
                         {
-                            q: "2. Em uma instalação indutiva no PhET com FP = 0,707, qual ação corrige o FP para 1,00?",
-                            opts: ["Aumentar a resistência em série", "Adicionar um capacitor em paralelo de valor adequado (ex: 0,032 F)", "Desligar a fonte de tensão", "Substituir a fonte por uma bateria CC"],
+                            q: "2. Em uma instalação indutiva com FP = 0,707, qual ação eleva o Fator de Potência para 1,00?",
+                            opts: ["Aumentar a resistência em série", "Adicionar um capacitor em paralelo com a reatância adequada", "Desligar a fonte de tensão", "Substituir a fonte por uma bateria CC"],
                             correct: 1,
                             exp: "O capacitor em paralelo fornece a potência reativa capacitiva (Q_C) necessária para neutralizar o reativo indutivo, reduzindo a corrente total fornecida pela fonte."
                         },
                         {
-                            q: "3. Qual é o comportamento de um indutor ideal no PhET em regime permanente alimentado por Corrente Contínua (CC)?",
+                            q: "3. Qual é o comportamento de um indutor ideal em regime permanente alimentado por Corrente Contínua (CC)?",
                             opts: ["Circuito aberto", "Curto-circuito (X_L = 0 Ω pois f = 0 Hz)", "Filtro passa-altas", "Gerador de tensão"],
                             correct: 1,
                             exp: "Como em CC a frequência é zero (f = 0 Hz), a reatância indutiva X_L = 2·π·f·L é 0 Ω (comporta-se como um fio de resistência desprezível)."
                         },
                         {
-                            q: "4. No osciloscópio do PhET, qual é a defasagem temporal entre a corrente e a tensão em um capacitor puro alimentado por fonte CA de 0,50 Hz?",
-                            opts: ["Tensão adiantada de 90°", "Corrente adiantada de 90° em relação à tensão (atinge o pico 0,5s antes)", "Em fase (0°)", "Defasagem de 180°"],
+                            q: "4. Qual é a defasagem temporal entre a corrente e a tensão em um capacitor puro alimentado por fonte CA?",
+                            opts: ["Tensão adiantada de 90°", "Corrente adiantada de 90° em relação à tensão", "Em fase (0°)", "Defasagem de 180°"],
                             correct: 1,
-                            exp: "No capacitor, a corrente atinge seu pico antes da tensão, estando 90° adiantada (1/4 de ciclo ou 0,5s na frequência de 0,50 Hz)."
+                            exp: "No capacitor, a corrente atinge seu pico antes da tensão, estando 90° adiantada (1/4 de ciclo de avanço angular)."
                         },
                         {
                             q: "5. A Lei de Kirchhoff das Correntes (LKC) fundamenta-se na conservação de:",
@@ -989,9 +1002,9 @@
                             </div>
 
                             <div class="mindmap-node text-center">
-                                <span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">3. Aplicação / SA (PhET)</span>
+                                <span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">3. Aplicação / Prática</span>
                                 <h4 class="font-bold text-xs text-slate-800 mt-2 mb-1">Engenharia Prática</h4>
-                                <p class="text-[11px] text-slate-600">FP (V=20V, f=0,50Hz)<br>Ressonância RLC Série<br>Simulação PhET + RA</p>
+                                <p class="text-[11px] text-slate-600">Fator de Potência (FP)<br>Ressonância RLC Série<br>Simulação PhET + RA</p>
                             </div>
                         </div>
                     </div>
@@ -1067,14 +1080,14 @@
                 <!-- Chat Scroll Area -->
                 <div id="chat-window" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
                     <div class="chat-bubble tutor-msg">
-                        Olá! Sou seu mediador pedagógico para a Sequência Didática de Circuitos CC e CA. Qual é a sua dúvida sobre a montagem de hoje?
+                        Olá! Sou seu mediador pedagógico para qualquer dúvida sobre Circuitos Elétricos (CC e CA). Qual é a sua pergunta técnica de hoje?
                     </div>
                 </div>
 
                 <!-- Chat Input Area -->
                 <div class="p-3 border-t bg-slate-50">
                     <form onsubmit="enviarTutorIa(event)" class="flex gap-2 bg-white border border-slate-300 rounded-full p-1 shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
-                        <input type="text" id="chat-input" placeholder="Digite sua dúvida sobre CC ou CA..." class="flex-1 outline-none text-sm px-3 bg-transparent" autocomplete="off">
+                        <input type="text" id="chat-input" placeholder="Digite sua dúvida sobre circuitos..." class="flex-1 outline-none text-sm px-3 bg-transparent" autocomplete="off">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white w-9 h-9 rounded-full flex items-center justify-center transition flex-shrink-0">
                             ➤
                         </button>
