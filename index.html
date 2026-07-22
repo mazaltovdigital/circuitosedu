@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CircuitosEdu - Plataforma Pedagógica CA</title>
+    <title>CircuitosEdu - Plataforma Pedagógica CA e CC</title>
 
     <!-- Google Analytics 4 (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-676V40J9RX"></script>
@@ -127,7 +127,7 @@
             console.warn("Modo Analytics primário ativo.");
         }
 
-        // Sanitização de caracteres para segurança no Chat
+        // Sanitização de HTML
         function escapeHtml(str) {
             return String(str)
                 .replace(/&/g, "&amp;")
@@ -136,7 +136,7 @@
                 .replace(/"/g, "&quot;");
         }
 
-        // Filtro para eliminar qualquer notação de cifrão do LaTeX ($Z$ -> Z)
+        // Filtro para eliminar notação cifrão de LaTeX ($Z$ -> Z)
         function limparNotacaoLatex(texto) {
             if (!texto) return "";
             return texto
@@ -155,7 +155,6 @@
             const alerta = document.getElementById('feedback-alerta');
             const btnIcon = document.getElementById('btn-icon');
 
-            // Validação sem travar a tela
             if (!radio) {
                 if (alerta) {
                     alerta.innerHTML = `
@@ -173,12 +172,10 @@
 
             const valorAjuda = radio.value;
 
-            // Desabilita o botão brevemente para evitar duplo clique
             btn.disabled = true;
             btn.classList.add('opacity-70');
             if (btnIcon) btnIcon.innerText = '⏳';
 
-            // Registra no Google Analytics 4
             try {
                 if (typeof window.gtag === 'function') {
                     window.gtag('event', 'submissao_feedback_aluno', {
@@ -189,10 +186,9 @@
                     });
                 }
             } catch (e) {
-                console.warn("GA4 em modo não-bloqueante:", e);
+                console.warn("GA4 mode:", e);
             }
 
-            // Registra cópia de segurança no Firestore
             try {
                 if (db) {
                     const uid = currentUser ? currentUser.uid : 'anonimo_' + Date.now();
@@ -207,7 +203,6 @@
                 console.warn("Firestore silencioso:", e);
             }
 
-            // Exibe mensagem de confirmação verde imediatamente
             setTimeout(() => {
                 btn.disabled = false;
                 btn.classList.remove('opacity-70');
@@ -218,7 +213,7 @@
                         <span class="text-xl">✅</span>
                         <div>
                             <p class="font-bold text-emerald-800">Feedback registrado com sucesso!</p>
-                            <p class="text-xs text-emerald-700">Seus dados foram contabilizados para a pesquisa de mestrado. Obrigado!</p>
+                            <p class="text-xs text-emerald-700">Seus dados foram salvos para a pesquisa de mestrado. Obrigado!</p>
                         </div>
                     `;
                     alerta.className = "mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-3";
@@ -233,27 +228,79 @@
             }, 300);
         };
 
-        // Respostas Pedagógicas Mediadoras do Tutor IA (Notação de texto limpa, sem cifrão)
+        // BASE DE CONHECIMENTO EXPANDIDA (CC E CA) DO TUTOR MEDIADOR
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase();
 
-            if (texto.includes('impedancia') || texto.includes('impedância') || texto.includes('z')) {
-                return "<strong>Impedância (Z):</strong> É a oposição TOTAL que um circuito oferece à passagem da Corrente Alternada (CA), combinando a Resistência (R) e a Reatância (X).<br><br>📐 <em>Fórmula fundamental:</em><br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br><br>💡 <strong>Desafio no PhET:</strong> Monte um circuito com resistor e indutor em série. Observe o que acontece com a corrente quando você altera a frequência da fonte!";
-            }
-            if (texto.includes('fasor') || texto.includes('fasores') || texto.includes('angulo') || texto.includes('fase')) {
-                return "<strong>Fasores:</strong> São vetores girantes usados para representar grandezas senoidais de mesma frequência. Facilitam o cálculo da diferença de fase entre Tensão (V) e Corrente (I).<br><br>⚡ <strong>Reflexão pedagógica:</strong> Em um capacitor puro, a corrente está 90° adiantada em relação à tensão. Você consegue visualizar essa defasagem nas ondas do simulador PhET?";
-            }
-            if (texto.includes('reatancia') || texto.includes('reatância') || texto.includes('indutor') || texto.includes('capacitor')) {
-                return "<strong>Reatância (X):</strong> É a oposição oferecida à CA por componentes reativos:<br>• Indutiva: <code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>X_L = 2·π·f·L</code><br>• Capacitiva: <code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>X_C = 1 / (2·π·f·C)</code><br><br>🔍 <em>Experimente no simulador:</em> Aumente a frequência (f). O que ocorre com a reatância do indutor em comparação com a do capacitor?";
-            }
-            if (texto.includes('serie') || texto.includes('série') || texto.includes('paralelo') || texto.includes('misto')) {
-                return "<strong>Tipos de Ligação em CA:</strong><br>• <em>Série:</em> A corrente (I) é a mesma em todos os componentes, e as tensões se somam fasorialmente.<br>• <em>Paralelo:</em> A tensão (V) é idêntica nos ramos, e as correntes se somam fasorialmente.<br><br>👉 Monte a configuração desejada no PhET para testar seus cálculos!";
+            // Corrente Contínua (CC / DC)
+            if (texto.includes('corrente continua') || texto.includes('corrente contínua') || texto.includes(' cc') || texto.includes('dc') || texto.includes('bateria') || texto.includes('pilha')) {
+                return "<strong>Corrente Contínua (CC / DC):</strong> É o fluxo de cargas elétricas em um único sentido constante no tempo.<br><br>🔋 <strong>Características Principais:</strong><br>• Frequência é zero (f = 0 Hz).<br>• Capacitores agem como <strong>circuito aberto</strong> após carregados.<br>• Indutores agem como um <strong>curto-circuito</strong> (apenas com resistência do fio).<br><br>💡 <strong>Desafio PhET:</strong> Mude a fonte no simulador para uma bateria de CC. O que acontece com a lâmpada ao colocar um capacitor em série?";
             }
 
-            return "Ótima pergunta sobre a prática de Circuitos CA!<br><br>Como seu <strong>Tutor Mediador</strong>, convido você a investigar no <strong>Laboratório Virtual PhET</strong>: o que acontece com os valores medidos de tensão e corrente ao alterar a frequência ou os componentes do circuito? Teste no simulador e me diga o que observou!";
+            // Leis de Kirchhoff / Ohm
+            if (texto.includes('kirchhoff') || texto.includes('malha') || texto.includes('no ') || texto.includes('nós') || texto.includes('lei de ohm')) {
+                return "<strong>Leis Fundamentais de Circuitos (CC e CA):</strong><br>• <strong>Lei de Ohm:</strong> V = R · I (em CC) ou V = Z · I (em CA).<br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram em um nó é igual à soma das que saem.<br>• <strong>Lei das Malhas (LKV):</strong> A soma algébrica das tensões em uma malha fechada é zero.<br><br>🔍 <strong>No PhET:</strong> Monte uma malha com duas resistências e meça a queda de tensão em cada uma com o voltímetro!";
+            }
+
+            // Capacitância
+            if (texto.includes('capacit') || texto.includes('farad')) {
+                return "<strong>Capacitância (C):</strong> Mede a capacidade de armazenar carga elétrica.<br><br>⚡ <strong>Diferença CC vs CA:</strong><br>• <em>Em CC:</em> Carrega-se até a tensão da fonte e bloqueia a corrente contínua.<br>• <em>Em CA:</em> Permite a passagem de corrente devido à oscilação, com Reatância X_C = 1 / (2·π·f·C).<br><br>💡 <strong>Desafio PhET:</strong> Teste o capacitor com fonte CC e depois com fonte CA para ver a diferença no fluxo de elétrons!";
+            }
+
+            // Indutância
+            if (texto.includes('indut') || texto.includes('henry')) {
+                return "<strong>Indutância (L):</strong> Propriedade do indutor de se opor a variações bruscas de corrente armazenando energia num campo magnético.<br><br>🌀 <strong>Diferença CC vs CA:</strong><br>• <em>Em CC:</em> Em regime permanente comporta-se como um fio (curto-circuito).<br>• <em>Em CA:</em> Gera Reatância Indutiva X_L = 2·π·f·L.<br><br>💡 <strong>Desafio PhET:</strong> Monte um indutor com fonte CA e observe o atraso da corrente!";
+            }
+
+            // Resistência
+            if (texto.includes('resist') || texto.includes('ohm')) {
+                return "<strong>Resistência (R):</strong> É a oposição pura ao fluxo de elétrons, dissipando energia como calor (Efeito Joule).<br><br>📏 <strong>Em CC e CA:</strong> Comporta-se de forma idêntica tanto em CC quanto em CA, sem depender da frequência.<br><br>🔍 <strong>Experimente no PhET:</strong> Meça a corrente em um resistor com fonte CC de 10V e fonte CA de 10V RMS!";
+            }
+
+            // Impedância
+            if (texto.includes('impedan') || texto.includes('impedân') || texto.includes('z')) {
+                return "<strong>Impedância (Z):</strong> É a oposição TOTAL à corrente em CA, unindo Resistência (R) e Reatâncias (X_L e X_C).<br><br>📐 <em>Fórmula fundamental:</em><br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br><br>💡 <strong>Desafio no PhET:</strong> Monte um circuito RLC em série em CA e meça a corrente ao variar a frequência!";
+            }
+
+            // Potência e Fator de Potência
+            if (texto.includes('potenc') || texto.includes('potênc') || texto.includes('fator de pot') || texto.includes('watt') || texto.includes('var')) {
+                return "<strong>Potência em Circuitos:</strong><br>• <strong>Em CC:</strong> P = V · I (apenas potência ativa em Watts).<br>• <strong>Em CA:</strong> Temos Potência Ativa (P em W), Reativa (Q em VAr) e Aparente (S em VA).<br><br>⚡ <strong>Fator de Potência (FP = P / S):</strong> Indica o quão eficientemente a energia CA está sendo utilizada.";
+            }
+
+            // Tensão e Voltagem
+            if (texto.includes('tens') || texto.includes('tensã') || texto.includes('volt')) {
+                return "<strong>Tensão Elétrica (V):</strong> A diferença de potencial que impulsiona as cargas.<br><br>📈 <strong>CC vs CA:</strong> Em CC o valor de V é constante ao longo do tempo. Em CA a tensão oscila senoidalmente e usamos o valor RMS (eficaz).<br><br>💡 <strong>No PhET:</strong> Compare o gráfico do voltímetro em uma bateria CC e numa fonte CA!";
+            }
+
+            // Corrente
+            if (texto.includes('corrent') || texto.includes('amper')) {
+                return "<strong>Corrente Elétrica (I):</strong> O fluxo ordenado de cargas.<br><br>🔄 <strong>Em CC:</strong> Sentido contínuo e único.<br><strong>Em CA:</strong> Inverte a direção periodicamente na frequência da rede (ex: 60 Hz).";
+            }
+
+            // Frequência
+            if (texto.includes('frequenc') || texto.includes('frequênc') || texto.includes('hertz')) {
+                return "<strong>Frequência (f):</strong> Quantidade de ciclos por segundo (Hz).<br><br>⚙️ <strong>Atenção:</strong> Em CC a frequência é f = 0 Hz. Em CA no Brasil, a frequência da rede elétrica comercial é de 60 Hz.";
+            }
+
+            // Fasores
+            if (texto.includes('fasor') || texto.includes('fasores') || texto.includes('angulo') || texto.includes('fase')) {
+                return "<strong>Fasores:</strong> Vetores girantes exclusivos para análise de circuitos em Corrente Alternada (CA). Facilitam a soma e subtração de tensões e correntes desfasadas.";
+            }
+
+            // Ressonância
+            if (texto.includes('ressonan')) {
+                return "<strong>Ressonância Elétrica (CA):</strong> Ocorre quando a Reatância Indutiva X_L é igual à Reatância Capacitiva X_C, tornando a impedância puramente resistiva (Z = R) e a corrente máxima!";
+            }
+
+            // Configurações de Ligação
+            if (texto.includes('serie') || texto.includes('série') || texto.includes('paralelo') || texto.includes('misto')) {
+                return "<strong>Tipos de Ligação (CC e CA):</strong><br>• <em>Série:</em> A corrente (I) é idêntica em todos os componentes.<br>• <em>Paralelo:</em> A tensão (V) é idêntica em todos os ramos.<br><br>👉 Monte a configuração desejada no simulador PhET para testar seus cálculos!";
+            }
+
+            return "Excelente pergunta sobre circuitos elétricos (CC/CA)!<br><br>Como seu <strong>Tutor Mediador</strong>, convido você a testar este conceito no <strong>Laboratório Virtual PhET</strong>: monte o circuito, meça tensão e corrente com os instrumentos e me diga o que observou!";
         }
 
-        // Requisição para API Gemini com Exponential Backoff
+        // Requisição para API Gemini com Exponential Backoff (1s, 2s, 4s, 8s, 16s)
         async function fetchGeminiWithBackoff(prompt, systemPrompt) {
             const delays = [1000, 2000, 4000, 8000, 16000];
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
@@ -311,16 +358,16 @@
 
             let respostaTexto = null;
 
-            if (apiKey && apiKey.length > 5) {
-                const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA). Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso do laboratório virtual PhET e a reflexão sobre conceitos como fasores, reatância e impedância. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente símbolos e variáveis em texto simples e negrito (ex: Z, R, X, V, I, f, π) para correta exibição no navegador.";
-                respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
-            }
+            // Chama Gemini 2.5 Flash habilitado para CC e CA
+            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA) e Corrente Contínua (CC). Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso do laboratório virtual PhET e a reflexão sobre conceitos como Leis de Ohm, Leis de Kirchhoff, fasores, reatância, capacitância, indutância e impedância. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente símbolos e variáveis em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π) para correta exibição no navegador.";
+            
+            respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
 
+            // Fallback para motor pedagógico local
             if (!respostaTexto) {
                 respostaTexto = gerarRespostaTutorEducacional(mensagem);
             }
 
-            // Aplica filtro de limpeza final para garantir eliminação total de cifrões
             respostaTexto = limparNotacaoLatex(respostaTexto);
 
             const elem = document.getElementById(aiTempId);
@@ -365,7 +412,7 @@
             
             <!-- Material Teórico -->
             <section id="teoria" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-                <h2 class="text-xl font-bold mb-4 text-slate-800 flex items-center gap-2">📖 Material de Estudo CA</h2>
+                <h2 class="text-xl font-bold mb-4 text-slate-800 flex items-center gap-2">📖 Material de Estudo CA e CC</h2>
                 <div class="grid grid-cols-3 gap-4">
                     <div class="interactive-card" onclick="location.href='grandezas.html'">
                         <span class="text-3xl">⚡</span>
@@ -504,7 +551,7 @@
                     Este ambiente virtual de aprendizagem é um <strong>Produto Educacional</strong> resultante da pesquisa de Mestrado Profissional em Ensino Tecnológico (UEA/IFAM), desenvolvida por <strong>Daniel Sandoval</strong>.
                 </p>
                 <p class="text-slate-600 text-sm leading-relaxed text-justify">
-                    O objetivo principal é investigar a contribuição do uso de <strong>Inteligência Artificial Generativa Mediadora</strong> e <strong>Realidade Aumentada (RA)</strong> na compreensão de conceitos fundamentais de Circuitos Elétricos de Corrente Alternada (CA).
+                    O objetivo principal é investigar a contribuição do uso de <strong>Inteligência Artificial Generativa Mediadora</strong> e <strong>Realidade Aumentada (RA)</strong> na compreensão de conceitos fundamentais de Circuitos Elétricos de Corrente Alternada (CA) e Corrente Contínua (CC).
                 </p>
             </section>
         </main>
@@ -521,14 +568,14 @@
                 <!-- Chat Scroll Area -->
                 <div id="chat-window" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
                     <div class="chat-bubble tutor-msg">
-                        Olá! Sou seu mediador pedagógico para Circuitos CA. Qual é a sua dúvida sobre a montagem de hoje?
+                        Olá! Sou seu mediador pedagógico para Circuitos CC e CA. Qual é a sua dúvida sobre a montagem de hoje?
                     </div>
                 </div>
 
                 <!-- Chat Input Area -->
                 <div class="p-3 border-t bg-slate-50">
                     <form onsubmit="enviarTutorIa(event)" class="flex gap-2 bg-white border border-slate-300 rounded-full p-1 shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
-                        <input type="text" id="chat-input" placeholder="Digite sua dúvida..." class="flex-1 outline-none text-sm px-3 bg-transparent" autocomplete="off">
+                        <input type="text" id="chat-input" placeholder="Digite sua dúvida sobre CC ou CA..." class="flex-1 outline-none text-sm px-3 bg-transparent" autocomplete="off">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white w-9 h-9 rounded-full flex items-center justify-center transition flex-shrink-0">
                             ➤
                         </button>
@@ -542,7 +589,7 @@
     <!-- Rodapé -->
     <footer class="bg-slate-900 text-slate-400 py-10 mt-12 text-center text-xs">
         <div class="max-w-4xl mx-auto px-4">
-            <p class="font-bold text-slate-200 mb-1">CircuitosEdu — Plataforma Pedagógica CA</p>
+            <p class="font-bold text-slate-200 mb-1">CircuitosEdu — Plataforma Pedagógica CA e CC</p>
             <p>© 2026 Daniel Sandoval | Projeto de Mestrado UEA / IFAM</p>
         </div>
     </footer>
