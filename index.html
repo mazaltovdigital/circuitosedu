@@ -104,7 +104,6 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Key fornecida em tempo de execução
         const apiKey = ""; 
 
         const firebaseConfig = (typeof __firebase_config !== 'undefined' && __firebase_config) 
@@ -241,7 +240,7 @@
             }, 300);
         };
 
-        // BASE DE CONHECIMENTO EXPANDIDA (CC, CA, SA, FATOR DE POTÊNCIA)
+        // BASE DE CONHECIMENTO EXPANDIDA DA IA
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase();
 
@@ -511,7 +510,7 @@
                 </div>
             </section>
 
-            <!-- ITEM 2.3: TOPOLOGIAS FUNDAMENTAIS DE CIRCUITOS (SÉRIE, PARALELO, MISTO) COM SCHEMATICS SVG -->
+            <!-- TOPOLOGIAS FUNDAMENTAIS DE CIRCUITOS COM SCHEMATICS SVG -->
             <section id="topologias" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                 <h2 class="text-xl font-bold mb-2 text-slate-800">🔌 Topologias Fundamentais de Circuitos em CA</h2>
                 <p class="text-xs text-slate-500 mb-6">Esquemáticos elétricos vetoriais e relações fasoriais das 3 topologias de estudo:</p>
@@ -524,10 +523,8 @@
                             <rect x="10" y="10" width="180" height="80" rx="6" fill="none" stroke="#2563eb" stroke-width="2"/>
                             <circle cx="20" cy="50" r="12" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
                             <path d="M 14 50 Q 20 40 26 50 Q 32 60 38 50" fill="none" stroke="#1d4ed8" stroke-width="1.5" transform="translate(-8,-2)"/>
-                            <!-- Resistor -->
                             <path d="M 50 10 L 60 10 L 65 0 L 75 20 L 85 0 L 95 20 L 100 10 L 110 10" fill="none" stroke="#0284c7" stroke-width="2"/>
                             <text x="80" y="32" font-size="10" text-anchor="middle" font-weight="bold">R</text>
-                            <!-- Indutor -->
                             <path d="M 120 10 Q 125 0 130 10 Q 135 0 140 10 Q 145 0 150 10 Q 155 0 160 10" fill="none" stroke="#d97706" stroke-width="2"/>
                             <text x="140" y="32" font-size="10" text-anchor="middle" font-weight="bold">L</text>
                         </svg>
@@ -541,7 +538,6 @@
                             <rect x="20" y="15" width="160" height="70" fill="none" stroke="#2563eb" stroke-width="2"/>
                             <line x1="90" y1="15" x2="90" y2="85" stroke="#0284c7" stroke-width="2"/>
                             <line x1="150" y1="15" x2="150" y2="85" stroke="#16a34a" stroke-width="2"/>
-                            <!-- Capacitor -->
                             <line x1="142" y1="45" x2="158" y2="45" stroke="#16a34a" stroke-width="3"/>
                             <line x1="142" y1="55" x2="158" y2="55" stroke="#16a34a" stroke-width="3"/>
                             <text x="170" y="52" font-size="10" font-weight="bold">C</text>
@@ -557,7 +553,6 @@
                             <rect x="15" y="15" width="170" height="70" fill="none" stroke="#2563eb" stroke-width="2"/>
                             <line x1="110" y1="15" x2="110" y2="85" stroke="#d97706" stroke-width="2"/>
                             <line x1="160" y1="15" x2="160" y2="85" stroke="#16a34a" stroke-width="2"/>
-                            <!-- Resistor Série -->
                             <path d="M 40 15 L 50 15 L 53 5 L 63 25 L 73 5 L 83 25 L 87 15 L 95 15" fill="none" stroke="#0284c7" stroke-width="2"/>
                             <text x="65" y="38" font-size="10" font-weight="bold">R_série</text>
                         </svg>
@@ -566,13 +561,13 @@
                 </div>
             </section>
 
-            <!-- ITEM 2.2: REALIDADE AUMENTADA (RA) REAL COM MARCADORES SVG & VISUALIZADOR 3D -->
+            <!-- REALIDADE AUMENTADA (RA) COM MODELOS 3D E FASORES DISTINTOS -->
             <section id="ra" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                 <h2 class="text-xl font-bold mb-2 text-slate-800">🕶️ Realidade Aumentada (RA) - Marcadores & Visualizador 3D</h2>
-                <p class="text-xs text-slate-500 mb-4">Projete os componentes e vetores fasoriais em 3D. Utilize os marcadores abaixo para leitura em aplicativos móveis:</p>
+                <p class="text-xs text-slate-500 mb-4">Projete os componentes e vetores fasoriais em 3D. Clique em cada marcador para inspecionar seu modelo individual:</p>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                    <!-- Marcador R (Hiro/ArUco SVG) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
+                    <!-- Marcador R -->
                     <div class="border rounded-xl p-3 bg-white text-center flex flex-col items-center shadow-sm">
                         <span class="text-xs font-bold text-blue-900 mb-2">Marcador Resistor (R)</span>
                         <svg class="w-24 h-24 border-4 border-black bg-white" viewBox="0 0 100 100">
@@ -580,8 +575,8 @@
                             <rect x="35" y="35" width="30" height="30" fill="white"/>
                             <text x="50" y="55" font-size="16" font-weight="bold" text-anchor="middle" fill="black">R</text>
                         </svg>
-                        <button onclick="abrirVisualizador3D('Resistor', 'O Resistor dissipa energia mantendo Tensão e Corrente em fase (0°).')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1 px-2.5 rounded shadow">
-                            🕶️ Ver em 3D
+                        <button onclick="abrirVisualizador3D('Resistor', 'O Resistor dissipa energia térmica (Efeito Joule). Tensão V(t) e Corrente I(t) permanecem em perfeita fase (ângulo de defasagem de 0°).')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1.5 px-3 rounded shadow transition">
+                            🕶️ Ver Resistor 3D
                         </button>
                     </div>
 
@@ -593,8 +588,8 @@
                             <circle cx="50" cy="50" r="18" fill="white"/>
                             <text x="50" y="55" font-size="16" font-weight="bold" text-anchor="middle" fill="black">L</text>
                         </svg>
-                        <button onclick="abrirVisualizador3D('Indutor', 'O Indutor gera reatância X_L = 2·π·f·L, atrasando a corrente em 90°.')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1 px-2.5 rounded shadow">
-                            🕶️ Ver em 3D
+                        <button onclick="abrirVisualizador3D('Indutor', 'O Indutor armazena energia em campo magnético, gerando reatância X_L = 2·π·f·L. A Tensão V(t) fica adiantada 90° em relação à Corrente I(t).')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1.5 px-3 rounded shadow transition">
+                            🕶️ Ver Indutor 3D
                         </button>
                     </div>
 
@@ -606,40 +601,135 @@
                             <polygon points="50,25 70,70 30,70" fill="white"/>
                             <text x="50" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="black">C</text>
                         </svg>
-                        <button onclick="abrirVisualizador3D('Capacitor', 'O Capacitor gera reatância X_C = 1 / (2·π·f·C), adiantando a corrente em 90°.')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1 px-2.5 rounded shadow">
-                            🕶️ Ver em 3D
+                        <button onclick="abrirVisualizador3D('Capacitor', 'O Capacitor armazena energia em campo elétrico, gerando reatância X_C = 1 / (2·π·f·C). A Corrente I(t) fica adiantada 90° em relação à Tensão V(t).')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1.5 px-3 rounded shadow transition">
+                            🕶️ Ver Capacitor 3D
                         </button>
                     </div>
                 </div>
 
-                <!-- Modal do Visualizador 3D -->
-                <div id="modal-ra-3d" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center shadow-2xl relative">
-                        <button onclick="document.getElementById('modal-ra-3d').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
-                        <h3 id="ra-title" class="text-lg font-bold text-blue-900 mb-2">Projeção 3D do Componente</h3>
-                        <div class="w-full h-48 bg-slate-900 rounded-xl flex items-center justify-center my-4 overflow-hidden relative">
-                            <!-- Animação Vetorial de Fasor 3D -->
-                            <svg class="w-32 h-32 animate-spin" style="animation-duration: 8s;" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,4"/>
-                                <line x1="50" y1="50" x2="85" y2="50" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow)"/>
-                                <text x="70" y="42" fill="#ef4444" font-size="10" font-weight="bold">V(t)</text>
-                            </svg>
+                <!-- Modal do Visualizador 3D Customizado -->
+                <div id="modal-ra-3d" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="bg-white rounded-2xl max-w-xl w-full p-6 text-center shadow-2xl relative">
+                        <button onclick="document.getElementById('modal-ra-3d').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 font-bold text-lg p-1">✕</button>
+                        <h3 id="ra-title" class="text-lg font-bold text-blue-900 mb-1">Projeção Fasorial 3D</h3>
+                        
+                        <!-- Container Gráfico do Modelo 3D / Fasorial Dinâmico -->
+                        <div id="ra-graphics-container" class="w-full bg-slate-900 rounded-xl min-h-[170px] flex items-center justify-center my-4 overflow-hidden relative border border-slate-800">
                         </div>
-                        <p id="ra-desc" class="text-xs text-slate-600 leading-relaxed mb-4"></p>
-                        <button onclick="document.getElementById('modal-ra-3d').classList.add('hidden')" class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg text-xs shadow">Fechar Visualizador</button>
+                        
+                        <p id="ra-desc" class="text-xs text-slate-600 leading-relaxed mb-4 px-2"></p>
+                        <button onclick="document.getElementById('modal-ra-3d').classList.add('hidden')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-xs shadow transition">Fechar Visualizador</button>
                     </div>
                 </div>
 
                 <script>
-                    function abrirVisualizador3D(nome, desc) {
-                        document.getElementById('ra-title').innerText = "Projeção Fasorial 3D: " + nome;
+                    function abrirVisualizador3D(tipo, desc) {
+                        document.getElementById('ra-title').innerText = "Projeção Fasorial 3D e Componente: " + tipo;
                         document.getElementById('ra-desc').innerText = desc;
+                        
+                        const container = document.getElementById('ra-graphics-container');
+                        
+                        if (tipo === 'Resistor') {
+                            container.innerHTML = `
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-6 w-full p-3">
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-[11px] font-bold text-slate-300 mb-1">Componente R (Resistor)</span>
+                                        <svg class="w-36 h-28 bg-slate-800 rounded-lg p-2 border border-slate-700" viewBox="0 0 160 80">
+                                            <line x1="10" y1="40" x2="40" y2="40" stroke="#cbd5e1" stroke-width="4"/>
+                                            <line x1="120" y1="40" x2="150" y2="40" stroke="#cbd5e1" stroke-width="4"/>
+                                            <rect x="40" y="25" width="80" height="30" rx="8" fill="#fde047" stroke="#b45309" stroke-width="2"/>
+                                            <rect x="52" y="25" width="6" height="30" fill="#ef4444"/>
+                                            <rect x="68" y="25" width="6" height="30" fill="#a855f7"/>
+                                            <rect x="84" y="25" width="6" height="30" fill="#78350f"/>
+                                            <rect x="100" y="25" width="6" height="30" fill="#eab308"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-[11px] font-bold text-slate-300 mb-1">Diagrama Fasorial (Em Fase - 0°)</span>
+                                        <svg class="w-36 h-28 bg-slate-800 rounded-lg p-2 border border-slate-700" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="38" fill="none" stroke="#475569" stroke-dasharray="3,3"/>
+                                            <line x1="10" y1="50" x2="90" y2="50" stroke="#334155" stroke-width="1"/>
+                                            <line x1="50" y1="10" x2="50" y2="90" stroke="#334155" stroke-width="1"/>
+                                            <line x1="50" y1="50" x2="88" y2="50" stroke="#ef4444" stroke-width="3"/>
+                                            <polygon points="88,50 82,46 82,54" fill="#ef4444"/>
+                                            <text x="75" y="42" fill="#ef4444" font-size="9" font-weight="bold">V(t)</text>
+                                            <line x1="50" y1="50" x2="78" y2="50" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,2"/>
+                                            <polygon points="78,50 72,47 72,53" fill="#3b82f6"/>
+                                            <text x="65" y="62" fill="#3b82f6" font-size="9" font-weight="bold">I(t)</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (tipo === 'Indutor') {
+                            container.innerHTML = `
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-6 w-full p-3">
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-[11px] font-bold text-slate-300 mb-1">Componente L (Indutor)</span>
+                                        <svg class="w-36 h-28 bg-slate-800 rounded-lg p-2 border border-slate-700" viewBox="0 0 160 80">
+                                            <line x1="10" y1="40" x2="30" y2="40" stroke="#cbd5e1" stroke-width="4"/>
+                                            <line x1="130" y1="40" x2="150" y2="40" stroke="#cbd5e1" stroke-width="4"/>
+                                            <path d="M 30 40 Q 42 15 54 40 Q 66 15 78 40 Q 90 15 102 40 Q 114 15 126 40" fill="none" stroke="#d97706" stroke-width="5" stroke-linecap="round"/>
+                                            <line x1="35" y1="20" x2="125" y2="20" stroke="#94a3b8" stroke-width="3" stroke-dasharray="6,3"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-[11px] font-bold text-slate-300 mb-1">Fasor (V adiantado 90°)</span>
+                                        <svg class="w-36 h-28 bg-slate-800 rounded-lg p-2 border border-slate-700" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="38" fill="none" stroke="#475569" stroke-dasharray="3,3"/>
+                                            <line x1="10" y1="50" x2="90" y2="50" stroke="#334155" stroke-width="1"/>
+                                            <line x1="50" y1="10" x2="50" y2="90" stroke="#334155" stroke-width="1"/>
+                                            <line x1="50" y1="50" x2="50" y2="15" stroke="#ef4444" stroke-width="3"/>
+                                            <polygon points="50,15 46,21 54,21" fill="#ef4444"/>
+                                            <text x="56" y="24" fill="#ef4444" font-size="9" font-weight="bold">V(t) 90°</text>
+                                            <line x1="50" y1="50" x2="82" y2="50" stroke="#3b82f6" stroke-width="3"/>
+                                            <polygon points="82,50 76,46 76,54" fill="#3b82f6"/>
+                                            <text x="68" y="64" fill="#3b82f6" font-size="9" font-weight="bold">I(t) 0°</text>
+                                            <path d="M 62 50 A 12 12 0 0 0 50 38" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
+                                            <text x="58" y="42" fill="#e2e8f0" font-size="8">90°</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (tipo === 'Capacitor') {
+                            container.innerHTML = `
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-6 w-full p-3">
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-[11px] font-bold text-slate-300 mb-1">Componente C (Capacitor)</span>
+                                        <svg class="w-36 h-28 bg-slate-800 rounded-lg p-2 border border-slate-700" viewBox="0 0 160 80">
+                                            <line x1="10" y1="40" x2="65" y2="40" stroke="#cbd5e1" stroke-width="4"/>
+                                            <line x1="95" y1="40" x2="150" y2="40" stroke="#cbd5e1" stroke-width="4"/>
+                                            <rect x="65" y="15" width="6" height="50" fill="#0284c7" rx="2"/>
+                                            <rect x="89" y="15" width="6" height="50" fill="#0284c7" rx="2"/>
+                                            <line x1="72" y1="25" x2="87" y2="25" stroke="#a5f3fc" stroke-width="1.5" stroke-dasharray="2,2"/>
+                                            <line x1="72" y1="40" x2="87" y2="40" stroke="#a5f3fc" stroke-width="1.5" stroke-dasharray="2,2"/>
+                                            <line x1="72" y1="55" x2="87" y2="55" stroke="#a5f3fc" stroke-width="1.5" stroke-dasharray="2,2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-[11px] font-bold text-slate-300 mb-1">Fasor (I adiantada 90°)</span>
+                                        <svg class="w-36 h-28 bg-slate-800 rounded-lg p-2 border border-slate-700" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="38" fill="none" stroke="#475569" stroke-dasharray="3,3"/>
+                                            <line x1="10" y1="50" x2="90" y2="50" stroke="#334155" stroke-width="1"/>
+                                            <line x1="50" y1="10" x2="50" y2="90" stroke="#334155" stroke-width="1"/>
+                                            <line x1="50" y1="50" x2="82" y2="50" stroke="#ef4444" stroke-width="3"/>
+                                            <polygon points="82,50 76,46 76,54" fill="#ef4444"/>
+                                            <text x="68" y="64" fill="#ef4444" font-size="9" font-weight="bold">V(t) 0°</text>
+                                            <line x1="50" y1="50" x2="50" y2="15" stroke="#3b82f6" stroke-width="3"/>
+                                            <polygon points="50,15 46,21 54,21" fill="#3b82f6"/>
+                                            <text x="56" y="24" fill="#3b82f6" font-size="9" font-weight="bold">I(t) +90°</text>
+                                            <path d="M 62 50 A 12 12 0 0 0 50 38" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
+                                            <text x="58" y="42" fill="#e2e8f0" font-size="8">90°</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                            `;
+                        }
                         document.getElementById('modal-ra-3d').classList.remove('hidden');
                     }
                 </script>
             </section>
 
-            <!-- ETAPA 4: BANCO DE QUIZ SÍNCRONO EXPANDIDO (10 QUESTÕES) -->
+            <!-- ETAPA 4: BANCO DE QUIZ SÍNCRONO EXPANDIDO -->
             <section id="fechamento" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">Etapa 4: Fechamento & Quiz Completo</span>
@@ -647,7 +737,6 @@
                 <h2 class="text-xl font-bold mb-2 text-slate-800">🧠 Quiz de Avaliação Síncrona de Aprendizagem</h2>
                 <p class="text-xs text-slate-600 mb-4">Banco de questões alinhado às Situações de Aprendizagem de CC e CA:</p>
 
-                <!-- Engine do Quiz -->
                 <div id="quiz-container" class="bg-slate-50 p-5 rounded-xl border border-slate-200">
                     <div id="quiz-header" class="flex justify-between items-center mb-3">
                         <span id="quiz-progress" class="text-xs font-bold text-blue-700">Questão 1 de 5</span>
@@ -757,36 +846,30 @@
                 </script>
             </section>
 
-            <!-- ETAPA 4: MAPAS MENTAIS VISUAIS (DIAGRAMA DE NÓS GRAFICO EM SVG/CSS) -->
+            <!-- ETAPA 4: MAPAS MENTAIS VISUAIS -->
             <section id="mapas" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                 <h2 class="text-xl font-bold mb-2 text-slate-800">🗺️ Mapas Mentais Visuais da Sequência Didática</h2>
                 <p class="text-xs text-slate-500 mb-6">Síntese visual gráfica das conexões conceituais de CC e CA:</p>
 
                 <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                    <!-- Diagrama de Nó Central -->
                     <div class="flex flex-col items-center gap-6">
-                        <!-- Nó Raiz -->
                         <div class="bg-blue-600 text-white font-bold text-sm px-6 py-3 rounded-full shadow-lg border-2 border-blue-400">
                             ⚡ Circuitos Elétricos (CC ➔ CA)
                         </div>
 
-                        <!-- Ramos Conectores -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                            <!-- Ramo 1 -->
                             <div class="mindmap-node text-center">
                                 <span class="bg-amber-100 text-amber-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">1. CC e Kirchhoff</span>
                                 <h4 class="font-bold text-xs text-slate-800 mt-2 mb-1">Ancoragem Básica</h4>
                                 <p class="text-[11px] text-slate-600">Lei de Ohm (V=R·I)<br>Lei dos Nós (LKC)<br>Lei das Malhas (LKV)</p>
                             </div>
 
-                            <!-- Ramo 2 -->
                             <div class="mindmap-node text-center">
                                 <span class="bg-blue-100 text-blue-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">2. Transposição CA</span>
                                 <h4 class="font-bold text-xs text-slate-800 mt-2 mb-1">Domínio da Frequência</h4>
                                 <p class="text-[11px] text-slate-600">Fasores (Vetores)<br>Reatâncias X_L e X_C<br>Impedância Z = R + jX</p>
                             </div>
 
-                            <!-- Ramo 3 -->
                             <div class="mindmap-node text-center">
                                 <span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">3. Aplicação / SA</span>
                                 <h4 class="font-bold text-xs text-slate-800 mt-2 mb-1">Engenharia Prática</h4>
