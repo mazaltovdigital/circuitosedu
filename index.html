@@ -127,13 +127,21 @@
             console.warn("Modo Analytics primário ativo.");
         }
 
-        // Sanitização de caracteres
+        // Sanitização de caracteres para segurança no Chat
         function escapeHtml(str) {
             return String(str)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;");
+        }
+
+        // Filtro para eliminar qualquer notação de cifrão do LaTeX ($Z$ -> Z)
+        function limparNotacaoLatex(texto) {
+            if (!texto) return "";
+            return texto
+                .replace(/\$([^\$]+)\$/g, '<strong>$1</strong>')
+                .replace(/\$/g, '');
         }
 
         // 1. ENVIO DE FEEDBACK INSTANTÂNEO
@@ -225,21 +233,21 @@
             }, 300);
         };
 
-        // Respostas Pedagógicas Mediadoras do Tutor IA
+        // Respostas Pedagógicas Mediadoras do Tutor IA (Notação de texto limpa, sem cifrão)
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase();
 
             if (texto.includes('impedancia') || texto.includes('impedância') || texto.includes('z')) {
-                return "<strong>Impedância ($Z$):</strong> É a oposição TOTAL que um circuito oferece à passagem da Corrente Alternada (CA), combinando a Resistência ($R$) e a Reatância ($X$).<br><br>📐 <em>Fórmula fundamental:</em><br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br><br>💡 <strong>Desafio no PhET:</strong> Monte um circuito com resistor e indutor em série. Observe o que acontece com a corrente quando você altera a frequência da fonte!";
+                return "<strong>Impedância (Z):</strong> É a oposição TOTAL que um circuito oferece à passagem da Corrente Alternada (CA), combinando a Resistência (R) e a Reatância (X).<br><br>📐 <em>Fórmula fundamental:</em><br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br><br>💡 <strong>Desafio no PhET:</strong> Monte um circuito com resistor e indutor em série. Observe o que acontece com a corrente quando você altera a frequência da fonte!";
             }
             if (texto.includes('fasor') || texto.includes('fasores') || texto.includes('angulo') || texto.includes('fase')) {
-                return "<strong>Fasores:</strong> São vetores girantes usados para representar grandezas senoidais de mesma frequência. Facilitam o cálculo da diferença de fase entre Tensão ($V$) e Corrente ($I$).<br><br>⚡ <strong>Reflexão pedagógica:</strong> Em um capacitor puro, a corrente está 90° adiantada em relação à tensão. Você consegue visualizar essa defasagem nas ondas do simulador PhET?";
+                return "<strong>Fasores:</strong> São vetores girantes usados para representar grandezas senoidais de mesma frequência. Facilitam o cálculo da diferença de fase entre Tensão (V) e Corrente (I).<br><br>⚡ <strong>Reflexão pedagógica:</strong> Em um capacitor puro, a corrente está 90° adiantada em relação à tensão. Você consegue visualizar essa defasagem nas ondas do simulador PhET?";
             }
             if (texto.includes('reatancia') || texto.includes('reatância') || texto.includes('indutor') || texto.includes('capacitor')) {
-                return "<strong>Reatância ($X$):</strong> É a oposição oferecida à CA por componentes reativos:<br>• Indutiva: <code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>X_L = 2·π·f·L</code><br>• Capacitiva: <code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>X_C = 1 / (2·π·f·C)</code><br><br>🔍 <em>Experimente no simulador:</em> Aumente a frequência ($f$). O que ocorre com a reatância do indutor em comparação com a do capacitor?";
+                return "<strong>Reatância (X):</strong> É a oposição oferecida à CA por componentes reativos:<br>• Indutiva: <code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>X_L = 2·π·f·L</code><br>• Capacitiva: <code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>X_C = 1 / (2·π·f·C)</code><br><br>🔍 <em>Experimente no simulador:</em> Aumente a frequência (f). O que ocorre com a reatância do indutor em comparação com a do capacitor?";
             }
             if (texto.includes('serie') || texto.includes('série') || texto.includes('paralelo') || texto.includes('misto')) {
-                return "<strong>Tipos de Ligação em CA:</strong><br>• <em>Série:</em> A corrente ($I$) é a mesma em todos os componentes, e as tensões se somam fasorialmente.<br>• <em>Paralelo:</em> A tensão ($V$) é idêntica nos ramos, e as correntes se somam fasorialmente.<br><br>👉 Monte a configuração desejada no PhET para testar seus cálculos!";
+                return "<strong>Tipos de Ligação em CA:</strong><br>• <em>Série:</em> A corrente (I) é a mesma em todos os componentes, e as tensões se somam fasorialmente.<br>• <em>Paralelo:</em> A tensão (V) é idêntica nos ramos, e as correntes se somam fasorialmente.<br><br>👉 Monte a configuração desejada no PhET para testar seus cálculos!";
             }
 
             return "Ótima pergunta sobre a prática de Circuitos CA!<br><br>Como seu <strong>Tutor Mediador</strong>, convido você a investigar no <strong>Laboratório Virtual PhET</strong>: o que acontece com os valores medidos de tensão e corrente ao alterar a frequência ou os componentes do circuito? Teste no simulador e me diga o que observou!";
@@ -304,13 +312,16 @@
             let respostaTexto = null;
 
             if (apiKey && apiKey.length > 5) {
-                const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA). Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso do laboratório virtual PhET e a reflexão sobre conceitos como fasores, reatância e impedância.";
+                const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA). Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso do laboratório virtual PhET e a reflexão sobre conceitos como fasores, reatância e impedância. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente símbolos e variáveis em texto simples e negrito (ex: Z, R, X, V, I, f, π) para correta exibição no navegador.";
                 respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
             }
 
             if (!respostaTexto) {
                 respostaTexto = gerarRespostaTutorEducacional(mensagem);
             }
+
+            // Aplica filtro de limpeza final para garantir eliminação total de cifrões
+            respostaTexto = limparNotacaoLatex(respostaTexto);
 
             const elem = document.getElementById(aiTempId);
             if (elem) elem.innerHTML = respostaTexto;
