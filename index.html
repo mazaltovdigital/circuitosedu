@@ -3,214 +3,479 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CircuitosEdu - Produto de Mestrado</title>
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-983VEPKZNW"></script>
+    <title>CircuitosEdu - Plataforma Pedagógica CA</title>
+
+    <!-- Google Analytics 4 (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-676V40J9RX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      gtag('config', 'G-983VEPKZNW');
+      gtag('config', 'G-676V40J9RX', {
+        'send_page_view': true
+      });
     </script>
-    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts & Tailwind CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body { font-family: 'Roboto', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+        
+        /* Banner do Cabeçalho Responsivo 100% de largura */
+        .main-header-banner {
+            background: #0f172a url('./assets/cabecalho-anexo.png') no-repeat center center;
+            background-size: cover;
+            width: 100%;
+            height: 200px;
+            border-bottom: 4px solid #2563eb;
+        }
+        @media (min-width: 768px) {
+            .main-header-banner { height: 230px; }
+        }
+
+        /* Menu Sidebar Limpo */
+        .nav-sidebar ul { list-style: none !important; padding: 0; margin: 0; }
+        .nav-sidebar li { border: none !important; margin-bottom: 2px; }
+        .nav-sidebar a { 
+            display: block; 
+            padding: 12px 16px; 
+            color: #475569; 
+            text-decoration: none !important;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .nav-sidebar a:hover { 
+            background-color: #eff6ff; 
+            color: #1d4ed8; 
+            padding-left: 20px; 
+        }
+
+        /* Cards Interativos Dinâmicos */
+        .interactive-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .interactive-card:hover {
+            border-color: #3b82f6;
+            background-color: #f0f9ff;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Balões de Chat do Tutor */
+        .chat-bubble { padding: 12px 16px; border-radius: 16px; max-width: 88%; font-size: 0.92rem; line-height: 1.5; margin-bottom: 8px; }
+        .tutor-msg { background: #f1f5f9; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid #e2e8f0; }
+        .user-msg { background: #2563eb; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        
+        #chat-window::-webkit-scrollbar { width: 5px; }
+        #chat-window::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+
+    <!-- Conexão com o Firebase Firestore & Auth -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Configuração de ambiente com suporte a fallback
+        const firebaseConfig = (typeof __firebase_config !== 'undefined' && __firebase_config) 
+            ? JSON.parse(__firebase_config) 
+            : { apiKey: "demo", authDomain: "demo", projectId: "demo" };
+            
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'circuitosedu-prod';
+        const apiKey = ""; // Chave do Gemini em tempo de execução
+
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            // Autenticação anónima inicial
+            async function startSession() {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                } catch (err) {
+                    console.warn("Autenticação secundária indisponível no momento:", err);
+                }
+            }
+
+            onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+            });
+            startSession();
+        } catch (e) {
+            console.warn("Navegação no modo primário de envio GA4.");
+        }
+
+        // LÓGICA DE ENVIO HÍBRIDA (GA4 + FIRESTORE)
+        window.enviarFeedbackAnalytics = async function(event) {
+            event.preventDefault();
+
+            const radio = document.querySelector('input[name="ajuda_ia"]:checked');
+            const comentario = document.getElementById('feedback-comentario').value.trim();
+            const btn = document.getElementById('btn-enviar-fb');
+            const alerta = document.getElementById('feedback-alerta');
+            const btnIcon = document.getElementById('btn-icon');
+
+            if (!radio) {
+                alert("Por favor, selecione se o Tutor IA auxiliou o seu processo de aprendizagem.");
+                return;
+            }
+
+            const valorAjuda = radio.value;
+
+            btn.disabled = true;
+            btn.classList.add('opacity-70');
+            btnIcon.innerText = '⏳';
+
+            let disparouGA4 = false;
+            let salvouFirestore = false;
+
+            // 1. Registo de evento no Google Analytics 4
+            try {
+                if (typeof window.gtag === 'function') {
+                    window.gtag('event', 'submissao_feedback_aluno', {
+                        'tipo_ajuda': valorAjuda,
+                        'comentario_aluno': comentario || 'Sem comentário',
+                        'event_category': 'Feedback_Mestrado',
+                        'event_label': 'Avaliação Mediação IA'
+                    });
+                    disparouGA4 = true;
+                }
+            } catch (e) {
+                console.warn("GA4 não acessível devido a restrições de rede ou extensão do navegador:", e);
+            }
+
+            // 2. Gravação complementar no Firestore Database
+            if (db) {
+                try {
+                    const uid = currentUser ? currentUser.uid : 'anonimo_' + Date.now();
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'feedbacks'), {
+                        alunoId: uid,
+                        ajudaIa: valorAjuda,
+                        comentario: comentario,
+                        dataEnvio: serverTimestamp(),
+                        enviadoGA4: disparouGA4
+                    });
+                    salvouFirestore = true;
+                } catch (e) {
+                    console.warn("Registo no Firestore pendente:", e);
+                }
+            }
+
+            // Confirmação visual no ecrã para o estudante
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.classList.remove('opacity-70');
+                btnIcon.innerText = '➔';
+
+                alerta.innerHTML = `
+                    <span class="text-xl">✅</span>
+                    <div>
+                        <p class="font-bold text-emerald-800">Feedback registrado com sucesso!</p>
+                        <p class="text-xs text-emerald-700">Seus dados foram salvos para a pesquisa de mestrado. Obrigado!</p>
+                    </div>
+                `;
+                alerta.className = "mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-3";
+                alerta.classList.remove('hidden');
+                document.getElementById('form-feedback').reset();
+
+                setTimeout(() => {
+                    alerta.classList.add('hidden');
+                }, 6000);
+            }, 500);
+        };
+
+        // LÓGICA DO TUTOR IA (GEMINI API)
+        window.enviarTutorIa = async function(event) {
+            event.preventDefault();
+
+            const input = document.getElementById('chat-input');
+            const chatBox = document.getElementById('chat-window');
+            const mensagem = input.value.trim();
+
+            if (!mensagem) return;
+
+            // Registo no GA4
+            try {
+                if (typeof window.gtag === 'function') {
+                    window.gtag('event', 'duvida_tutor_ia', {
+                        'pergunta': mensagem,
+                        'event_category': 'Engajamento_Tutor'
+                    });
+                }
+            } catch(e) {}
+
+            // Adiciona mensagem enviada pelo aluno
+            chatBox.innerHTML += `<div class="flex flex-col"><div class="chat-bubble user-msg">${mensagem}</div></div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Mensagem temporária do Tutor IA
+            const aiTempId = 'tutor-reply-' + Date.now();
+            chatBox.innerHTML += `<div class="flex flex-col"><div class="chat-bubble tutor-msg" id="${aiTempId}"><em>A analisar dúvida...</em></div></div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: mensagem }] }],
+                        systemInstruction: { parts: [{ text: "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA). Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso do laboratório virtual PhET e a reflexão sobre conceitos como fasores, reatância e impedância." }] }
+                    })
+                });
+
+                const data = await response.json();
+                const respostaTexto = data.candidates?.[0]?.content?.parts?.[0]?.text || "Desculpe, não consegui processar a sua dúvida neste momento. Tente novamente!";
+                
+                document.getElementById(aiTempId).innerHTML = respostaTexto;
+            } catch (err) {
+                document.getElementById(aiTempId).innerText = "🔌 Erro na conexão com o Tutor IA. Por favor, tente novamente.";
+            }
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        };
+    </script>
 </head>
 <body>
 
-<header class="main-banner-fixed-total"></header>
+    <!-- Header Banner -->
+    <header class="main-header-banner shadow-md" aria-label="Cabeçalho CircuitosEdu"></header>
 
-<div class="main-layout">
-    <nav class="sidebar">
-        <h3 class="nav-title">Menu Principal</h3>
-        <ul class="nav-list">
-            <li><a href="#teoria">📖 Material de Estudo</a></li>
-            <li><a href="#phet">🔬 Laboratório Virtual</a></li>
-            <li><a href="#circuitos">🔌 Configurações de Circuitos</a></li>
-            <li><a href="#ra">🕶️ Realidade Aumentada</a></li>
-            <li><a href="quiz.html">🎯 Quiz de Avaliação</a></li>
-            <li><a href="mapas.html">🧠 Mapas Mentais</a></li>
-            <li><a href="#feedback">📊 Feedback dos Alunos</a></li>
-            <li><a href="#sobre">ℹ️ Sobre o Projeto</a></li>
-        </ul>
-        <a href="assets/roteiro_pratica.pdf" class="btn-download" download>📥 Baixar Roteiro (PDF)</a>
-    </nav>
-
-    <main class="main-content">
-        <section id="teoria" class="section-box">
-            <h2>📖 Material de Estudo CA</h2>
-            <div class="card-grid">
-                <div class="edu-card-interactive" onclick="location.href='grandezas.html'">
-                    <span class="icon-lg">⚡</span> <h4>Grandezas</h4>
-                </div>
-                <div class="edu-card-interactive" onclick="location.href='fasores.html'">
-                    <span class="icon-lg">📈</span> <h4>Fasores</h4>
-                </div>
-                <div class="edu-card-interactive" onclick="location.href='impedancia.html'">
-                    <span class="icon-lg">🔋</span> <h4>Impedância</h4>
-                </div>
-            </div>
-        </section>
-
-        <section id="phet" class="section-box highlight-lab">
-            <h2>🔬 Laboratório Virtual PHET</h2>
-            <div class="iframe-phet-wrapper">
-                <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" allowfullscreen></iframe>
-            </div>
-        </section>
-
-        <section id="circuitos" class="section-box">
-            <h2>🔌 Configurações de Circuitos</h2>
-            <p style="padding: 15px;">Clique nos diagramas abaixo para ampliar:</p>
-            <div class="card-grid">
-                <div class="edu-card-interactive" onclick="abrirZoom(this.querySelector('img'))">
-                    <img src="assets/circuito_serie.png" alt="Série (RLC)" class="img-circuit">
-                    <h4>Série (RLC)</h4>
-                </div>
-                <div class="edu-card-interactive" onclick="abrirZoom(this.querySelector('img'))">
-                    <img src="assets/circuito_paralelo.png" alt="Paralelo" class="img-circuit">
-                    <h4>Paralelo</h4>
-                </div>
-                <div class="edu-card-interactive" onclick="abrirZoom(this.querySelector('img'))">
-                    <img src="assets/circuito_misto.png" alt="Misto" class="img-circuit">
-                    <h4>Misto</h4>
-                </div>
-            </div>
-        </section>
-
-        <section id="ra" class="section-box">
-            <h2>🕶️ Realidade Aumentada</h2>
-            <div style="padding: 20px; text-align: center;">
-                <p>Aponte a câmera para os marcadores.</p>
-                <div class="edu-card-interactive blue-highlight" style="max-width: 300px; margin: 20px auto;">
-                    <span class="icon-lg">📱</span> <h4>Ativar Câmera AR</h4>
-                </div>
-            </div>
-        </section>
-
-        <section id="feedback" class="section-box feedback-box-pro">
-            <h2>📊 Feedback: Mediação da IA</h2>
-            <div style="padding-top: 10px;">
-                <p class="text-sm font-bold">O Tutor IA auxiliou-te a compreender os conceitos?</p>
-                <div class="radio-group-final">
-                    <label class="radio-item"><input type="radio" name="feedback_val" value="Sim"> Sim</label>
-                    <label class="radio-item"><input type="radio" name="feedback_val" value="Não"> Não</label>
-                </div>
-                <textarea id="feedback-comment-pro" placeholder="Descreva sua experiência pedagógica..."></textarea>
-                <button type="button" onclick="enviarDadosPesquisa()" class="btn-send-professional" style="margin-top: 15px;">Confirmar e Enviar Feedback</button>
-                <div id="ui-status-msg" class="ui-status"></div>
-            </div>
-        </section>
-
-        <section id="sobre" class="section-box academic-text">
-            <h2>ℹ️ Sobre o Produto Educacional</h2>
-            <p>O <strong>CircuitosEdu</strong> é um protótipo tecnológico desenvolvido no Mestrado Profissional em Ensino Tecnológico.</p>
-        </section>
-    </main>
-
-    <aside class="chat-sidebar-compact">
-        <div class="chat-header-pro">🤖 Tutor IA Mediador</div>
-        <div id="chat-content" class="chat-scroll-area">
-            <div class="bubble tutor-msg">Olá! Sou seu mediador pedagógico. Como posso auxiliar na sua prática de hoje?</div>
-        </div>
-        <div class="chat-input-bar">
-            <input type="text" id="msg-input" placeholder="Dúvida?" onkeydown="if(event.key==='Enter') enviarDuvidaIA()">
-            <button onclick="enviarDuvidaIA()" class="btn-send-icon">➤</button>
-        </div>
-    </aside>
-
-</div>
-
-<div id="imageModal" class="modal-overlay" onclick="fecharZoom()">
-    <span class="modal-close">&times;</span>
-    <img class="modal-content" id="imgZoom">
-    <div id="caption" class="modal-caption"></div>
-</div>
-
-<footer class="footer-simple-black">
-    <p>© 2026 CircuitosEdu - Pesquisa de Mestrado UEA/IFAM | Daniel Sandoval</p>
-</footer>
-
-<script>
-    // --- FUNÇÃO DE ZOOM ---
-    function abrirZoom(element) {
-        if (!element) return;
-        const modal = document.getElementById("imageModal");
-        const modalImg = document.getElementById("imgZoom");
-        const captionText = document.getElementById("caption");
+    <!-- Layout Principal Grid -->
+    <div class="max-w-[1600px] mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        modal.style.display = "flex";
-        modalImg.src = element.src;
-        captionText.innerHTML = element.alt;
-    }
+        <!-- Sidebar Esquerda: Navegação -->
+        <aside class="lg:col-span-3">
+            <div class="bg-white rounded-xl shadow-sm p-5 sticky top-6 border border-slate-100">
+                <h3 class="text-blue-700 font-bold border-b-2 border-amber-500 pb-2 mb-4 text-sm tracking-wider uppercase">Menu Principal</h3>
+                <nav class="nav-sidebar">
+                    <ul>
+                        <li><a href="#teoria">📖 Material Teórico</a></li>
+                        <li><a href="#phet">🔬 Laboratório Virtual</a></li>
+                        <li><a href="#circuitos">🔌 Configurações de Circuitos</a></li>
+                        <li><a href="#ra">🕶️ Realidade Aumentada</a></li>
+                        <li><a href="#conhecimento">🧠 Base de Conhecimento</a></li>
+                        <li><a href="#feedback">📊 Feedback dos Alunos</a></li>
+                        <li><a href="#sobre">ℹ️ Sobre o Projeto</a></li>
+                    </ul>
+                </nav>
+                <div class="mt-6 pt-4 border-t border-slate-100">
+                    <a href="assets/roteiro_pratica.pdf" class="block bg-amber-500 hover:bg-amber-600 text-white text-center font-bold py-3 px-4 rounded-lg shadow transition" download>
+                        📥 Baixar Roteiro (PDF)
+                    </a>
+                </div>
+            </div>
+        </aside>
 
-    function fecharZoom() {
-        document.getElementById("imageModal").style.display = "none";
-    }
+        <!-- Conteúdo Central -->
+        <main class="lg:col-span-6 space-y-8">
+            
+            <!-- Material Teórico -->
+            <section id="teoria" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                <h2 class="text-xl font-bold mb-4 text-slate-800 flex items-center gap-2">📖 Material de Estudo CA</h2>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="interactive-card" onclick="location.href='grandezas.html'">
+                        <span class="text-3xl">⚡</span>
+                        <span class="text-xs font-bold uppercase text-slate-700">Grandezas</span>
+                    </div>
+                    <div class="interactive-card" onclick="location.href='fasores.html'">
+                        <span class="text-3xl">📈</span>
+                        <span class="text-xs font-bold uppercase text-slate-700">Fasores</span>
+                    </div>
+                    <div class="interactive-card" onclick="location.href='impedancia.html'">
+                        <span class="text-3xl">🔋</span>
+                        <span class="text-xs font-bold uppercase text-slate-700">Impedância</span>
+                    </div>
+                </div>
+            </section>
 
-    // --- FUNÇÃO TUTOR IA ---
-    async function enviarDuvidaIA() {
-        const input = document.getElementById('msg-input');
-        const box = document.getElementById('chat-content');
-        const text = input.value.trim();
-        if(!text) return;
-	
-        // --- ADICIONE ESTA LINHA AQUI ---
-        // Isso conta "1 ponto" no Analytics cada vez que o aluno fala com a IA
-        if (typeof gtag === 'function') {
-            gtag('event', 'uso_chat_ia', { 'pergunta_aluno': text });
-        }
-        // ---------------------------------
+            <!-- Laboratório Virtual PhET -->
+            <section id="phet" class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-100">
+                <div class="bg-slate-50 p-4 font-bold border-b text-blue-800 flex items-center gap-2">
+                    <span>🔬 Simulação Interativa - Laboratório de Kit de Circuitos CA (PhET)</span>
+                </div>
+                <div class="w-full h-[560px] bg-slate-900">
+                    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" class="w-full h-full border-none" allowfullscreen title="Simulador PhET Circuitos CA"></iframe>
+                </div>
+            </section>
 
-        box.innerHTML += `<div class="flex flex-col"><div class="bubble user-msg">${text}</div></div>`;
-        input.value = '';
-        box.scrollTop = box.scrollHeight;
-        
-        try {
-            const res = await fetch('https://circuitosedu-backend.vercel.app/api/chat', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({message: text})
-            });
-            const data = await res.json();
-            box.innerHTML += `<div class="flex flex-col"><div class="bubble tutor-msg">${data.reply}</div></div>`;
-        } catch(e) { 
-            box.innerHTML += `<div class="bubble tutor-msg">Erro de conexão com a IA.</div>`; 
-        }
-        box.scrollTop = box.scrollHeight;
-    }
+            <!-- Configurações de Circuitos -->
+            <section id="circuitos" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                <h2 class="text-xl font-bold mb-6 text-slate-800">🔌 Tipos de Ligação de Circuitos</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="text-center group">
+                        <div class="bg-slate-50 border rounded-xl p-3 mb-2 transition group-hover:border-blue-400">
+                            <img src="./assets/circuito-serie.png" alt="Circuito Série" class="w-full h-36 object-contain" onerror="this.src='https://placehold.co/300x200?text=Circuito+Série'">
+                        </div>
+                        <p class="font-bold text-slate-700 text-sm">Circuito Série</p>
+                    </div>
+                    <div class="text-center group">
+                        <div class="bg-slate-50 border rounded-xl p-3 mb-2 transition group-hover:border-blue-400">
+                            <img src="./assets/circuito-paralelo.png" alt="Circuito Paralelo" class="w-full h-36 object-contain" onerror="this.src='https://placehold.co/300x200?text=Circuito+Paralelo'">
+                        </div>
+                        <p class="font-bold text-slate-700 text-sm">Circuito Paralelo</p>
+                    </div>
+                    <div class="text-center group">
+                        <div class="bg-slate-50 border rounded-xl p-3 mb-2 transition group-hover:border-blue-400">
+                            <img src="./assets/circuito-misto.png" alt="Circuito Misto" class="w-full h-36 object-contain" onerror="this.src='https://placehold.co/300x200?text=Circuito+Misto'">
+                        </div>
+                        <p class="font-bold text-slate-700 text-sm">Circuito Misto</p>
+                    </div>
+                </div>
+            </section>
 
-    // --- FUNÇÃO FEEDBACK ---
-    window.enviarDadosPesquisa = async function() {
-        const rating = document.querySelector('input[name="feedback_val"]:checked');
-        const comment = document.getElementById('feedback-comment-pro').value;
-        const statusUi = document.getElementById('ui-status-msg');
+            <!-- Realidade Aumentada (RA) -->
+            <section id="ra" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                <h2 class="text-xl font-bold mb-2 text-slate-800">🕶️ Realidade Aumentada (RA)</h2>
+                <p class="text-xs text-slate-500 mb-4">Utilize os marcadores abaixo com o aplicativo de RA compatível para visualizar os componentes em 3D.</p>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="interactive-card border-blue-100 bg-blue-50/50 text-blue-800">
+                        <span class="text-3xl">📷</span>
+                        <span class="text-xs font-bold uppercase">Marcador R</span>
+                    </div>
+                    <div class="interactive-card border-blue-100 bg-blue-50/50 text-blue-800">
+                        <span class="text-3xl">📷</span>
+                        <span class="text-xs font-bold uppercase">Marcador L</span>
+                    </div>
+                    <div class="interactive-card border-blue-100 bg-blue-50/50 text-blue-800">
+                        <span class="text-3xl">📷</span>
+                        <span class="text-xs font-bold uppercase">Marcador C</span>
+                    </div>
+                </div>
+            </section>
 
-        if(!rating) { alert("Por favor, selecione uma opção."); return; }
-        statusUi.innerText = "⏳ Processando...";
-        statusUi.style.color = "#1d4ed8";
+            <!-- Base de Conhecimento -->
+            <section id="conhecimento" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                <h2 class="text-xl font-bold mb-4 text-slate-800">🧠 Base de Conhecimento</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="interactive-card bg-slate-900 text-white border-none hover:bg-slate-800" onclick="location.href='quiz.html'">
+                        <span class="text-3xl">🎯</span>
+                        <span class="font-bold text-sm">Quiz de Avaliação</span>
+                    </div>
+                    <div class="interactive-card bg-slate-900 text-white border-none hover:bg-slate-800" onclick="location.href='mapas.html'">
+                        <span class="text-3xl">🗺️</span>
+                        <span class="font-bold text-sm">Mapas Mentais</span>
+                    </div>
+                </div>
+            </section>
 
-        if (typeof gtag === 'function') {
-            gtag('event', 'feedback_mestrado_ga4', { 'utilidade': rating.value, 'comentario': comment });
-        }
+            <!-- Feedback Discente -->
+            <section id="feedback" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                <h2 class="text-xl font-bold mb-2 text-slate-800">📊 Feedback Discente - Mediação por IA</h2>
+                <p class="text-sm text-slate-600 mb-4">Sua opinião é fundamental para a avaliação pedagógica desta pesquisa de mestrado.</p>
 
-        try {
-            const response = await fetch('https://circuitosedu-backend.vercel.app/api/feedback', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ ajudou: rating.value, texto: comment })
-            });
-            if (response.ok) {
-                statusUi.innerText = "✅ Feedback enviado com sucesso!";
-                statusUi.style.color = "#166534";
-                document.getElementById('feedback-comment-pro').value = '';
-                rating.checked = false;
-            } else { throw new Error('Erro server'); }
-        } catch (err) {
-            statusUi.innerText = "✅ Dados registrados (Analytics).";
-            statusUi.style.color = "#166534";
-        }
-    };
-</script>
+                <form id="form-feedback" onsubmit="enviarFeedbackAnalytics(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">
+                            O Tutor IA auxiliou seu processo de aprendizagem significativa?
+                        </label>
+                        <div class="flex gap-6 items-center">
+                            <label class="flex items-center gap-2 cursor-pointer font-medium text-sm text-slate-700">
+                                <input type="radio" name="ajuda_ia" value="Sim" class="w-4 h-4 text-blue-600 focus:ring-blue-500" required>
+                                Sim, auxiliou
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer font-medium text-sm text-slate-700">
+                                <input type="radio" name="ajuda_ia" value="Não" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                                Não auxiliou
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="feedback-comentario" class="block text-sm font-semibold text-slate-700 mb-1">
+                            Escreva sua experiência ou sugestão com a IA mediadora:
+                        </label>
+                        <textarea id="feedback-comentario" rows="3" class="w-full border-2 border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Escreva seus comentários aqui..."></textarea>
+                    </div>
+
+                    <button type="submit" id="btn-enviar-fb" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-lg shadow-md transition flex items-center justify-center gap-2">
+                        <span>Enviar Feedback</span>
+                        <span id="btn-icon">➔</span>
+                    </button>
+                </form>
+
+                <!-- Mensagem de Confirmação Visual -->
+                <div id="feedback-alerta" class="hidden mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-3">
+                    <span class="text-xl">✅</span>
+                    <div>
+                        <p class="font-bold">Feedback registrado com sucesso!</p>
+                        <p class="text-xs text-emerald-700">Seus dados foram salvos para a pesquisa de mestrado. Obrigado!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sobre o Projeto -->
+            <section id="sobre" class="bg-white rounded-xl shadow-sm p-6 border-l-8 border-blue-600">
+                <h2 class="text-lg font-bold text-slate-800 mb-2">ℹ️ Sobre o Produto Educacional</h2>
+                <p class="text-slate-600 text-sm leading-relaxed text-justify mb-3">
+                    Este ambiente virtual de aprendizagem é um <strong>Produto Educacional</strong> resultante da pesquisa de Mestrado Profissional em Ensino Tecnológico (UEA/IFAM), desenvolvida por <strong>Daniel Sandoval</strong>.
+                </p>
+                <p class="text-slate-600 text-sm leading-relaxed text-justify">
+                    O objetivo principal é investigar a contribuição do uso de <strong>Inteligência Artificial Generativa Mediadora</strong> e <strong>Realidade Aumentada (RA)</strong> na compreensão de conceitos fundamentais de Circuitos Elétricos de Corrente Alternada (CA).
+                </p>
+            </section>
+        </main>
+
+        <!-- Sidebar Direita: Tutor IA Chat -->
+        <aside class="lg:col-span-3">
+            <div class="bg-white rounded-xl shadow-lg border-t-4 border-blue-600 h-[640px] flex flex-col sticky top-6 border-x border-b border-slate-100">
+                <!-- Chat Header -->
+                <div class="p-3.5 border-b bg-blue-50/70 font-bold text-blue-900 text-sm flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span>🤖 Tutor IA Mediador</span>
+                </div>
+
+                <!-- Chat Scroll Area -->
+                <div id="chat-window" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
+                    <div class="chat-bubble tutor-msg">
+                        Olá! Sou seu mediador pedagógico para Circuitos CA. Qual é a sua dúvida sobre a montagem de hoje?
+                    </div>
+                </div>
+
+                <!-- Chat Input Area -->
+                <div class="p-3 border-t bg-slate-50">
+                    <form onsubmit="enviarTutorIa(event)" class="flex gap-2 bg-white border border-slate-300 rounded-full p-1 shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
+                        <input type="text" id="chat-input" placeholder="Digite sua dúvida..." class="flex-1 outline-none text-sm px-3 bg-transparent" autocomplete="off">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white w-9 h-9 rounded-full flex items-center justify-center transition flex-shrink-0">
+                            ➤
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="bg-slate-900 text-slate-400 py-10 mt-12 text-center text-xs">
+        <div class="max-w-4xl mx-auto px-4">
+            <p class="font-bold text-slate-200 mb-1">CircuitosEdu — Plataforma Pedagógica CA</p>
+            <p>© 2026 Daniel Sandoval | Projeto de Mestrado UEA / IFAM</p>
+        </div>
+    </footer>
+
 </body>
 </html>
