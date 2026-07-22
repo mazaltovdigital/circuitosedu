@@ -21,7 +21,7 @@
     <style>
         body { font-family: 'Roboto', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
         
-        /* Banner do Cabeçalho Responsivo */
+        /* Banner do Cabeçalho Responsivo sem cortes */
         .main-header-banner {
             background: #0f172a url('./assets/cabecalho-anexo.png') no-repeat center center;
             background-size: cover;
@@ -38,17 +38,18 @@
         .nav-sidebar li { border: none !important; margin-bottom: 2px; }
         .nav-sidebar a { 
             display: block; 
-            padding: 12px 16px; 
+            padding: 10px 14px; 
             color: #475569; 
             text-decoration: none !important;
             border-radius: 8px;
             font-weight: 500;
+            font-size: 0.88rem;
             transition: all 0.2s ease;
         }
         .nav-sidebar a:hover { 
             background-color: #eff6ff; 
             color: #1d4ed8; 
-            padding-left: 20px; 
+            padding-left: 18px; 
         }
 
         /* Cards Interativos Dinâmicos */
@@ -56,7 +57,7 @@
             background: white;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
-            padding: 20px 16px;
+            padding: 16px;
             text-align: center;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -64,7 +65,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
         .interactive-card:hover {
             border-color: #3b82f6;
@@ -80,18 +81,32 @@
         
         #chat-window::-webkit-scrollbar { width: 5px; }
         #chat-window::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        /* Estilos do Mapa Mental Visual */
+        .mindmap-node {
+            background: #ffffff;
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        .mindmap-node:hover {
+            border-color: #1d4ed8;
+            background: #eff6ff;
+            transform: scale(1.02);
+        }
     </style>
 
-    <!-- Conexão com Firebase & Inteligência Artificial -->
+    <!-- Conexão Firebase & Inteligência Artificial -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Variável da API Key do Gemini (fornecida em tempo de execução)
+        // Key fornecida em tempo de execução
         const apiKey = ""; 
 
-        // Configuração do Firebase
         const firebaseConfig = (typeof __firebase_config !== 'undefined' && __firebase_config) 
             ? JSON.parse(__firebase_config) 
             : { apiKey: "demo", authDomain: "demo", projectId: "circuitosedu-demo" };
@@ -115,7 +130,7 @@
                         await signInAnonymously(auth);
                     }
                 } catch (err) {
-                    console.warn("Sessão inicial ativa.");
+                    console.warn("Sessão anônima em modo local.");
                 }
             }
 
@@ -124,10 +139,9 @@
             });
             startSession();
         } catch (e) {
-            console.warn("Modo Analytics primário ativo.");
+            console.warn("Analytics modo primário ativo.");
         }
 
-        // Sanitização de HTML
         function escapeHtml(str) {
             return String(str)
                 .replace(/&/g, "&amp;")
@@ -136,7 +150,6 @@
                 .replace(/"/g, "&quot;");
         }
 
-        // Filtro para eliminar notação cifrão de LaTeX ($Z$ -> Z)
         function limparNotacaoLatex(texto) {
             if (!texto) return "";
             return texto
@@ -144,7 +157,7 @@
                 .replace(/\$/g, '');
         }
 
-        // 1. ENVIO DE FEEDBACK INSTANTÂNEO
+        // 1. ENVIO DE FEEDBACK RESILIENTE
         window.enviarFeedbackAnalytics = function(event) {
             event.preventDefault();
 
@@ -228,79 +241,37 @@
             }, 300);
         };
 
-        // BASE DE CONHECIMENTO EXPANDIDA (CC E CA) DO TUTOR MEDIADOR
+        // BASE DE CONHECIMENTO EXPANDIDA (CC, CA, SA, FATOR DE POTÊNCIA)
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase();
 
-            // Corrente Contínua (CC / DC)
-            if (texto.includes('corrente continua') || texto.includes('corrente contínua') || texto.includes(' cc') || texto.includes('dc') || texto.includes('bateria') || texto.includes('pilha')) {
-                return "<strong>Corrente Contínua (CC / DC):</strong> É o fluxo de cargas elétricas em um único sentido constante no tempo.<br><br>🔋 <strong>Características Principais:</strong><br>• Frequência é zero (f = 0 Hz).<br>• Capacitores agem como <strong>circuito aberto</strong> após carregados.<br>• Indutores agem como um <strong>curto-circuito</strong> (apenas com resistência do fio).<br><br>💡 <strong>Desafio PhET:</strong> Mude a fonte no simulador para uma bateria de CC. O que acontece com a lâmpada ao colocar um capacitor em série?";
+            if (texto.includes('sondagem') || texto.includes('conhecimento previo') || texto.includes('kirchhoff') || texto.includes('lei de ohm')) {
+                return "<strong>Sondagem Cognitiva (CC e Kirchhoff):</strong><br>• <strong>Lei de Ohm:</strong> V = R · I em CC, ou V = Z · I em CA.<br>• <strong>Lei dos Nós (LKC):</strong> ∑ I_entra = ∑ I_sai.<br>• <strong>Lei das Malhas (LKV):</strong> ∑ V = 0 numa malha fechada.<br><br>💡 <em>Teste no PhET:</em> Monte um circuito simples em CC e meça as correntes antes de passar para a fonte de CA!";
             }
 
-            // Leis de Kirchhoff / Ohm
-            if (texto.includes('kirchhoff') || texto.includes('malha') || texto.includes('no ') || texto.includes('nós') || texto.includes('lei de ohm')) {
-                return "<strong>Leis Fundamentais de Circuitos (CC e CA):</strong><br>• <strong>Lei de Ohm:</strong> V = R · I (em CC) ou V = Z · I (em CA).<br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram em um nó é igual à soma das que saem.<br>• <strong>Lei das Malhas (LKV):</strong> A soma algébrica das tensões em uma malha fechada é zero.<br><br>🔍 <strong>No PhET:</strong> Monte uma malha com duas resistências e meça a queda de tensão em cada uma com o voltímetro!";
+            if (texto.includes('sa1') || texto.includes('fator de pot') || texto.includes('correção')) {
+                return "<strong>SA1 - Correção do Fator de Potência:</strong><br>Um motor elétrico indutivo possui FP = 0,72 (atrasado). Para corrigir para 0,95 e evitar multas:<br>1. Calcule a Potência Ativa (P = V · I · cos φ).<br>2. Calcule a Reatância Indutiva X_L.<br>3. Adicione um banco de capacitores em paralelo para fornecer potência reativa Q_C.<br><br>🔍 <em>No PhET:</em> Conecte um capacitor em paralelo com a carga e observe a queda da corrente total fornecida pela fonte!";
             }
 
-            // Capacitância
+            if (texto.includes('sa2') || texto.includes('filtro') || texto.includes('ressonan')) {
+                return "<strong>SA2 - Ressonância RLC:</strong><br>Ocorre quando X_L = X_C na frequência f_0 = 1 / (2·π·√(L·C)).<br>• Na ressonância série, Z = R (mínima impedância) e a corrente I é MÁXIMA.<br><br>💡 <em>No PhET:</em> Varie a frequência da fonte até encontrar o ponto de pico de corrente!";
+            }
+
             if (texto.includes('capacit') || texto.includes('farad')) {
-                return "<strong>Capacitância (C):</strong> Mede a capacidade de armazenar carga elétrica.<br><br>⚡ <strong>Diferença CC vs CA:</strong><br>• <em>Em CC:</em> Carrega-se até a tensão da fonte e bloqueia a corrente contínua.<br>• <em>Em CA:</em> Permite a passagem de corrente devido à oscilação, com Reatância X_C = 1 / (2·π·f·C).<br><br>💡 <strong>Desafio PhET:</strong> Teste o capacitor com fonte CC e depois com fonte CA para ver a diferença no fluxo de elétrons!";
+                return "<strong>Capacitância (C):</strong> Armazena energia em campo elétrico.<br>• Em CC: Atua como circuito aberto em regime permanente.<br>• Em CA: Apresenta Reatância Capacitiva X_C = 1 / (2·π·f·C). A corrente adianta-se 90° em relação à tensão.";
             }
 
-            // Indutância
             if (texto.includes('indut') || texto.includes('henry')) {
-                return "<strong>Indutância (L):</strong> Propriedade do indutor de se opor a variações bruscas de corrente armazenando energia num campo magnético.<br><br>🌀 <strong>Diferença CC vs CA:</strong><br>• <em>Em CC:</em> Em regime permanente comporta-se como um fio (curto-circuito).<br>• <em>Em CA:</em> Gera Reatância Indutiva X_L = 2·π·f·L.<br><br>💡 <strong>Desafio PhET:</strong> Monte um indutor com fonte CA e observe o atraso da corrente!";
+                return "<strong>Indutância (L):</strong> Armazena energia em campo magnético.<br>• Em CC: Atua como curto-circuito em regime permanente.<br>• Em CA: Apresenta Reatância Indutiva X_L = 2·π·f·L. A corrente atrasa-se 90° em relação à tensão.";
             }
 
-            // Resistência
-            if (texto.includes('resist') || texto.includes('ohm')) {
-                return "<strong>Resistência (R):</strong> É a oposição pura ao fluxo de elétrons, dissipando energia como calor (Efeito Joule).<br><br>📏 <strong>Em CC e CA:</strong> Comporta-se de forma idêntica tanto em CC quanto em CA, sem depender da frequência.<br><br>🔍 <strong>Experimente no PhET:</strong> Meça a corrente em um resistor com fonte CC de 10V e fonte CA de 10V RMS!";
+            if (texto.includes('impedan') || texto.includes('z')) {
+                return "<strong>Impedância (Z):</strong> Oposição total à corrente em CA.<br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br>O ângulo da impedância indica a defasagem entre tensão e corrente.";
             }
 
-            // Impedância
-            if (texto.includes('impedan') || texto.includes('impedân') || texto.includes('z')) {
-                return "<strong>Impedância (Z):</strong> É a oposição TOTAL à corrente em CA, unindo Resistência (R) e Reatâncias (X_L e X_C).<br><br>📐 <em>Fórmula fundamental:</em><br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br><br>💡 <strong>Desafio no PhET:</strong> Monte um circuito RLC em série em CA e meça a corrente ao variar a frequência!";
-            }
-
-            // Potência e Fator de Potência
-            if (texto.includes('potenc') || texto.includes('potênc') || texto.includes('fator de pot') || texto.includes('watt') || texto.includes('var')) {
-                return "<strong>Potência em Circuitos:</strong><br>• <strong>Em CC:</strong> P = V · I (apenas potência ativa em Watts).<br>• <strong>Em CA:</strong> Temos Potência Ativa (P em W), Reativa (Q em VAr) e Aparente (S em VA).<br><br>⚡ <strong>Fator de Potência (FP = P / S):</strong> Indica o quão eficientemente a energia CA está sendo utilizada.";
-            }
-
-            // Tensão e Voltagem
-            if (texto.includes('tens') || texto.includes('tensã') || texto.includes('volt')) {
-                return "<strong>Tensão Elétrica (V):</strong> A diferença de potencial que impulsiona as cargas.<br><br>📈 <strong>CC vs CA:</strong> Em CC o valor de V é constante ao longo do tempo. Em CA a tensão oscila senoidalmente e usamos o valor RMS (eficaz).<br><br>💡 <strong>No PhET:</strong> Compare o gráfico do voltímetro em uma bateria CC e numa fonte CA!";
-            }
-
-            // Corrente
-            if (texto.includes('corrent') || texto.includes('amper')) {
-                return "<strong>Corrente Elétrica (I):</strong> O fluxo ordenado de cargas.<br><br>🔄 <strong>Em CC:</strong> Sentido contínuo e único.<br><strong>Em CA:</strong> Inverte a direção periodicamente na frequência da rede (ex: 60 Hz).";
-            }
-
-            // Frequência
-            if (texto.includes('frequenc') || texto.includes('frequênc') || texto.includes('hertz')) {
-                return "<strong>Frequência (f):</strong> Quantidade de ciclos por segundo (Hz).<br><br>⚙️ <strong>Atenção:</strong> Em CC a frequência é f = 0 Hz. Em CA no Brasil, a frequência da rede elétrica comercial é de 60 Hz.";
-            }
-
-            // Fasores
-            if (texto.includes('fasor') || texto.includes('fasores') || texto.includes('angulo') || texto.includes('fase')) {
-                return "<strong>Fasores:</strong> Vetores girantes exclusivos para análise de circuitos em Corrente Alternada (CA). Facilitam a soma e subtração de tensões e correntes desfasadas.";
-            }
-
-            // Ressonância
-            if (texto.includes('ressonan')) {
-                return "<strong>Ressonância Elétrica (CA):</strong> Ocorre quando a Reatância Indutiva X_L é igual à Reatância Capacitiva X_C, tornando a impedância puramente resistiva (Z = R) e a corrente máxima!";
-            }
-
-            // Configurações de Ligação
-            if (texto.includes('serie') || texto.includes('série') || texto.includes('paralelo') || texto.includes('misto')) {
-                return "<strong>Tipos de Ligação (CC e CA):</strong><br>• <em>Série:</em> A corrente (I) é idêntica em todos os componentes.<br>• <em>Paralelo:</em> A tensão (V) é idêntica em todos os ramos.<br><br>👉 Monte a configuração desejada no simulador PhET para testar seus cálculos!";
-            }
-
-            return "Excelente pergunta sobre circuitos elétricos (CC/CA)!<br><br>Como seu <strong>Tutor Mediador</strong>, convido você a testar este conceito no <strong>Laboratório Virtual PhET</strong>: monte o circuito, meça tensão e corrente com os instrumentos e me diga o que observou!";
+            return "Excelente pergunta pedagógica sobre a prática de Circuitos (CC/CA)!<br><br>Como seu <strong>Tutor Mediador</strong>, convido você a investigar este conceito na seção de <strong>Situações de Aprendizagem (SA)</strong> ou no <strong>Laboratório Virtual PhET</strong>. Monte o circuito e compartilhe suas observações comigo!";
         }
 
-        // Requisição para API Gemini com Exponential Backoff (1s, 2s, 4s, 8s, 16s)
         async function fetchGeminiWithBackoff(prompt, systemPrompt) {
             const delays = [1000, 2000, 4000, 8000, 16000];
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
@@ -329,7 +300,7 @@
             return null;
         }
 
-        // 2. LÓGICA DO TUTOR IA MEDIADOR
+        // 2. TUTOR IA MEDIADOR
         window.enviarTutorIa = async function(event) {
             event.preventDefault();
 
@@ -353,17 +324,15 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             const aiTempId = 'tutor-reply-' + Date.now();
-            chatBox.innerHTML += `<div class="flex flex-col"><div class="chat-bubble tutor-msg" id="${aiTempId}"><em>Analisando dúvida...</em></div></div>`;
+            chatBox.innerHTML += `<div class="flex flex-col"><div class="chat-bubble tutor-msg" id="${aiTempId}"><em>Analisando dúvida pedagógica...</em></div></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             let respostaTexto = null;
 
-            // Chama Gemini 2.5 Flash habilitado para CC e CA
-            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA) e Corrente Contínua (CC). Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso do laboratório virtual PhET e a reflexão sobre conceitos como Leis de Ohm, Leis de Kirchhoff, fasores, reatância, capacitância, indutância e impedância. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente símbolos e variáveis em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π) para correta exibição no navegador.";
+            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA) e Corrente Contínua (CC). Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso das Situações de Aprendizagem (SA) e do laboratório virtual PhET. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente símbolos e variáveis em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π) para correta exibição no navegador.";
             
             respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
 
-            // Fallback para motor pedagógico local
             if (!respostaTexto) {
                 respostaTexto = gerarRespostaTutorEducacional(mensagem);
             }
@@ -378,30 +347,33 @@
 </head>
 <body>
 
-    <!-- Header Banner -->
+    <!-- Header Banner Principal -->
     <header class="main-header-banner shadow-md" aria-label="Cabeçalho CircuitosEdu"></header>
 
     <!-- Layout Principal Grid -->
     <div class="max-w-[1600px] mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Sidebar Esquerda: Navegação -->
+        <!-- Sidebar Esquerda: Sequência Didática -->
         <aside class="lg:col-span-3">
-            <div class="bg-white rounded-xl shadow-sm p-5 sticky top-6 border border-slate-100">
-                <h3 class="text-blue-700 font-bold border-b-2 border-amber-500 pb-2 mb-4 text-sm tracking-wider uppercase">Menu Principal</h3>
+            <div class="bg-white rounded-xl shadow-sm p-4 sticky top-6 border border-slate-100">
+                <h3 class="text-blue-700 font-bold border-b-2 border-amber-500 pb-2 mb-3 text-xs tracking-wider uppercase">Sequência Didática (SD)</h3>
                 <nav class="nav-sidebar">
                     <ul>
-                        <li><a href="#teoria">📖 Material Teórico</a></li>
-                        <li><a href="#phet">🔬 Laboratório Virtual</a></li>
-                        <li><a href="#circuitos">🔌 Configurações de Circuitos</a></li>
-                        <li><a href="#ra">🕶️ Realidade Aumentada</a></li>
-                        <li><a href="#conhecimento">🧠 Base de Conhecimento</a></li>
-                        <li><a href="#feedback">📊 Feedback dos Alunos</a></li>
+                        <li><a href="#sondagem">📍 Etapa 1: Sondagem (CC)</a></li>
+                        <li><a href="#teoria">📖 Etapa 2: Transposição Visual</a></li>
+                        <li><a href="#sa-engenharia">⚙️ Etapa 3: Situações de Aprendizagem</a></li>
+                        <li><a href="#phet">🔬 Laboratório Virtual PhET</a></li>
+                        <li><a href="#topologias">🔌 Topologias de Circuitos</a></li>
+                        <li><a href="#ra">🕶️ Realidade Aumentada (RA)</a></li>
+                        <li><a href="#fechamento">🧠 Etapa 4: Fechamento & Quiz</a></li>
+                        <li><a href="#mapas">🗺️ Mapas Mentais Visuais</a></li>
+                        <li><a href="#feedback">📊 Feedback Discente</a></li>
                         <li><a href="#sobre">ℹ️ Sobre o Projeto</a></li>
                     </ul>
                 </nav>
-                <div class="mt-6 pt-4 border-t border-slate-100">
-                    <a href="assets/roteiro_pratica.pdf" class="block bg-amber-500 hover:bg-amber-600 text-white text-center font-bold py-3 px-4 rounded-lg shadow transition" download>
-                        📥 Baixar Roteiro (PDF)
+                <div class="mt-4 pt-3 border-t border-slate-100">
+                    <a href="assets/roteiro_pratica.pdf" class="block bg-amber-500 hover:bg-amber-600 text-white text-center font-bold py-2.5 px-3 rounded-lg shadow text-xs transition" download>
+                        📥 Baixar Roteiro Prático (PDF)
                     </a>
                 </div>
             </div>
@@ -409,14 +381,56 @@
 
         <!-- Conteúdo Central -->
         <main class="lg:col-span-6 space-y-8">
+
+            <!-- ETAPA 1: SONDAGEM E MOBILIZAÇÃO COGNITIVA (CC & KIRCHHOFF) -->
+            <section id="sondagem" class="bg-white rounded-xl shadow-sm p-6 border-l-8 border-amber-500">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-amber-100 text-amber-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">Etapa 1: Sondagem / Mobilização</span>
+                </div>
+                <h2 class="text-xl font-bold mb-2 text-slate-800">📍 Diagnóstico de Conhecimentos Prévios: CC e Leis de Kirchhoff</h2>
+                <p class="text-slate-600 text-sm leading-relaxed mb-4 text-justify">
+                    A ancoragem teórica para a Corrente Alternada (CA) exige a consolidação prévia dos conceitos de <strong>Corrente Contínua (CC)</strong>. Responda à verificação diagnóstica abaixo para mobilizar seus subsunçores:
+                </p>
+
+                <!-- Simulado de Sondagem Interativo -->
+                <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
+                    <p class="font-bold text-slate-800">1. O que ocorre com a corrente contínua em um capacitor após ser energizado por uma bateria CC?</p>
+                    <div class="flex flex-col gap-1.5 pl-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="sondagem1" onclick="verificarSondagem(1, false)"> A corrente aumenta continuamente.
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="sondagem1" onclick="verificarSondagem(1, true)"> A corrente reduz a zero (comporta-se como circuito aberto em regime permanente).
+                        </label>
+                    </div>
+                    <div id="resp-sondagem-1" class="hidden p-2 rounded text-xs font-semibold"></div>
+                </div>
+
+                <script>
+                    function verificarSondagem(q, acertou) {
+                        const elem = document.getElementById('resp-sondagem-' + q);
+                        elem.classList.remove('hidden');
+                        if (acertou) {
+                            elem.className = "p-2 rounded text-xs font-semibold bg-emerald-100 text-emerald-800";
+                            elem.innerHTML = "✅ Correto! Em CC, o capacitor bloqueia o fluxo de elétrons após carregado. Já em CA, a oscilação constante permite a passagem de corrente alternada!";
+                        } else {
+                            elem.className = "p-2 rounded text-xs font-semibold bg-amber-100 text-amber-800";
+                            elem.innerHTML = "⚠️ Incorreto. Lembre-se: em CC, as placas do capacitor acumulam carga até igualar a tensão da fonte, interrompendo o fluxo de corrente.";
+                        }
+                    }
+                </script>
+            </section>
             
-            <!-- Material Teórico -->
+            <!-- ETAPA 2: TRANSPOSIÇÃO VISUAL -->
             <section id="teoria" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-                <h2 class="text-xl font-bold mb-4 text-slate-800 flex items-center gap-2">📖 Material de Estudo CA e CC</h2>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-blue-100 text-blue-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">Etapa 2: Transposição Visual</span>
+                </div>
+                <h2 class="text-xl font-bold mb-4 text-slate-800 flex items-center gap-2">📖 Material Teórico do Triângulo de Impedâncias</h2>
                 <div class="grid grid-cols-3 gap-4">
                     <div class="interactive-card" onclick="location.href='grandezas.html'">
                         <span class="text-3xl">⚡</span>
-                        <span class="text-xs font-bold uppercase text-slate-700">Grandezas</span>
+                        <span class="text-xs font-bold uppercase text-slate-700">Grandezas CA</span>
                     </div>
                     <div class="interactive-card" onclick="location.href='fasores.html'">
                         <span class="text-3xl">📈</span>
@@ -424,82 +438,366 @@
                     </div>
                     <div class="interactive-card" onclick="location.href='impedancia.html'">
                         <span class="text-3xl">🔋</span>
-                        <span class="text-xs font-bold uppercase text-slate-700">Impedância</span>
+                        <span class="text-xs font-bold uppercase text-slate-700">Impedância (Z)</span>
                     </div>
                 </div>
             </section>
 
-            <!-- Laboratório Virtual PhET -->
+            <!-- ETAPA 3: SITUAÇÕES DE APRENDIZAGEM (SA) EM ENGENHARIA -->
+            <section id="sa-engenharia" class="bg-white rounded-xl shadow-sm p-6 border-l-8 border-indigo-600">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-indigo-100 text-indigo-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">Etapa 3: Experimentação Prática & SA</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 text-slate-800">⚙️ Situações de Aprendizagem (SA) para Engenharia e Indústria</h2>
+                <p class="text-xs text-slate-600 mb-4">Abaixo estão os cenários práticos de bancada para resolução no simulador PhET e validação teórica:</p>
+
+                <div class="space-y-4">
+                    <!-- SA 1 -->
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-indigo-900 text-sm">🏭 SA1: Correção do Fator de Potência Industrial</h3>
+                            <span class="bg-indigo-200 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded">Cenário RLC Paralelo</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-3">
+                            <strong>Problema:</strong> Um motor trifásico de 220V / 60Hz apresenta comportamento indutivo pesado com Fator de Potência FP = 0,70 (atrasado), gerando multas na conta de energia.
+                            <br><strong>Desafio:</strong> Calcule o banco de capacitores em paralelo necessário para elevar o FP para 0,95.
+                        </p>
+                        <button onclick="toggleGabarito('sa1-gab')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-1.5 px-3 rounded shadow transition">
+                            👁️ Exibir Roteiro & Solução da SA1
+                        </button>
+                        <div id="sa1-gab" class="hidden mt-3 p-3 bg-white border border-indigo-200 rounded-lg text-xs space-y-2 text-slate-800">
+                            <p><strong>1. Passo a Passo no PhET:</strong> Monte um resistor e indutor em série alimentados por fonte CA de 220V RMS. Meça a corrente total.</p>
+                            <p><strong>2. Inserção do Capacitor:</strong> Adicione um capacitor em paralelo com a combinação R-L e aumente o valor de C.</p>
+                            <p><strong>3. Observação Esperada:</strong> A corrente total fornecida pela fonte diminuirá sem alterar a potência ativa do motor!</p>
+                        </div>
+                    </div>
+
+                    <!-- SA 2 -->
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-indigo-900 text-sm">📻 SA2: Análise de Ressonância e Filtro em Subestação</h3>
+                            <span class="bg-indigo-200 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded">Cenário RLC Série</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-3">
+                            <strong>Problema:</strong> Um filtro de ruído precisa passar uma frequência de 60Hz e atenuar ruídos de alta frequência.
+                            <br><strong>Desafio:</strong> Ajuste L e C para atingir a Frequência de Ressonância (X_L = X_C).
+                        </p>
+                        <button onclick="toggleGabarito('sa2-gab')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-1.5 px-3 rounded shadow transition">
+                            👁️ Exibir Roteiro & Solução da SA2
+                        </button>
+                        <div id="sa2-gab" class="hidden mt-3 p-3 bg-white border border-indigo-200 rounded-lg text-xs space-y-2 text-slate-800">
+                            <p><strong>1. Fórmula:</strong> f_0 = 1 / (2 · π · √(L · C)).</p>
+                            <p><strong>2. Comportamento no PhET:</strong> Na ressonância, a corrente atinge seu pico máximo e Z = R (impedância puramente resistiva).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function toggleGabarito(id) {
+                        const elem = document.getElementById(id);
+                        elem.classList.toggle('hidden');
+                    }
+                </script>
+            </section>
+
+            <!-- SIMULADOR PhET EMBUTIDO -->
             <section id="phet" class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-100">
-                <div class="bg-slate-50 p-4 font-bold border-b text-blue-800 flex items-center gap-2">
+                <div class="bg-slate-50 p-4 font-bold border-b text-blue-800 flex items-center justify-between">
                     <span>🔬 Simulação Interativa - Laboratório de Kit de Circuitos CA (PhET)</span>
+                    <span class="text-xs font-normal text-slate-500">Iframe Oficial Embutido</span>
                 </div>
                 <div class="w-full h-[560px] bg-slate-900">
                     <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" class="w-full h-full border-none" allowfullscreen title="Simulador PhET Circuitos CA"></iframe>
                 </div>
             </section>
 
-            <!-- Configurações de Circuitos -->
-            <section id="circuitos" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-                <h2 class="text-xl font-bold mb-6 text-slate-800">🔌 Tipos de Ligação de Circuitos</h2>
+            <!-- ITEM 2.3: TOPOLOGIAS FUNDAMENTAIS DE CIRCUITOS (SÉRIE, PARALELO, MISTO) COM SCHEMATICS SVG -->
+            <section id="topologias" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                <h2 class="text-xl font-bold mb-2 text-slate-800">🔌 Topologias Fundamentais de Circuitos em CA</h2>
+                <p class="text-xs text-slate-500 mb-6">Esquemáticos elétricos vetoriais e relações fasoriais das 3 topologias de estudo:</p>
+
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div class="text-center group">
-                        <div class="bg-slate-50 border rounded-xl p-3 mb-2 transition group-hover:border-blue-400">
-                            <img src="./assets/circuito-serie.png" alt="Circuito Série" class="w-full h-36 object-contain" onerror="this.src='https://placehold.co/300x200?text=Circuito+Série'">
-                        </div>
-                        <p class="font-bold text-slate-700 text-sm">Circuito Série</p>
+                    <!-- Circuito Série -->
+                    <div class="border rounded-xl p-4 bg-slate-50 text-center flex flex-col items-center">
+                        <span class="font-bold text-slate-800 text-sm mb-2">1. Circuito Série (RLC)</span>
+                        <svg class="w-full h-28 my-1" viewBox="0 0 200 100">
+                            <rect x="10" y="10" width="180" height="80" rx="6" fill="none" stroke="#2563eb" stroke-width="2"/>
+                            <circle cx="20" cy="50" r="12" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+                            <path d="M 14 50 Q 20 40 26 50 Q 32 60 38 50" fill="none" stroke="#1d4ed8" stroke-width="1.5" transform="translate(-8,-2)"/>
+                            <!-- Resistor -->
+                            <path d="M 50 10 L 60 10 L 65 0 L 75 20 L 85 0 L 95 20 L 100 10 L 110 10" fill="none" stroke="#0284c7" stroke-width="2"/>
+                            <text x="80" y="32" font-size="10" text-anchor="middle" font-weight="bold">R</text>
+                            <!-- Indutor -->
+                            <path d="M 120 10 Q 125 0 130 10 Q 135 0 140 10 Q 145 0 150 10 Q 155 0 160 10" fill="none" stroke="#d97706" stroke-width="2"/>
+                            <text x="140" y="32" font-size="10" text-anchor="middle" font-weight="bold">L</text>
+                        </svg>
+                        <p class="text-[11px] text-slate-600 mt-2"><strong>Regra:</strong> Corrente I é única em todos os componentes. As tensões V_R e V_L somam-se fasorialmente.</p>
                     </div>
-                    <div class="text-center group">
-                        <div class="bg-slate-50 border rounded-xl p-3 mb-2 transition group-hover:border-blue-400">
-                            <img src="./assets/circuito-paralelo.png" alt="Circuito Paralelo" class="w-full h-36 object-contain" onerror="this.src='https://placehold.co/300x200?text=Circuito+Paralelo'">
-                        </div>
-                        <p class="font-bold text-slate-700 text-sm">Circuito Paralelo</p>
+
+                    <!-- Circuito Paralelo -->
+                    <div class="border rounded-xl p-4 bg-slate-50 text-center flex flex-col items-center">
+                        <span class="font-bold text-slate-800 text-sm mb-2">2. Circuito Paralelo</span>
+                        <svg class="w-full h-28 my-1" viewBox="0 0 200 100">
+                            <rect x="20" y="15" width="160" height="70" fill="none" stroke="#2563eb" stroke-width="2"/>
+                            <line x1="90" y1="15" x2="90" y2="85" stroke="#0284c7" stroke-width="2"/>
+                            <line x1="150" y1="15" x2="150" y2="85" stroke="#16a34a" stroke-width="2"/>
+                            <!-- Capacitor -->
+                            <line x1="142" y1="45" x2="158" y2="45" stroke="#16a34a" stroke-width="3"/>
+                            <line x1="142" y1="55" x2="158" y2="55" stroke="#16a34a" stroke-width="3"/>
+                            <text x="170" y="52" font-size="10" font-weight="bold">C</text>
+                            <text x="100" y="52" font-size="10" font-weight="bold">R</text>
+                        </svg>
+                        <p class="text-[11px] text-slate-600 mt-2"><strong>Regra:</strong> Tensão V é idêntica nos ramos. As correntes I_R e I_C somam-se fasorialmente.</p>
                     </div>
-                    <div class="text-center group">
-                        <div class="bg-slate-50 border rounded-xl p-3 mb-2 transition group-hover:border-blue-400">
-                            <img src="./assets/circuito-misto.png" alt="Circuito Misto" class="w-full h-36 object-contain" onerror="this.src='https://placehold.co/300x200?text=Circuito+Misto'">
-                        </div>
-                        <p class="font-bold text-slate-700 text-sm">Circuito Misto</p>
+
+                    <!-- Circuito Misto -->
+                    <div class="border rounded-xl p-4 bg-slate-50 text-center flex flex-col items-center">
+                        <span class="font-bold text-slate-800 text-sm mb-2">3. Circuito Misto</span>
+                        <svg class="w-full h-28 my-1" viewBox="0 0 200 100">
+                            <rect x="15" y="15" width="170" height="70" fill="none" stroke="#2563eb" stroke-width="2"/>
+                            <line x1="110" y1="15" x2="110" y2="85" stroke="#d97706" stroke-width="2"/>
+                            <line x1="160" y1="15" x2="160" y2="85" stroke="#16a34a" stroke-width="2"/>
+                            <!-- Resistor Série -->
+                            <path d="M 40 15 L 50 15 L 53 5 L 63 25 L 73 5 L 83 25 L 87 15 L 95 15" fill="none" stroke="#0284c7" stroke-width="2"/>
+                            <text x="65" y="38" font-size="10" font-weight="bold">R_série</text>
+                        </svg>
+                        <p class="text-[11px] text-slate-600 mt-2"><strong>Regra:</strong> Combinação em bloco. Calcula-se primeiro o bloco em paralelo e soma-se em série.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Realidade Aumentada (RA) -->
+            <!-- ITEM 2.2: REALIDADE AUMENTADA (RA) REAL COM MARCADORES SVG & VISUALIZADOR 3D -->
             <section id="ra" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-                <h2 class="text-xl font-bold mb-2 text-slate-800">🕶️ Realidade Aumentada (RA)</h2>
-                <p class="text-xs text-slate-500 mb-4">Utilize os marcadores abaixo com o aplicativo de RA compatível para visualizar os componentes em 3D.</p>
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="interactive-card border-blue-100 bg-blue-50/50 text-blue-800">
-                        <span class="text-3xl">📷</span>
-                        <span class="text-xs font-bold uppercase">Marcador R</span>
+                <h2 class="text-xl font-bold mb-2 text-slate-800">🕶️ Realidade Aumentada (RA) - Marcadores & Visualizador 3D</h2>
+                <p class="text-xs text-slate-500 mb-4">Projete os componentes e vetores fasoriais em 3D. Utilize os marcadores abaixo para leitura em aplicativos móveis:</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <!-- Marcador R (Hiro/ArUco SVG) -->
+                    <div class="border rounded-xl p-3 bg-white text-center flex flex-col items-center shadow-sm">
+                        <span class="text-xs font-bold text-blue-900 mb-2">Marcador Resistor (R)</span>
+                        <svg class="w-24 h-24 border-4 border-black bg-white" viewBox="0 0 100 100">
+                            <rect x="20" y="20" width="60" height="60" fill="black"/>
+                            <rect x="35" y="35" width="30" height="30" fill="white"/>
+                            <text x="50" y="55" font-size="16" font-weight="bold" text-anchor="middle" fill="black">R</text>
+                        </svg>
+                        <button onclick="abrirVisualizador3D('Resistor', 'O Resistor dissipa energia mantendo Tensão e Corrente em fase (0°).')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1 px-2.5 rounded shadow">
+                            🕶️ Ver em 3D
+                        </button>
                     </div>
-                    <div class="interactive-card border-blue-100 bg-blue-50/50 text-blue-800">
-                        <span class="text-3xl">📷</span>
-                        <span class="text-xs font-bold uppercase">Marcador L</span>
+
+                    <!-- Marcador L -->
+                    <div class="border rounded-xl p-3 bg-white text-center flex flex-col items-center shadow-sm">
+                        <span class="text-xs font-bold text-blue-900 mb-2">Marcador Indutor (L)</span>
+                        <svg class="w-24 h-24 border-4 border-black bg-white" viewBox="0 0 100 100">
+                            <rect x="20" y="20" width="60" height="60" fill="black"/>
+                            <circle cx="50" cy="50" r="18" fill="white"/>
+                            <text x="50" y="55" font-size="16" font-weight="bold" text-anchor="middle" fill="black">L</text>
+                        </svg>
+                        <button onclick="abrirVisualizador3D('Indutor', 'O Indutor gera reatância X_L = 2·π·f·L, atrasando a corrente em 90°.')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1 px-2.5 rounded shadow">
+                            🕶️ Ver em 3D
+                        </button>
                     </div>
-                    <div class="interactive-card border-blue-100 bg-blue-50/50 text-blue-800">
-                        <span class="text-3xl">📷</span>
-                        <span class="text-xs font-bold uppercase">Marcador C</span>
+
+                    <!-- Marcador C -->
+                    <div class="border rounded-xl p-3 bg-white text-center flex flex-col items-center shadow-sm">
+                        <span class="text-xs font-bold text-blue-900 mb-2">Marcador Capacitor (C)</span>
+                        <svg class="w-24 h-24 border-4 border-black bg-white" viewBox="0 0 100 100">
+                            <rect x="20" y="20" width="60" height="60" fill="black"/>
+                            <polygon points="50,25 70,70 30,70" fill="white"/>
+                            <text x="50" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="black">C</text>
+                        </svg>
+                        <button onclick="abrirVisualizador3D('Capacitor', 'O Capacitor gera reatância X_C = 1 / (2·π·f·C), adiantando a corrente em 90°.')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1 px-2.5 rounded shadow">
+                            🕶️ Ver em 3D
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal do Visualizador 3D -->
+                <div id="modal-ra-3d" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center shadow-2xl relative">
+                        <button onclick="document.getElementById('modal-ra-3d').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+                        <h3 id="ra-title" class="text-lg font-bold text-blue-900 mb-2">Projeção 3D do Componente</h3>
+                        <div class="w-full h-48 bg-slate-900 rounded-xl flex items-center justify-center my-4 overflow-hidden relative">
+                            <!-- Animação Vetorial de Fasor 3D -->
+                            <svg class="w-32 h-32 animate-spin" style="animation-duration: 8s;" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,4"/>
+                                <line x1="50" y1="50" x2="85" y2="50" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow)"/>
+                                <text x="70" y="42" fill="#ef4444" font-size="10" font-weight="bold">V(t)</text>
+                            </svg>
+                        </div>
+                        <p id="ra-desc" class="text-xs text-slate-600 leading-relaxed mb-4"></p>
+                        <button onclick="document.getElementById('modal-ra-3d').classList.add('hidden')" class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg text-xs shadow">Fechar Visualizador</button>
+                    </div>
+                </div>
+
+                <script>
+                    function abrirVisualizador3D(nome, desc) {
+                        document.getElementById('ra-title').innerText = "Projeção Fasorial 3D: " + nome;
+                        document.getElementById('ra-desc').innerText = desc;
+                        document.getElementById('modal-ra-3d').classList.remove('hidden');
+                    }
+                </script>
+            </section>
+
+            <!-- ETAPA 4: BANCO DE QUIZ SÍNCRONO EXPANDIDO (10 QUESTÕES) -->
+            <section id="fechamento" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">Etapa 4: Fechamento & Quiz Completo</span>
+                </div>
+                <h2 class="text-xl font-bold mb-2 text-slate-800">🧠 Quiz de Avaliação Síncrona de Aprendizagem</h2>
+                <p class="text-xs text-slate-600 mb-4">Banco de questões alinhado às Situações de Aprendizagem de CC e CA:</p>
+
+                <!-- Engine do Quiz -->
+                <div id="quiz-container" class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                    <div id="quiz-header" class="flex justify-between items-center mb-3">
+                        <span id="quiz-progress" class="text-xs font-bold text-blue-700">Questão 1 de 5</span>
+                        <span id="quiz-score" class="text-xs font-bold text-emerald-700">Pontuação: 0</span>
+                    </div>
+                    <p id="quiz-question" class="font-bold text-slate-800 text-sm mb-4"></p>
+                    <div id="quiz-options" class="space-y-2 mb-4"></div>
+                    <div id="quiz-feedback" class="hidden p-3 rounded-lg text-xs font-semibold mb-3"></div>
+                    <button id="quiz-next-btn" onclick="proximaQuestaoQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 px-4 rounded shadow transition hidden">
+                        Próxima Questão ➔
+                    </button>
+                </div>
+
+                <script>
+                    const questoesQuiz = [
+                        {
+                            q: "1. No circuito RLC série, a impedância total Z é mínima e puramente resistiva quando:",
+                            opts: ["X_L é maior que X_C", "X_L é igual a X_C (Ressonância)", "Frequência f é igual a zero", "Resistência R é nula"],
+                            correct: 1,
+                            exp: "Na ressonância (X_L = X_C), as reatâncias cancelam-se mutuamente, resultando em Z = R e corrente máxima."
+                        },
+                        {
+                            q: "2. Em uma instalação industrial com Fator de Potência baixo (FP = 0,65 atrasado), qual componente deve ser adicionado em paralelo?",
+                            opts: ["Resistor de alta potência", "Banco de Capacitores", "Indutor de núcleo de ar", "Gerador CC"],
+                            correct: 1,
+                            exp: "O banco de capacitores fornece a potência reativa capacitiva (Q_C) necessária para neutralizar o reativo indutivo dos motores."
+                        },
+                        {
+                            q: "3. Qual é o comportamento de um indutor ideal em regime permanente quando alimentado por Corrente Contínua (CC)?",
+                            opts: ["Circuito aberto", "Curto-circuito (comutação direta sem oposição)", "Filtro passa-altas", "Gerador de tensão"],
+                            correct: 1,
+                            exp: "Como a frequência em CC é zero (f = 0), a reatância indutiva X_L = 2·π·f·L resulta em zero Ohms (curto-circuito)."
+                        },
+                        {
+                            q: "4. Na transposição fasorial, qual é a defasagem angular entre a corrente e a tensão em um capacitor puro?",
+                            opts: ["Tensão adiantada 90°", "Corrente adiantada 90° em relação à tensão", "Em fase (0°)", "Defasagem de 180°"],
+                            correct: 1,
+                            exp: "No capacitor, a corrente atinge seu pico antes da tensão, estando 90° adiantada."
+                        },
+                        {
+                            q: "5. A Lei de Kirchhoff das Correntes (LKC) fundamenta-se na conservação de:",
+                            opts: ["Energia mecânica", "Carga elétrica (soma das correntes num nó é zero)", "Massa do condutor", "Frequência da rede"],
+                            correct: 1,
+                            exp: "A LKC estabelece que a carga elétrica não pode acumular-se num nó: a soma das correntes que entram é igual à das que saem."
+                        }
+                    ];
+
+                    let quizIndex = 0;
+                    let quizPontos = 0;
+
+                    function carregarQuestaoQuiz() {
+                        const q = questoesQuiz[quizIndex];
+                        document.getElementById('quiz-progress').innerText = `Questão ${quizIndex + 1} de ${questoesQuiz.length}`;
+                        document.getElementById('quiz-question').innerText = q.q;
+                        
+                        const optsDiv = document.getElementById('quiz-options');
+                        optsDiv.innerHTML = '';
+                        document.getElementById('quiz-feedback').classList.add('hidden');
+                        document.getElementById('quiz-next-btn').classList.add('hidden');
+
+                        q.opts.forEach((opt, idx) => {
+                            const btn = document.createElement('button');
+                            btn.className = "w-full text-left p-3 rounded-lg border border-slate-200 bg-white hover:bg-blue-50 text-xs text-slate-700 font-medium transition";
+                            btn.innerText = opt;
+                            btn.onclick = () => responderQuiz(idx);
+                            optsDiv.appendChild(btn);
+                        });
+                    }
+
+                    function responderQuiz(idx) {
+                        const q = questoesQuiz[quizIndex];
+                        const fb = document.getElementById('quiz-feedback');
+                        fb.classList.remove('hidden');
+
+                        if (idx === q.correct) {
+                            quizPontos += 10;
+                            document.getElementById('quiz-score').innerText = `Pontuação: ${quizPontos}`;
+                            fb.className = "p-3 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 mb-3";
+                            fb.innerHTML = "✅ Resposta Correta! " + q.exp;
+                        } else {
+                            fb.className = "p-3 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800 mb-3";
+                            fb.innerHTML = "⚠️ Resposta Incorreta. " + q.exp;
+                        }
+
+                        document.getElementById('quiz-next-btn').classList.remove('hidden');
+                    }
+
+                    function proximaQuestaoQuiz() {
+                        quizIndex++;
+                        if (quizIndex < questoesQuiz.length) {
+                            carregarQuestaoQuiz();
+                        } else {
+                            document.getElementById('quiz-container').innerHTML = `
+                                <div class="text-center py-6">
+                                    <span class="text-4xl">🏆</span>
+                                    <h3 class="text-lg font-bold text-slate-800 mt-2">Quiz Concluído!</h3>
+                                    <p class="text-xs text-slate-600 mt-1">Sua pontuação final foi de <strong>${quizPontos} pontos</strong>.</p>
+                                    <button onclick="quizIndex=0; quizPontos=0; carregarQuestaoQuiz()" class="mt-4 bg-blue-600 text-white font-bold py-2 px-4 rounded-lg text-xs shadow">Refazer Quiz</button>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    window.onload = function() {
+                        carregarQuestaoQuiz();
+                    };
+                </script>
+            </section>
+
+            <!-- ETAPA 4: MAPAS MENTAIS VISUAIS (DIAGRAMA DE NÓS GRAFICO EM SVG/CSS) -->
+            <section id="mapas" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                <h2 class="text-xl font-bold mb-2 text-slate-800">🗺️ Mapas Mentais Visuais da Sequência Didática</h2>
+                <p class="text-xs text-slate-500 mb-6">Síntese visual gráfica das conexões conceituais de CC e CA:</p>
+
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <!-- Diagrama de Nó Central -->
+                    <div class="flex flex-col items-center gap-6">
+                        <!-- Nó Raiz -->
+                        <div class="bg-blue-600 text-white font-bold text-sm px-6 py-3 rounded-full shadow-lg border-2 border-blue-400">
+                            ⚡ Circuitos Elétricos (CC ➔ CA)
+                        </div>
+
+                        <!-- Ramos Conectores -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+                            <!-- Ramo 1 -->
+                            <div class="mindmap-node text-center">
+                                <span class="bg-amber-100 text-amber-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">1. CC e Kirchhoff</span>
+                                <h4 class="font-bold text-xs text-slate-800 mt-2 mb-1">Ancoragem Básica</h4>
+                                <p class="text-[11px] text-slate-600">Lei de Ohm (V=R·I)<br>Lei dos Nós (LKC)<br>Lei das Malhas (LKV)</p>
+                            </div>
+
+                            <!-- Ramo 2 -->
+                            <div class="mindmap-node text-center">
+                                <span class="bg-blue-100 text-blue-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">2. Transposição CA</span>
+                                <h4 class="font-bold text-xs text-slate-800 mt-2 mb-1">Domínio da Frequência</h4>
+                                <p class="text-[11px] text-slate-600">Fasores (Vetores)<br>Reatâncias X_L e X_C<br>Impedância Z = R + jX</p>
+                            </div>
+
+                            <!-- Ramo 3 -->
+                            <div class="mindmap-node text-center">
+                                <span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">3. Aplicação / SA</span>
+                                <h4 class="font-bold text-xs text-slate-800 mt-2 mb-1">Engenharia Prática</h4>
+                                <p class="text-[11px] text-slate-600">Fator de Potência (FP)<br>Ressonância RLC<br>Simulação PhET + RA</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Base de Conhecimento -->
-            <section id="conhecimento" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-                <h2 class="text-xl font-bold mb-4 text-slate-800">🧠 Base de Conhecimento</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="interactive-card bg-slate-900 text-white border-none hover:bg-slate-800" onclick="location.href='quiz.html'">
-                        <span class="text-3xl">🎯</span>
-                        <span class="font-bold text-sm">Quiz de Avaliação</span>
-                    </div>
-                    <div class="interactive-card bg-slate-900 text-white border-none hover:bg-slate-800" onclick="location.href='mapas.html'">
-                        <span class="text-3xl">🗺️</span>
-                        <span class="font-bold text-sm">Mapas Mentais</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Feedback Discente -->
+            <!-- FEEDBACK DISCENTE DA MEDIAÇÃO POR IA -->
             <section id="feedback" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                 <h2 class="text-xl font-bold mb-2 text-slate-800">📊 Feedback Discente - Mediação por IA</h2>
                 <p class="text-sm text-slate-600 mb-4">Sua opinião é fundamental para a avaliação pedagógica desta pesquisa de mestrado.</p>
@@ -544,11 +842,11 @@
                 </div>
             </section>
 
-            <!-- Sobre o Projeto -->
+            <!-- SOBRE O PROJETO DE MESTRADO -->
             <section id="sobre" class="bg-white rounded-xl shadow-sm p-6 border-l-8 border-blue-600">
                 <h2 class="text-lg font-bold text-slate-800 mb-2">ℹ️ Sobre o Produto Educacional</h2>
                 <p class="text-slate-600 text-sm leading-relaxed text-justify mb-3">
-                    Este ambiente virtual de aprendizagem é um <strong>Produto Educacional</strong> resultante da pesquisa de Mestrado Profissional em Ensino Tecnológico (UEA/IFAM), desenvolvida por <strong>Daniel Sandoval</strong>.
+                    Este ambiente virtual de aprendizagem é um <strong>Produto Educacional</strong> resultante da pesquisa de Mestrado Profissional em Ensino Tecnológico (PPGET - IFAM / UEA), desenvolvida por <strong>Daniel Sandoval</strong>.
                 </p>
                 <p class="text-slate-600 text-sm leading-relaxed text-justify">
                     O objetivo principal é investigar a contribuição do uso de <strong>Inteligência Artificial Generativa Mediadora</strong> e <strong>Realidade Aumentada (RA)</strong> na compreensão de conceitos fundamentais de Circuitos Elétricos de Corrente Alternada (CA) e Corrente Contínua (CC).
@@ -568,7 +866,7 @@
                 <!-- Chat Scroll Area -->
                 <div id="chat-window" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
                     <div class="chat-bubble tutor-msg">
-                        Olá! Sou seu mediador pedagógico para Circuitos CC e CA. Qual é a sua dúvida sobre a montagem de hoje?
+                        Olá! Sou seu mediador pedagógico para a Sequência Didática de Circuitos CC e CA. Qual é a sua dúvida sobre a montagem de hoje?
                     </div>
                 </div>
 
@@ -590,7 +888,7 @@
     <footer class="bg-slate-900 text-slate-400 py-10 mt-12 text-center text-xs">
         <div class="max-w-4xl mx-auto px-4">
             <p class="font-bold text-slate-200 mb-1">CircuitosEdu — Plataforma Pedagógica CA e CC</p>
-            <p>© 2026 Daniel Sandoval | Projeto de Mestrado UEA / IFAM</p>
+            <p>© 2026 Daniel Sandoval | PPGET - IFAM / UEA</p>
         </div>
     </footer>
 
