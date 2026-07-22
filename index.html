@@ -21,7 +21,7 @@
     <style>
         body { font-family: 'Roboto', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
         
-        /* Banner do Cabeçalho Responsivo sem cortes */
+        /* Banner do Cabeçalho Responsivo */
         .main-header-banner {
             background: #0f172a url('./assets/cabecalho-anexo.png') no-repeat center center;
             background-size: cover;
@@ -95,6 +95,44 @@
             border-color: #1d4ed8;
             background: #eff6ff;
             transform: scale(1.02);
+        }
+
+        /* PADRÃO LUPA DE AMPLIAÇÃO */
+        .lupa-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: zoom-in;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .lupa-container:hover {
+            border-color: #2563eb;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.2);
+        }
+        .lupa-target {
+            transition: transform 0.12s ease-out;
+            transform-origin: center center;
+            width: 100%;
+            height: 100%;
+        }
+        .lupa-badge {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: rgba(15, 23, 42, 0.85);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 12px;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 10;
         }
     </style>
 
@@ -173,7 +211,7 @@
                         <span class="text-xl">⚠️</span>
                         <div>
                             <p class="font-bold text-amber-800">Atenção!</p>
-                            <p class="text-xs text-amber-700">Por favor, selecione se o Tutor IA auxiliou seu processo de aprendizagem antes de enviar.</p>
+                            <p class="text-xs text-amber-700">Por favor, selecione se o Tutor IA auxiliou o seu processo de aprendizagem antes de enviar.</p>
                         </div>
                     `;
                     alerta.className = "mt-4 p-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm flex items-center gap-3";
@@ -225,7 +263,7 @@
                         <span class="text-xl">✅</span>
                         <div>
                             <p class="font-bold text-emerald-800">Feedback registrado com sucesso!</p>
-                            <p class="text-xs text-emerald-700">Seus dados foram salvos para a pesquisa de mestrado. Obrigado!</p>
+                            <p class="text-xs text-emerald-700">Os seus dados foram salvos para a pesquisa de mestrado. Obrigado!</p>
                         </div>
                     `;
                     alerta.className = "mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-3";
@@ -240,7 +278,7 @@
             }, 300);
         };
 
-        // BASE DE CONHECIMENTO EXPANDIDA DA IA
+        // BASE DE CONHECIMENTO DO TUTOR MEDIADOR
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase();
 
@@ -249,26 +287,26 @@
             }
 
             if (texto.includes('sa1') || texto.includes('fator de pot') || texto.includes('correção')) {
-                return "<strong>SA1 - Correção do Fator de Potência:</strong><br>Um motor elétrico indutivo possui FP = 0,72 (atrasado). Para corrigir para 0,95 e evitar multas:<br>1. Calcule a Potência Ativa (P = V · I · cos φ).<br>2. Calcule a Reatância Indutiva X_L.<br>3. Adicione um banco de capacitores em paralelo para fornecer potência reativa Q_C.<br><br>🔍 <em>No PhET:</em> Conecte um capacitor em paralelo com a carga e observe a queda da corrente total fornecida pela fonte!";
+                return "<strong>SA1 - Correção do Fator de Potência no PhET:</strong><br>Configure no PhET: Fonte CA V = 20 V RMS, f = 0,50 Hz. Carga indutiva: R = 10 Ω, L = 3,18 H (X_L = 10 Ω).<br>1. Sem capacitor: I = 1,41 A, FP = 0,707.<br>2. Adicione C = 0,032 F (32 mF) em paralelo.<br>3. Resultado no PhET: A corrente total da fonte cai para 1,00 A e o FP sobe para 1,00!";
             }
 
             if (texto.includes('sa2') || texto.includes('filtro') || texto.includes('ressonan')) {
-                return "<strong>SA2 - Ressonância RLC:</strong><br>Ocorre quando X_L = X_C na frequência f_0 = 1 / (2·π·√(L·C)).<br>• Na ressonância série, Z = R (mínima impedância) e a corrente I é MÁXIMA.<br><br>💡 <em>No PhET:</em> Varie a frequência da fonte até encontrar o ponto de pico de corrente!";
+                return "<strong>SA2 - Ressonância RLC Série no PhET:</strong><br>Configure no PhET: Fonte V = 10 V RMS, R = 10 Ω, L = 1,0 H e C = 0,10 F.<br>• Varie a frequência de 0,10 Hz até 2,00 Hz.<br>• Na frequência f_0 ≈ 0,50 Hz, X_L = X_C ≈ 3,14 Ω (Ressonância), e a corrente atinge seu pico máximo de 1,00 A!";
             }
 
             if (texto.includes('capacit') || texto.includes('farad')) {
-                return "<strong>Capacitância (C):</strong> Armazena energia em campo elétrico.<br>• Em CC: Atua como circuito aberto em regime permanente.<br>• Em CA: Apresenta Reatância Capacitiva X_C = 1 / (2·π·f·C). A corrente adianta-se 90° em relação à tensão.";
+                return "<strong>Capacitância (C) no PhET:</strong> Armazena energia em campo elétrico.<br>• Em CC: Atua como circuito aberto em regime permanente.<br>• Em CA no PhET: Apresenta Reatância Capacitiva X_C = 1 / (2·π·f·C). Com f = 0,50 Hz e C = 0,10 F, X_C = 3,18 Ω.";
             }
 
             if (texto.includes('indut') || texto.includes('henry')) {
-                return "<strong>Indutância (L):</strong> Armazena energia em campo magnético.<br>• Em CC: Atua como curto-circuito em regime permanente.<br>• Em CA: Apresenta Reatância Indutiva X_L = 2·π·f·L. A corrente atrasa-se 90° em relação à tensão.";
+                return "<strong>Indutância (L) no PhET:</strong> Armazena energia em campo magnético.<br>• Em CC: Atua como curto-circuito em regime permanente.<br>• Em CA no PhET: Apresenta Reatância Indutiva X_L = 2·π·f·L. Com f = 0,50 Hz e L = 1,0 H, X_L = 3,14 Ω.";
             }
 
             if (texto.includes('impedan') || texto.includes('z')) {
-                return "<strong>Impedância (Z):</strong> Oposição total à corrente em CA.<br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br>O ângulo da impedância indica a defasagem entre tensão e corrente.";
+                return "<strong>Impedância (Z):</strong> Oposição total à corrente em CA.<br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br>No PhET, quando X_L = X_C, Z torna-se puramente resistiva (Z = R).";
             }
 
-            return "Excelente pergunta pedagógica sobre a prática de Circuitos (CC/CA)!<br><br>Como seu <strong>Tutor Mediador</strong>, convido você a investigar este conceito na seção de <strong>Situações de Aprendizagem (SA)</strong> ou no <strong>Laboratório Virtual PhET</strong>. Monte o circuito e compartilhe suas observações comigo!";
+            return "Excelente pergunta pedagógica sobre a prática de Circuitos no PhET!<br><br>Como seu <strong>Tutor Mediador</strong>, lembre-se que no PhET a frequência varia de <strong>0,10 Hz a 2,00 Hz</strong> e a tensão varia de <strong>0 V a 120 V</strong>. Teste esses parâmetros no simulador e compartilhe suas observações comigo!";
         }
 
         async function fetchGeminiWithBackoff(prompt, systemPrompt) {
@@ -328,7 +366,7 @@
 
             let respostaTexto = null;
 
-            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA) e Corrente Contínua (CC). Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso das Situações de Aprendizagem (SA) e do laboratório virtual PhET. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente símbolos e variáveis em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π) para correta exibição no navegador.";
+            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu objetivo é orientar alunos de cursos técnicos no ensino de Circuitos Elétricos de Corrente Alternada (CA) e Corrente Contínua (CC). Considere que no simulador PhET a frequência da fonte varia de 0.10 Hz a 2.00 Hz e a tensão de 0 V a 120 V. Aplique o método de scaffolding (andaimes pedagógicos): não dê respostas prontas, incentive o uso das Situações de Aprendizagem (SA) e do simulador PhET. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente símbolos e variáveis em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π) para correta exibição no navegador.";
             
             respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
 
@@ -341,6 +379,34 @@
             const elem = document.getElementById(aiTempId);
             if (elem) elem.innerHTML = respostaTexto;
             chatBox.scrollTop = chatBox.scrollHeight;
+        };
+
+        // LÓGICA DO PADRÃO LUPA (ZOOM DINÂMICO QUE ACOMPANHA O RATO)
+        window.moverLupa = function(e, container) {
+            const target = container.querySelector('.lupa-target');
+            const rect = container.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            target.style.transformOrigin = `${x}% ${y}%`;
+            target.style.transform = "scale(2.2)";
+        };
+
+        window.resetarLupa = function(container) {
+            const target = container.querySelector('.lupa-target');
+            target.style.transformOrigin = "center center";
+            target.style.transform = "scale(1)";
+        };
+
+        window.expandirImagemTopologia = function(titulo, imgSrc, desc) {
+            document.getElementById('topologia-title').innerText = "Ampliação HD: " + titulo;
+            document.getElementById('topologia-desc').innerText = desc;
+            const imgBox = document.getElementById('topologia-img-box');
+            
+            // Exibe a imagem de alta definição com fallback automático para esquema SVG
+            imgBox.innerHTML = `
+                <img src="${imgSrc}" class="max-h-[320px] max-w-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/600x350/0f172a/ffffff?text=${encodeURIComponent(titulo)}';">
+            `;
+            document.getElementById('modal-topologia-zoom').classList.remove('hidden');
         };
     </script>
 </head>
@@ -442,13 +508,13 @@
                 </div>
             </section>
 
-            <!-- ETAPA 3: SITUAÇÕES DE APRENDIZAGEM (SA) EM ENGENHARIA -->
+            <!-- ETAPA 3: SITUAÇÕES DE APRENDIZAGEM (SA) TOTALMENTE CALIBRADAS PARA O PHET -->
             <section id="sa-engenharia" class="bg-white rounded-xl shadow-sm p-6 border-l-8 border-indigo-600">
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="bg-indigo-100 text-indigo-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">Etapa 3: Experimentação Prática & SA</span>
+                    <span class="bg-indigo-100 text-indigo-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">Etapa 3: Experimentação Prática & SA (100% Calibradas para o PhET)</span>
                 </div>
-                <h2 class="text-xl font-bold mb-3 text-slate-800">⚙️ Situações de Aprendizagem (SA) para Engenharia e Indústria</h2>
-                <p class="text-xs text-slate-600 mb-4">Abaixo estão os cenários práticos de bancada para resolução no simulador PhET e validação teórica:</p>
+                <h2 class="text-xl font-bold mb-1 text-slate-800">⚙️ Situações de Aprendizagem (SA) em Engenharia</h2>
+                <p class="text-xs text-slate-500 mb-4">Os parâmetros abaixo foram perfeitamente ajustados para as faixas de operação do simulador PhET (Tensão max: 120V, Frequência max: 2,00Hz):</p>
 
                 <div class="space-y-4">
                     <!-- SA 1 -->
@@ -458,35 +524,55 @@
                             <span class="bg-indigo-200 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded">Cenário RLC Paralelo</span>
                         </div>
                         <p class="text-xs text-slate-700 leading-relaxed mb-3">
-                            <strong>Problema:</strong> Um motor trifásico de 220V / 60Hz apresenta comportamento indutivo pesado com Fator de Potência FP = 0,70 (atrasado), gerando multas na conta de energia.
-                            <br><strong>Desafio:</strong> Calcule o banco de capacitores em paralelo necessário para elevar o FP para 0,95.
+                            <strong>Problema:</strong> Uma carga indutiva alimentada por fonte CA de <strong>V = 20 V RMS</strong> e <strong>f = 0,50 Hz</strong> possui resistor de <strong>R = 10 Ω</strong> e indutor de <strong>L = 3,18 H</strong> (Reatância Indutiva X_L = 10 Ω). O circuito apresenta Fator de Potência baixo (FP = 0,707 atrasado) com corrente de 1,41 A.
+                            <br><strong>Desafio no PhET:</strong> Calcule e adicione um Capacitor (C) em paralelo com a carga para elevar o FP para 1,00 e reduzir a corrente total fornecida pela fonte para 1,00 A.
                         </p>
                         <button onclick="toggleGabarito('sa1-gab')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-1.5 px-3 rounded shadow transition">
                             👁️ Exibir Roteiro & Solução da SA1
                         </button>
                         <div id="sa1-gab" class="hidden mt-3 p-3 bg-white border border-indigo-200 rounded-lg text-xs space-y-2 text-slate-800">
-                            <p><strong>1. Passo a Passo no PhET:</strong> Monte um resistor e indutor em série alimentados por fonte CA de 220V RMS. Meça a corrente total.</p>
-                            <p><strong>2. Inserção do Capacitor:</strong> Adicione um capacitor em paralelo com a combinação R-L e aumente o valor de C.</p>
-                            <p><strong>3. Observação Esperada:</strong> A corrente total fornecida pela fonte diminuirá sem alterar a potência ativa do motor!</p>
+                            <p><strong>1. Parâmetros no PhET:</strong> Ajuste a fonte CA para <strong>20 V</strong> e <strong>0,50 Hz</strong>. Monte o ramo R-L com R = 10 Ω e L = 3,18 H. Conecte o amperímetro na saída da fonte (meça I = 1,41 A).</p>
+                            <p><strong>2. Cálculo do Capacitor:</strong> Para anular X_L = 10 Ω em f = 0,50 Hz: C = 1 / (2·π·f·X_C) = 1 / (2·π · 0,5 · 10) = <strong>0,032 F</strong> (32 mF).</p>
+                            <p><strong>3. Validação no PhET:</strong> Conecte um capacitor de 0,032 F em paralelo com a carga. Observe no amperímetro que a corrente total da fonte cairá de 1,41 A para exatamente <strong>1,00 A</strong> (FP = 1,00)!</p>
                         </div>
                     </div>
 
                     <!-- SA 2 -->
                     <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
                         <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-indigo-900 text-sm">📻 SA2: Análise de Ressonância e Filtro em Subestação</h3>
+                            <h3 class="font-bold text-indigo-900 text-sm">📻 SA2: Análise de Ressonância e Filtro RLC Série</h3>
                             <span class="bg-indigo-200 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded">Cenário RLC Série</span>
                         </div>
                         <p class="text-xs text-slate-700 leading-relaxed mb-3">
-                            <strong>Problema:</strong> Um filtro de ruído precisa passar uma frequência de 60Hz e atenuar ruídos de alta frequência.
-                            <br><strong>Desafio:</strong> Ajuste L e C para atingir a Frequência de Ressonância (X_L = X_C).
+                            <strong>Problema:</strong> Um filtro RLC série é alimentado por uma fonte CA PhET de <strong>V = 10 V RMS</strong> com frequência ajustável de 0,10 Hz a 2,00 Hz, utilizando <strong>R = 10 Ω</strong>, <strong>L = 1,0 H</strong> e <strong>C = 0,10 F</strong>.
+                            <br><strong>Desafio no PhET:</strong> Varie a frequência da fonte noPhET até identificar experimentalmente a frequência de ressonância (f_0) na qual a corrente atinge seu MÁXIMO absoluto (1,00 A).
                         </p>
                         <button onclick="toggleGabarito('sa2-gab')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-1.5 px-3 rounded shadow transition">
                             👁️ Exibir Roteiro & Solução da SA2
                         </button>
                         <div id="sa2-gab" class="hidden mt-3 p-3 bg-white border border-indigo-200 rounded-lg text-xs space-y-2 text-slate-800">
-                            <p><strong>1. Fórmula:</strong> f_0 = 1 / (2 · π · √(L · C)).</p>
-                            <p><strong>2. Comportamento no PhET:</strong> Na ressonância, a corrente atinge seu pico máximo e Z = R (impedância puramente resistiva).</p>
+                            <p><strong>1. Fórmula Teórica:</strong> f_0 = 1 / (2 · π · √(L · C)) = 1 / (2 · π · √(1,0 · 0,10)) ≈ <strong>0,50 Hz</strong>.</p>
+                            <p><strong>2. Prática no PhET:</strong> Ajuste a fonte para 10 V. Deslize a frequência do PhET de 0,10 Hz até 2,00 Hz. Ao atingir exatamente <strong>0,50 Hz</strong>, X_L ≈ X_C ≈ 3,14 Ω, anulando a reatância total (Z = R = 10 Ω) e gerando o pico de corrente de <strong>1,00 A</strong> no amperímetro!</p>
+                        </div>
+                    </div>
+
+                    <!-- SA 3 -->
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-indigo-900 text-sm">📐 SA3: Análise de Defasagem Fasorial e Componentes Puros</h3>
+                            <span class="bg-indigo-200 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded">Cenário Fasorial</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-3">
+                            <strong>Problema:</strong> Analisar visualmente o gráfico de ondas e o comportamento fasorial em cada um dos três componentes básicos (R, L, C) sob uma fonte CA de <strong>V = 10 V</strong> e <strong>f = 0,50 Hz</strong>.
+                            <br><strong>Desafio no PhET:</strong> Conecte sequencialmente R = 10 Ω, L = 3,18 H e C = 0,032 F à fonte CA e utilize o gráfico do PhET para medir a defasagem temporal da corrente.
+                        </p>
+                        <button onclick="toggleGabarito('sa3-gab')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-1.5 px-3 rounded shadow transition">
+                            👁️ Exibir Roteiro & Solução da SA3
+                        </button>
+                        <div id="sa3-gab" class="hidden mt-3 p-3 bg-white border border-indigo-200 rounded-lg text-xs space-y-2 text-slate-800">
+                            <p><strong>1. Resistor (R = 10 Ω):</strong> A onda de corrente está perfeitamente sobreposta à onda de tensão (defasagem de 0°).</p>
+                            <p><strong>2. Indutor (L = 3,18 H):</strong> A corrente atinge o pico 0,5 segundos após a tensão (atraso angular de 90°).</p>
+                            <p><strong>3. Capacitor (C = 0,032 F):</strong> A corrente atinge o pico 0,5 segundos antes da tensão (avanço angular de 90°).</p>
                         </div>
                     </div>
                 </div>
@@ -510,58 +596,72 @@
                 </div>
             </section>
 
-            <!-- TOPOLOGIAS FUNDAMENTAIS DE CIRCUITOS COM SCHEMATICS SVG -->
+            <!-- TOPOLOGIAS FUNDAMENTAIS DE CIRCUITOS COM EFEITO LUPA DE AMPLIAÇÃO DINÂMICA -->
             <section id="topologias" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-                <h2 class="text-xl font-bold mb-2 text-slate-800">🔌 Topologias Fundamentais de Circuitos em CA</h2>
-                <p class="text-xs text-slate-500 mb-6">Esquemáticos elétricos vetoriais e relações fasoriais das 3 topologias de estudo:</p>
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-xl font-bold text-slate-800">🔌 Topologias Fundamentais de Circuitos em CA</h2>
+                    <span class="bg-blue-100 text-blue-800 font-bold text-[10px] px-2.5 py-1 rounded-full uppercase flex items-center gap-1">🔍 Lupa Ativa</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-6">Passe o rato sobre qualquer figura para ativar a lupa de ampliação dinâmica ou clique para expandir:</p>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <!-- Circuito Série -->
-                    <div class="border rounded-xl p-4 bg-slate-50 text-center flex flex-col items-center">
-                        <span class="font-bold text-slate-800 text-sm mb-2">1. Circuito Série (RLC)</span>
-                        <svg class="w-full h-28 my-1" viewBox="0 0 200 100">
-                            <rect x="10" y="10" width="180" height="80" rx="6" fill="none" stroke="#2563eb" stroke-width="2"/>
-                            <circle cx="20" cy="50" r="12" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
-                            <path d="M 14 50 Q 20 40 26 50 Q 32 60 38 50" fill="none" stroke="#1d4ed8" stroke-width="1.5" transform="translate(-8,-2)"/>
-                            <path d="M 50 10 L 60 10 L 65 0 L 75 20 L 85 0 L 95 20 L 100 10 L 110 10" fill="none" stroke="#0284c7" stroke-width="2"/>
-                            <text x="80" y="32" font-size="10" text-anchor="middle" font-weight="bold">R</text>
-                            <path d="M 120 10 Q 125 0 130 10 Q 135 0 140 10 Q 145 0 150 10 Q 155 0 160 10" fill="none" stroke="#d97706" stroke-width="2"/>
-                            <text x="140" y="32" font-size="10" text-anchor="middle" font-weight="bold">L</text>
-                        </svg>
-                        <p class="text-[11px] text-slate-600 mt-2"><strong>Regra:</strong> Corrente I é única em todos os componentes. As tensões V_R e V_L somam-se fasorialmente.</p>
+                    <div class="border rounded-xl p-4 bg-slate-50 text-center flex flex-col items-center shadow-sm">
+                        <span class="font-bold text-slate-800 text-sm mb-3">1. Circuito Série (RLC)</span>
+                        <div class="lupa-container w-full h-40 mb-3" onmousemove="moverLupa(event, this)" onmouseleave="resetarLupa(this)" onclick="expandirImagemTopologia('Circuito Série', './assets/circuito-serie.png', 'Corrente I é idêntica em todos os componentes. As tensões V_R e V_L somam-se fasorialmente.')">
+                            <div class="lupa-target w-full h-full flex items-center justify-center p-2">
+                                <img src="./assets/circuito-serie.png" alt="Circuito Série" class="max-h-full max-w-full object-contain" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-full h-full\' viewBox=\'0 0 200 100\'><rect x=\'10\' y=\'10\' width=\'180\' height=\'80\' rx=\'6\' fill=\'none\' stroke=\'#2563eb\' stroke-width=\'2\'/><circle cx=\'20\' cy=\'50\' r=\'12\' fill=\'#eff6ff\' stroke=\'#1d4ed8\' stroke-width=\'2\'/><path d=\'M 14 50 Q 20 40 26 50 Q 32 60 38 50\' fill=\'none\' stroke=\'#1d4ed8\' stroke-width=\'1.5\' transform=\'translate(-8,-2)\'/><path d=\'M 50 10 L 60 10 L 65 0 L 75 20 L 85 0 L 95 20 L 100 10 L 110 10\' fill=\'none\' stroke=\'#0284c7\' stroke-width=\'2\'/><text x=\'80\' y=\'32\' font-size=\'10\' text-anchor=\'middle\' font-weight=\'bold\'>R</text><path d=\'M 120 10 Q 125 0 130 10 Q 135 0 140 10 Q 145 0 150 10 Q 155 0 160 10\' fill=\'none\' stroke=\'#d97706\' stroke-width=\'2\'/><text x=\'140\' y=\'32\' font-size=\'10\' text-anchor=\'middle\' font-weight=\'bold\'>L</text></svg>'">
+                            </div>
+                            <div class="lupa-badge">
+                                <span>🔍</span> Passe o rato / Clique
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-600"><strong>Regra:</strong> Corrente I é idêntica em todos os componentes. Tensões V_R e V_L somam-se fasorialmente.</p>
                     </div>
 
                     <!-- Circuito Paralelo -->
-                    <div class="border rounded-xl p-4 bg-slate-50 text-center flex flex-col items-center">
-                        <span class="font-bold text-slate-800 text-sm mb-2">2. Circuito Paralelo</span>
-                        <svg class="w-full h-28 my-1" viewBox="0 0 200 100">
-                            <rect x="20" y="15" width="160" height="70" fill="none" stroke="#2563eb" stroke-width="2"/>
-                            <line x1="90" y1="15" x2="90" y2="85" stroke="#0284c7" stroke-width="2"/>
-                            <line x1="150" y1="15" x2="150" y2="85" stroke="#16a34a" stroke-width="2"/>
-                            <line x1="142" y1="45" x2="158" y2="45" stroke="#16a34a" stroke-width="3"/>
-                            <line x1="142" y1="55" x2="158" y2="55" stroke="#16a34a" stroke-width="3"/>
-                            <text x="170" y="52" font-size="10" font-weight="bold">C</text>
-                            <text x="100" y="52" font-size="10" font-weight="bold">R</text>
-                        </svg>
-                        <p class="text-[11px] text-slate-600 mt-2"><strong>Regra:</strong> Tensão V é idêntica nos ramos. As correntes I_R e I_C somam-se fasorialmente.</p>
+                    <div class="border rounded-xl p-4 bg-slate-50 text-center flex flex-col items-center shadow-sm">
+                        <span class="font-bold text-slate-800 text-sm mb-3">2. Circuito Paralelo</span>
+                        <div class="lupa-container w-full h-40 mb-3" onmousemove="moverLupa(event, this)" onmouseleave="resetarLupa(this)" onclick="expandirImagemTopologia('Circuito Paralelo', './assets/circuito-paralelo.png', 'Tensão V é idêntica em todos os ramos. As correntes I_R e I_C somam-se fasorialmente.')">
+                            <div class="lupa-target w-full h-full flex items-center justify-center p-2">
+                                <img src="./assets/circuito-paralelo.png" alt="Circuito Paralelo" class="max-h-full max-w-full object-contain" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-full h-full\' viewBox=\'0 0 200 100\'><rect x=\'20\' y=\'15\' width=\'160\' height=\'70\' fill=\'none\' stroke=\'#2563eb\' stroke-width=\'2\'/><line x1=\'90\' y1=\'15\' x2=\'90\' y2=\'85\' stroke=\'#0284c7\' stroke-width=\'2\'/><line x1=\'150\' y1=\'15\' x2=\'150\' y2=\'85\' stroke=\'#16a34a\' stroke-width=\'2\'/><line x1=\'142\' y1=\'45\' x2=\'158\' y2=\'45\' stroke=\'#16a34a\' stroke-width=\'3\'/><line x1=\'142\' y1=\'55\' x2=\'158\' y2=\'55\' stroke=\'#16a34a\' stroke-width=\'3\'/><text x=\'170\' y=\'52\' font-size=\'10\' font-weight=\'bold\'>C</text><text x=\'100\' y=\'52\' font-size=\'10\' font-weight=\'bold\'>R</text></svg>'">
+                            </div>
+                            <div class="lupa-badge">
+                                <span>🔍</span> Passe o rato / Clique
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-600"><strong>Regra:</strong> Tensão V é idêntica nos ramos. Correntes I_R e I_C somam-se fasorialmente.</p>
                     </div>
 
                     <!-- Circuito Misto -->
-                    <div class="border rounded-xl p-4 bg-slate-50 text-center flex flex-col items-center">
-                        <span class="font-bold text-slate-800 text-sm mb-2">3. Circuito Misto</span>
-                        <svg class="w-full h-28 my-1" viewBox="0 0 200 100">
-                            <rect x="15" y="15" width="170" height="70" fill="none" stroke="#2563eb" stroke-width="2"/>
-                            <line x1="110" y1="15" x2="110" y2="85" stroke="#d97706" stroke-width="2"/>
-                            <line x1="160" y1="15" x2="160" y2="85" stroke="#16a34a" stroke-width="2"/>
-                            <path d="M 40 15 L 50 15 L 53 5 L 63 25 L 73 5 L 83 25 L 87 15 L 95 15" fill="none" stroke="#0284c7" stroke-width="2"/>
-                            <text x="65" y="38" font-size="10" font-weight="bold">R_série</text>
-                        </svg>
-                        <p class="text-[11px] text-slate-600 mt-2"><strong>Regra:</strong> Combinação em bloco. Calcula-se primeiro o bloco em paralelo e soma-se em série.</p>
+                    <div class="border rounded-xl p-4 bg-slate-50 text-center flex flex-col items-center shadow-sm">
+                        <span class="font-bold text-slate-800 text-sm mb-3">3. Circuito Misto</span>
+                        <div class="lupa-container w-full h-40 mb-3" onmousemove="moverLupa(event, this)" onmouseleave="resetarLupa(this)" onclick="expandirImagemTopologia('Circuito Misto', './assets/circuito-misto.png', 'Combinação em bloco. Calcula-se primeiro a associação paralela e soma-se em série.')">
+                            <div class="lupa-target w-full h-full flex items-center justify-center p-2">
+                                <img src="./assets/circuito-misto.png" alt="Circuito Misto" class="max-h-full max-w-full object-contain" onerror="this.onerror=null; this.parentElement.innerHTML='<svg class=\'w-full h-full\' viewBox=\'0 0 200 100\'><rect x=\'15\' y=\'15\' width=\'170\' height=\'70\' fill=\'none\' stroke=\'#2563eb\' stroke-width=\'2\'/><line x1=\'110\' y1=\'15\' x2=\'110\' y2=\'85\' stroke=\'#d97706\' stroke-width=\'2\'/><line x1=\'160\' y1=\'15\' x2=\'160\' y2=\'85\' stroke=\'#16a34a\' stroke-width=\'2\'/><path d=\'M 40 15 L 50 15 L 53 5 L 63 25 L 73 5 L 83 25 L 87 15 L 95 15\' fill=\'none\' stroke=\'#0284c7\' stroke-width=\'2\'/><text x=\'65\' y=\'38\' font-size=\'10\' font-weight=\'bold\'>R_série</text></svg>'">
+                            </div>
+                            <div class="lupa-badge">
+                                <span>🔍</span> Passe o rato / Clique
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-600"><strong>Regra:</strong> Combinação em bloco. Resolve-se a associação paralela e soma-se à série.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- REALIDADE AUMENTADA (RA): DUPLA ABORDAGEM (APP SENAI SPACE & WEBAR EMBUTIDO) -->
+            <!-- MODAL DE AMPLIAÇÃO DAS TOPOLOGIAS (AO CLICAR) -->
+            <div id="modal-topologia-zoom" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+                <div class="bg-white rounded-2xl max-w-2xl w-full p-6 text-center shadow-2xl relative">
+                    <button onclick="document.getElementById('modal-topologia-zoom').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-800 font-bold text-xl p-2 transition">✕</button>
+                    <h3 id="topologia-title" class="text-lg font-bold text-blue-900 mb-2">Ampliação da Topologia</h3>
+                    <div id="topologia-img-box" class="w-full bg-slate-900 rounded-xl p-4 min-h-[240px] flex items-center justify-center my-3 border border-slate-700">
+                    </div>
+                    <p id="topologia-desc" class="text-xs text-slate-600 leading-relaxed mb-4"></p>
+                    <button onclick="document.getElementById('modal-topologia-zoom').classList.add('hidden')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-xs shadow transition">Fechar Ampliação</button>
+                </div>
+            </div>
+
+            <!-- REALIDADE AUMENTADA (RA): DUPLA ABORDAGEM -->
             <section id="ra" class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
                 <div class="flex items-center justify-between mb-2">
                     <h2 class="text-xl font-bold text-slate-800">🕶️ Realidade Aumentada (RA) e Visualizador 3D</h2>
@@ -771,34 +871,34 @@
                 <script>
                     const questoesQuiz = [
                         {
-                            q: "1. No circuito RLC série, a impedância total Z é mínima e puramente resistiva quando:",
-                            opts: ["X_L é maior que X_C", "X_L é igual a X_C (Ressonância)", "Frequência f é igual a zero", "Resistência R é nula"],
+                            q: "1. No simulador PhET com circuito RLC série, a frequência de ressonância (f_0) é caracterizada por:",
+                            opts: ["Reatância Indutiva maior que Reatância Capacitiva", "X_L igual a X_C, tornando a corrente MÁXIMA e Z = R", "Frequência f igual a zero", "Resistência R ser infinita"],
                             correct: 1,
-                            exp: "Na ressonância (X_L = X_C), as reatâncias cancelam-se mutuamente, resultando em Z = R e corrente máxima."
+                            exp: "Na ressonância (X_L = X_C), as reatâncias anulam-se mutuamente, resultando em Z = R e pico máximo de corrente."
                         },
                         {
-                            q: "2. Em uma instalação industrial com Fator de Potência baixo (FP = 0,65 atrasado), qual componente deve ser adicionado em paralelo?",
-                            opts: ["Resistor de alta potência", "Banco de Capacitores", "Indutor de núcleo de ar", "Gerador CC"],
+                            q: "2. Em uma instalação indutiva no PhET com FP = 0,707, qual ação corrige o FP para 1,00?",
+                            opts: ["Aumentar a resistência em série", "Adicionar um capacitor em paralelo de valor adequado (ex: 0,032 F)", "Desligar a fonte de tensão", "Substituir a fonte por uma bateria CC"],
                             correct: 1,
-                            exp: "O banco de capacitores fornece a potência reativa capacitiva (Q_C) necessária para neutralizar o reativo indutivo dos motores."
+                            exp: "O capacitor em paralelo fornece a potência reativa capacitiva (Q_C) necessária para neutralizar o reativo indutivo, reduzindo a corrente total fornecida pela fonte."
                         },
                         {
-                            q: "3. Qual é o comportamento de um indutor ideal em regime permanente quando alimentado por Corrente Contínua (CC)?",
-                            opts: ["Circuito aberto", "Curto-circuito (comutação direta sem oposição)", "Filtro passa-altas", "Gerador de tensão"],
+                            q: "3. Qual é o comportamento de um indutor ideal no PhET em regime permanente alimentado por Corrente Contínua (CC)?",
+                            opts: ["Circuito aberto", "Curto-circuito (X_L = 0 Ω pois f = 0 Hz)", "Filtro passa-altas", "Gerador de tensão"],
                             correct: 1,
-                            exp: "Como a frequência em CC é zero (f = 0), a reatância indutiva X_L = 2·π·f·L resulta em zero Ohms (curto-circuito)."
+                            exp: "Como em CC a frequência é zero (f = 0 Hz), a reatância indutiva X_L = 2·π·f·L é 0 Ω (comporta-se como um fio de resistência desprezível)."
                         },
                         {
-                            q: "4. Na transposição fasorial, qual é a defasagem angular entre a corrente e a tensão em um capacitor puro?",
-                            opts: ["Tensão adiantada 90°", "Corrente adiantada 90° em relação à tensão", "Em fase (0°)", "Defasagem de 180°"],
+                            q: "4. No osciloscópio do PhET, qual é a defasagem temporal entre a corrente e a tensão em um capacitor puro alimentado por fonte CA de 0,50 Hz?",
+                            opts: ["Tensão adiantada de 90°", "Corrente adiantada de 90° em relação à tensão (atinge o pico 0,5s antes)", "Em fase (0°)", "Defasagem de 180°"],
                             correct: 1,
-                            exp: "No capacitor, a corrente atinge seu pico antes da tensão, estando 90° adiantada."
+                            exp: "No capacitor, a corrente atinge seu pico antes da tensão, estando 90° adiantada (1/4 de ciclo ou 0,5s na frequência de 0,50 Hz)."
                         },
                         {
                             q: "5. A Lei de Kirchhoff das Correntes (LKC) fundamenta-se na conservação de:",
-                            opts: ["Energia mecânica", "Carga elétrica (soma das correntes num nó é zero)", "Massa do condutor", "Frequência da rede"],
+                            opts: ["Energia mecânica", "Carga elétrica (a soma das correntes que entram num nó é igual às que saem)", "Massa do condutor", "Frequência da rede"],
                             correct: 1,
-                            exp: "A LKC estabelece que a carga elétrica não pode acumular-se num nó: a soma das correntes que entram é igual à das que saem."
+                            exp: "A LKC estabelece que a carga elétrica não se acumula num nó: a soma das correntes a entrar é idêntica à soma das que saem."
                         }
                     ];
 
@@ -889,9 +989,9 @@
                             </div>
 
                             <div class="mindmap-node text-center">
-                                <span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">3. Aplicação / SA</span>
+                                <span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">3. Aplicação / SA (PhET)</span>
                                 <h4 class="font-bold text-xs text-slate-800 mt-2 mb-1">Engenharia Prática</h4>
-                                <p class="text-[11px] text-slate-600">Fator de Potência (FP)<br>Ressonância RLC<br>Simulação PhET + RA</p>
+                                <p class="text-[11px] text-slate-600">FP (V=20V, f=0,50Hz)<br>Ressonância RLC Série<br>Simulação PhET + RA</p>
                             </div>
                         </div>
                     </div>
