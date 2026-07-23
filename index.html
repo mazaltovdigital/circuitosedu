@@ -144,6 +144,7 @@
                 .replace(/"/g, "&quot;");
         }
 
+        // Função de Limpeza Rigorosa para qualquer resíduo de LaTeX/cifrão
         function limparNotacaoLatex(texto) {
             if (!texto) return "";
             return texto
@@ -967,6 +968,7 @@
                     </button>
                 </form>
 
+                <!-- Mensagem de Confirmação Visual de Sucesso -->
                 <div id="feedback-alerta" class="hidden mt-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-3"></div>
 
                 <div class="flex justify-between items-center pt-6 border-t mt-6">
