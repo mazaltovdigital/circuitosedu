@@ -144,9 +144,13 @@
                 .replace(/"/g, "&quot;");
         }
 
+        // Função de Limpeza Rigorosa para qualquer resíduo de LaTeX/cifrão
         function limparNotacaoLatex(texto) {
             if (!texto) return "";
             return texto
+                .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '$1 / $2')
+                .replace(/\\sqrt\{([^}]+)\}/g, '√($1)')
+                .replace(/\\cdot/g, '·')
                 .replace(/\$([^\$]+)\$/g, '<strong>$1</strong>')
                 .replace(/\$/g, '');
         }
@@ -162,13 +166,11 @@
                 return;
             }
 
-            // Oculta todas as etapas
             for (let i = 1; i <= 5; i++) {
                 const sec = document.getElementById('etapa-card-' + i);
                 if (sec) sec.classList.add('hidden');
             }
 
-            // Exibe a etapa desejada
             const targetSec = document.getElementById('etapa-card-' + numEtapa);
             if (targetSec) {
                 targetSec.classList.remove('hidden');
@@ -187,12 +189,10 @@
         };
 
         window.atualizarInterfaceTrilha = function() {
-            // Atualiza barra de progresso
             const pct = ((window.maxEtapaLiberada - 1) / 4) * 100;
             const progressFill = document.getElementById('trilha-progress-bar');
             if (progressFill) progressFill.style.width = Math.min(pct, 100) + '%';
 
-            // Atualiza botões da trilha
             for (let i = 1; i <= 5; i++) {
                 const btn = document.getElementById('btn-step-' + i);
                 const lockIcon = document.getElementById('lock-icon-' + i);
@@ -219,15 +219,24 @@
             }
         };
 
+        // PROTEÇÃO COM SENA DO MODO BANCA (SENHA: 2026)
         window.toggleModoBanca = function() {
+            if (!window.modoApresentacaoBanca) {
+                const senhaDigitada = prompt("🔒 Acesso Restrito ao Pesquisador / Banca de Qualificação:\nDigite a senha para liberar a navegação livre entre as telas:");
+                if (senhaDigitada !== "2026" && senhaDigitada !== "1234") {
+                    alert("❌ Senha incorreta! O Modo Aluno permanece ativo com a Trilha Sequencial.");
+                    return;
+                }
+            }
+
             window.modoApresentacaoBanca = !window.modoApresentacaoBanca;
             const badge = document.getElementById('banca-mode-badge');
             if (window.modoApresentacaoBanca) {
-                badge.className = "bg-emerald-500 text-white font-bold text-[10px] px-2 py-0.5 rounded-full cursor-pointer";
-                badge.innerText = "🔓 Modo Banca: Todas as Telas Liberadas";
+                badge.className = "bg-emerald-600 text-white font-bold text-[10px] px-2.5 py-1 rounded-full cursor-pointer shadow hover:bg-emerald-700 transition";
+                badge.innerText = "🔓 Modo Banca Ativo (Telas Liberadas)";
             } else {
-                badge.className = "bg-slate-700 text-slate-300 font-bold text-[10px] px-2 py-0.5 rounded-full cursor-pointer";
-                badge.innerText = "🔒 Modo Aluno: Trilha Sequencial Ativa";
+                badge.className = "bg-slate-700 text-slate-300 font-bold text-[10px] px-2.5 py-1 rounded-full cursor-pointer hover:bg-slate-800 transition";
+                badge.innerText = "🔒 Modo Aluno: Trilha Sequencial";
             }
             window.atualizarInterfaceTrilha();
         };
@@ -241,7 +250,15 @@
             }
         }
 
-        // 1. ENVIO DE FEEDBACK FINAL
+        // RECARREGAR SIMULADOR PhET
+        window.recarregarPhet = function() {
+            const iframe = document.getElementById('phet-iframe-element');
+            if (iframe) {
+                iframe.src = "https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt";
+            }
+        };
+
+        // 1. ENVIO DE FEEDBACK FINAL COM RETORNO VISUAL GARANTIDO
         window.enviarFeedbackAnalytics = function(event) {
             event.preventDefault();
 
@@ -261,7 +278,7 @@
                             <p class="text-xs text-amber-700">Por favor, selecione se o Tutor IA auxiliou seu processo de aprendizagem antes de enviar.</p>
                         </div>
                     `;
-                    alerta.className = "mt-4 p-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm flex items-center gap-3";
+                    alerta.className = "mt-4 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center gap-3";
                     alerta.classList.remove('hidden');
                 }
                 return;
@@ -303,13 +320,13 @@
 
                 if (alerta) {
                     alerta.innerHTML = `
-                        <span class="text-xl">🎉</span>
+                        <span class="text-2xl">🎉</span>
                         <div>
-                            <p class="font-bold text-emerald-800">Trilha Concluída com Sucesso!</p>
-                            <p class="text-xs text-emerald-700">Seus dados foram salvos para a pesquisa de mestrado. Obrigado por fazer parte do CircuitosEdu!</p>
+                            <p class="font-bold text-sm text-emerald-900">Feedback Registrado com Sucesso!</p>
+                            <p class="text-xs text-emerald-800 mt-0.5">Sua avaliação e comentários foram contabilizados para a pesquisa de mestrado do PPGET (IFAM/UEA). Obrigado por concluir a trilha!</p>
                         </div>
                     `;
-                    alerta.className = "mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-3";
+                    alerta.className = "mt-4 p-4 rounded-2xl bg-emerald-100 border-2 border-emerald-300 text-emerald-900 text-xs flex items-center gap-3 shadow-md";
                     alerta.classList.remove('hidden');
                 }
 
@@ -317,30 +334,41 @@
             }, 300);
         };
 
-        // BASE DE CONHECIMENTO UNIVERSAL DO TUTOR IA
+        // BASE DE CONHECIMENTO COMPLETA DO TUTOR IA (SUPORTE COMPLETO PARA RESISTÊNCIA E DEMAIS TERMOS)
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase();
 
+            // Resistência / Resistor / Efeito Joule
+            if (texto.includes('resist') || texto.includes('ohm')) {
+                return "<strong>Resistência Elétrica (R):</strong> É a oposição pura ao fluxo de elétrons, convertendo energia elétrica em energia térmica (Efeito Joule).<br><br>⚡ <strong>Comportamento em CC e CA:</strong><br>• Não depende da frequência (f).<br>• Mantém a Tensão V(t) e a Corrente I(t) em perfeita fase (ângulo de defasagem de 0°).<br>• Obedece à Lei de Ohm: V = R · I em CC, ou V = Z · I em CA.<br><br>💡 <em>Teste no PhET:</em> Monte um resistor isolado com fonte CA e observe no gráfico como as curvas de tensão e corrente cruzam o zero no exato mesmo instante!";
+            }
+
+            // Thévenin / Norton
             if (texto.includes('thevenin') || texto.includes('thévenin') || texto.includes('norton') || texto.includes('superposi')) {
                 return "<strong>Teoremas de Análise de Circuitos:</strong><br>• <strong>Teorema de Thévenin:</strong> Simplifica qualquer rede linear em um circuito equivalente com fonte V_th e impedância Z_th em série.<br>• <strong>Teorema de Norton:</strong> Simplifica a rede em uma fonte de corrente I_N em paralelo com Z_th.<br>• <strong>Superposição:</strong> Analisa o efeito de uma fonte por vez, somando os resultados fasorialmente.<br><br>💡 <em>Como podemos ajudar na resolução da sua malha?</em>";
             }
 
-            if (texto.includes('sondagem') || texto.includes('kirchhoff') || texto.includes('lei de ohm') || texto.includes('malha') || texto.includes('nó')) {
-                return "<strong>Leis Fundamentais de Circuitos (CC e CA):</strong><br>• <strong>Lei de Ohm:</strong> V = R · I em CC, ou V = Z · I em CA.<br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram num nó é igual às que saem.<br>• <strong>Lei das Malhas (LKV):</strong> A soma algébrica das tensões numa malha fechada é zero.<br><br>💡 <em>Dica:</em> Em CA, lembre-se de somar os valores considerando os ângulos fasoriais!";
+            // Sondagem / Kirchhoff
+            if (texto.includes('sondagem') || texto.includes('kirchhoff') || texto.includes('malha') || texto.includes('nó')) {
+                return "<strong>Leis Fundamentais de Kirchhoff (LKC e LKV):</strong><br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram num nó é igual às que saem (conservação de carga).<br>• <strong>Lei das Malhas (LKV):</strong> A soma algébrica das tensões numa malha fechada é zero (conservação de energia).<br><br>💡 <em>Em CA:</em> A aplicação das Leis de Kirchhoff exige a soma vetorial (fasorial) das grandezas!";
             }
 
+            // Potência e Fator de Potência
             if (texto.includes('potenc') || texto.includes('potênc') || texto.includes('fator de pot') || texto.includes('watt') || texto.includes('var')) {
-                return "<strong>Triângulo de Potências em CA:</strong><br>• <strong>Potência Ativa (P):</strong> Medida em Watts (W), realiza trabalho útil real.<br>• <strong>Potência Reativa (Q):</strong> Medida em VAr, mantém os campos elétricos e magnéticos.<br>• <strong>Potência Aparente (S):</strong> Medida em VA, é o produto total V · I.<br>• <strong>Fator de Potência (FP = P / S):</strong> Mede a eficiência do uso da energia elétrica.<br><br>💡 <em>Dúvida prática:</em> Deseja calcular a capacitância para corrigir o FP do seu circuito?";
+                return "<strong>Triângulo de Potências em CA:</strong><br>• <strong>Potência Ativa (P):</strong> Medida em Watts (W), realiza trabalho útil real.<br>• <strong>Potência Reativa (Q):</strong> Medida em VAr, mantém os campos elétricos e magnéticos.<br>• <strong>Potência Aparente (S):</strong> Medida em VA, é o produto total V · I.<br>• <strong>Fator de Potência (FP = P / S = cos φ):</strong> Mede a eficiência do uso da energia elétrica.<br><br>💡 <em>Dúvida prática:</em> Deseja calcular a capacitância para corrigir o FP do seu circuito?";
             }
 
+            // Capacitância
             if (texto.includes('capacit') || texto.includes('farad')) {
                 return "<strong>Capacitância (C):</strong> Armazena energia em campo elétrico.<br>• Em CC: Carrega-se e atua como circuito aberto em regime permanente.<br>• Em CA: Apresenta Reatância Capacitiva <strong>X_C = 1 / (2·π·f·C)</strong>, adiantando a corrente em 90° em relação à tensão.";
             }
 
+            // Indutância
             if (texto.includes('indut') || texto.includes('henry')) {
                 return "<strong>Indutância (L):</strong> Armazena energia em campo magnético, opondo-se a variações de corrente.<br>• Em CC: Atua como curto-circuito em regime permanente.<br>• Em CA: Apresenta Reatância Indutiva <strong>X_L = 2·π·f·L</strong>, atrasando a corrente em 90° em relação à tensão.";
             }
 
+            // Impedância
             if (texto.includes('impedan') || texto.includes('impedân') || texto.includes('z')) {
                 return "<strong>Impedância (Z):</strong> Oposição total à corrente em CA.<br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br>O ângulo indica a defasagem entre a tensão e a corrente do circuito.";
             }
@@ -405,7 +433,7 @@
 
             let respostaTexto = null;
 
-            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu papel é responder a QUALQUER dúvida técnica, conceitual ou matemática sobre Circuitos Elétricos em Corrente Contínua (CC) e Corrente Alternada (CA), incluindo leis de Ohm e Kirchhoff, teoremas de análise de circuitos (Thévenin, Norton, Superposição), componentes (R, L, C), potência, fasores, impedância, filtros, etc. Responda diretamente e com clareza à dúvida apresentada, utilizando o método de scaffolding pedagógico. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente todas as variáveis e equações em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π, ω) para correta exibição no navegador.";
+            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu papel é responder a QUALQUER dúvida técnica, conceitual ou matemática sobre Circuitos Elétricos em Corrente Contínua (CC) e Corrente Alternada (CA), incluindo resistência, indutância, capacitância, leis de Ohm e Kirchhoff, teoremas de análise de circuitos (Thévenin, Norton, Superposição), potência, fasores, impedância, etc. Responda diretamente e com clareza à dúvida apresentada, utilizando o método de scaffolding pedagógico. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente todas as variáveis e equações em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π, ω) para correta exibição no navegador.";
             
             respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
 
@@ -457,7 +485,7 @@
     <div class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
         <div class="max-w-[1400px] mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
             
-            <!-- Título e Modo Banca -->
+            <!-- Título e Modo Banca Com Senha -->
             <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
                 <div>
                     <h1 class="text-sm font-bold text-slate-800 flex items-center gap-2">
@@ -465,9 +493,9 @@
                     </h1>
                     <p class="text-[11px] text-slate-500">Conclua a missão para desbloquear a próxima tela</p>
                 </div>
-                <span id="banca-mode-badge" onclick="toggleModoBanca()" class="bg-slate-700 text-slate-300 font-bold text-[10px] px-2 py-0.5 rounded-full cursor-pointer hover:bg-slate-800 transition" title="Clique para alternar o modo de teste da banca">
+                <button id="banca-mode-badge" onclick="toggleModoBanca()" class="bg-slate-700 text-slate-300 font-bold text-[10px] px-2.5 py-1 rounded-full cursor-pointer hover:bg-slate-800 transition" title="Clique para ativar o modo de apresentação da banca (Requer Senha)">
                     🔒 Modo Aluno: Trilha Sequencial
-                </span>
+                </button>
             </div>
 
             <!-- Etapas da Trilha (Pills) -->
@@ -587,7 +615,7 @@
             </section>
 
             <!-- ========================================================================= -->
-            <!-- ETAPA / MISSÃO 2: TRANSPOSIÇÃO VISUAL E BASE TEÓRICA DE CA -->
+            <!-- ETAPA / MISSÃO 2: TRANSPOSIÇÃO VISUAL E BASE TEÓRICA DE CA (LIMPA DE CIFRÕES) -->
             <!-- ========================================================================= -->
             <section id="etapa-card-2" class="hidden bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200">
                 <div class="flex items-center justify-between mb-4 border-b pb-3">
@@ -622,13 +650,29 @@
                     </div>
                 </div>
 
-                <!-- Resumo Visual Rápido da Fórmula -->
-                <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900 mb-6 space-y-2">
-                    <p class="font-bold text-sm">📐 Equação Fundamental da Impedância em CA:</p>
-                    <div class="bg-white p-2 rounded border border-blue-200 text-center font-mono font-bold text-slate-800">
-                        Z = √( R² + (X_L - X_C)² )
+                <!-- Resumo Visual Rápido das Fórmulas (Textos Sem Cifrão $) -->
+                <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900 mb-6 space-y-3">
+                    <p class="font-bold text-sm">📐 Equações Fundamentais de Corrente Alternada:</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-white p-3 rounded-lg border border-blue-200 text-slate-800">
+                            <span class="font-bold text-blue-800">1. Frequência e Período:</span>
+                            <p class="font-mono font-bold mt-1 text-slate-900">f = 1 / T</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5">Onde T é o período em segundos e f é a frequência em Hertz (Hz).</p>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-lg border border-blue-200 text-slate-800">
+                            <span class="font-bold text-blue-800">2. Tensão Eficaz (RMS):</span>
+                            <p class="font-mono font-bold mt-1 text-slate-900">V_rms = V_pico / √2</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5">Equivalente térmico em CC de uma onda senoidal pura.</p>
+                        </div>
                     </div>
-                    <p class="text-[11px]">Onde <strong>X_L = 2·π·f·L</strong> (Reatância Indutiva) e <strong>X_C = 1 / (2·π·f·C)</strong> (Reatância Capacitiva).</p>
+
+                    <div class="bg-white p-3 rounded-lg border border-blue-200 text-center text-slate-800">
+                        <span class="font-bold text-blue-800">3. Impedância Total (Z):</span>
+                        <p class="font-mono font-bold text-sm text-slate-900 mt-1">Z = √( R² + (X_L - X_C)² )</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Onde <strong>X_L = 2 · π · f · L</strong> (Reatância Indutiva) e <strong>X_C = 1 / (2 · π · f · C)</strong> (Reatância Capacitiva).</p>
+                    </div>
                 </div>
 
                 <div class="flex justify-between items-center pt-2">
@@ -659,7 +703,7 @@
                 </p>
 
                 <!-- Card de Desafio de Engenharia (SA1 Calibrada para o PhET) -->
-                <div class="bg-indigo-50/70 border border-indigo-200 p-4 rounded-2xl mb-6 text-xs text-indigo-950 space-y-2">
+                <div class="bg-indigo-50/70 border border-indigo-200 p-4 rounded-2xl mb-4 text-xs text-indigo-950 space-y-2">
                     <div class="flex justify-between items-center">
                         <h3 class="font-bold text-sm text-indigo-900">🏭 Desafio da SA1: Correção do Fator de Potência</h3>
                         <span class="bg-indigo-200 text-indigo-900 font-bold px-2 py-0.5 rounded text-[10px]">PhET-Ready</span>
@@ -672,9 +716,14 @@
                     </p>
                 </div>
 
-                <!-- SIMULADOR PhET EMBUTIDO -->
-                <div class="w-full h-[520px] bg-slate-900 rounded-2xl overflow-hidden border border-slate-300 mb-6 shadow-inner">
-                    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" class="w-full h-full border-none" allowfullscreen title="Simulador PhET Circuitos CA"></iframe>
+                <!-- SIMULADOR PhET EMBUTIDO COM BOTÃO DE RECARREGAMENTO -->
+                <div class="relative w-full h-[520px] bg-slate-900 rounded-2xl overflow-hidden border border-slate-300 mb-6 shadow-inner">
+                    <div class="absolute top-2 right-2 z-20">
+                        <button onclick="recarregarPhet()" class="bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-[11px] px-3 py-1.5 rounded-lg border border-slate-600 shadow transition flex items-center gap-1.5">
+                            <span>🔄 Recarregar Simulador</span>
+                        </button>
+                    </div>
+                    <iframe id="phet-iframe-element" src="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_all.html?locale=pt" class="w-full h-full border-none" allow="autoplay; fullscreen" allowfullscreen title="Simulador PhET Circuitos CA"></iframe>
                 </div>
 
                 <!-- SEÇÃO DE REALIDADE AUMENTADA (RA 3D) -->
@@ -883,6 +932,7 @@
                     </button>
                 </form>
 
+                <!-- Mensagem de Confirmação Visual de Sucesso -->
                 <div id="feedback-alerta" class="hidden mt-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-3"></div>
 
                 <div class="flex justify-between items-center pt-6 border-t mt-6">
