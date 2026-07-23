@@ -608,18 +608,15 @@
                 </div>
 
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 text-justify">
-                    Agora que revisamos CC, avançamos para a <strong>Corrente Alternada (CA)</strong>! Clique nos cartões abaixo para explorar o material teórico ou assista aos vídeos ilustrativos no final da página:
+                    Agora que revisamos CC, avançamos para a <strong>Corrente Alternada (CA)</strong>! Clique nos cartões abaixo para explorar o material teórico ou assista aos vídeos ilustrativos selecionados:
                 </p>
 
-                <!-- ========================================================================= -->
-                <!-- DANIEL: EDITE OS TEXTOS DOS ÍCONES/CARDS ABAIXO MANUAMENTE SE DESEJAR    -->
-                <!-- ========================================================================= -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <!-- GRID DE CARDS COM O NOVO ÍCONE DE VÍDEOS LÚDICOS INTEGRADO -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
                     
                     <!-- Ícone 1: Grandezas -->
                     <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="location.href='grandezas.html'">
                         <span class="text-3xl mb-1">⚡</span>
-                        <!-- DANIEL: EDITE O TÍTULO E SUBTÍTULO DO ÍCONE 1 -->
                         <h3 class="font-bold text-slate-800 text-xs uppercase">Grandezas CA</h3>
                         <p class="text-[11px] text-slate-500 mt-1">Frequência (f), Tensão RMS e Período (T)</p>
                     </div>
@@ -627,22 +624,27 @@
                     <!-- Ícone 2: Fasores -->
                     <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="location.href='fasores.html'">
                         <span class="text-3xl mb-1">📈</span>
-                        <!-- DANIEL: EDITE O TÍTULO E SUBTÍTULO DO ÍCONE 2 -->
                         <h3 class="font-bold text-slate-800 text-xs uppercase">Fasores</h3>
-                        <p class="text-[11px] text-slate-500 mt-1">Vetores girantes e defasagem temporal (90°)</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Vetores girantes e defasagem (90°)</p>
                     </div>
 
                     <!-- Ícone 3: Impedância -->
                     <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="location.href='impedancia.html'">
                         <span class="text-3xl mb-1">🔋</span>
-                        <!-- DANIEL: EDITE O TÍTULO E SUBTÍTULO DO ÍCONE 3 -->
                         <h3 class="font-bold text-slate-800 text-xs uppercase">Impedância (Z)</h3>
                         <p class="text-[11px] text-slate-500 mt-1">Triângulo R, X_L e X_C em CA</p>
                     </div>
 
+                    <!-- Ícone 4: VÍDEOS LÚDICOS (ÍCONE DE EXIBIÇÃO DIRETA) -->
+                    <div class="interactive-card border-indigo-300 hover:border-indigo-600 bg-indigo-50/60 shadow-sm" onclick="document.getElementById('secao-videos-ludicos').scrollIntoView({behavior: 'smooth'})">
+                        <span class="text-3xl mb-1">🎬</span>
+                        <h3 class="font-bold text-indigo-900 text-xs uppercase">Vídeos Lúdicos</h3>
+                        <p class="text-[11px] text-indigo-700 mt-1">Guerra das Correntes e Animações</p>
+                    </div>
+
                 </div>
 
-                <!-- DANIEL: EDITE AS FÓRMULAS E EXPLICAÇÕES DE RESUMO SE DESEJAR -->
+                <!-- FÓRMULAS DE RESUMO TEÓRICO -->
                 <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900 mb-6 space-y-3">
                     <p class="font-bold text-sm">📐 Equações Fundamentais de Corrente Alternada:</p>
 
@@ -667,10 +669,8 @@
                     </div>
                 </div>
 
-                <!-- ========================================================================= -->
-                <!-- NOVA SEÇÃO: VÍDEOS DIDÁTICOS & LÚDICOS PARA OS ALUNOS (CURATORIA DANIEL)  -->
-                <!-- ========================================================================= -->
-                <div class="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-5 mb-6">
+                <!-- SEÇÃO DE VÍDEOS DIDÁTICOS & LÚDICOS -->
+                <div id="secao-videos-ludicos" class="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-5 mb-6">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-sm font-bold text-indigo-900 flex items-center gap-2">
                             <span>🎬 Vídeos Didáticos & Curiosidades Lúdicas</span>
@@ -681,7 +681,7 @@
                         Assista aos vídeos selecionados para visualizar de forma divertida como os elétrons se comportam em Corrente Alternada e a Guerra das Correntes:
                     </p>
 
-                    <!-- GRID DE CARDS DE VÍDEO (DANIEL: INSERIR SEUS VÍDEOS TRIADOS AQUI) -->
+                    <!-- GRID DE CARDS DE VÍDEO -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         
                         <!-- VÍDEO 1 -->
