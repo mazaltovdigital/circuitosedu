@@ -334,39 +334,82 @@
             }, 300);
         };
 
-        // BASE DE CONHECIMENTO COMPLETA DO TUTOR IA
+        // BASE DE CONHECIMENTO COMPLETA E EXAUSTIVA DO TUTOR IA
         function gerarRespostaTutorEducacional(duvida) {
-            const texto = duvida.toLowerCase();
+            // Normaliza o texto removendo acentos e maiúsculas
+            const texto = duvida.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-            if (texto.includes('resist') || texto.includes('ohm')) {
+            // 1. Fasores e Defasagem Angular
+            if (texto.includes('fasor') || texto.includes('fase') || texto.includes('angulo') || texto.includes('defasagem')) {
+                return "<strong>Fasores e Análise Vetorial em CA:</strong><br>• <strong>O que são:</strong> São vetores girantes com velocidade angular ω = 2·π·f. Representam a amplitude e a fase de grandezas senoidais.<br>• <strong>Resistor (R):</strong> Tensão V(t) e Corrente I(t) estão em <strong>perfeita fase (0°)</strong>.<br>• <strong>Indutor (L):</strong> A Tensão V(t) fica <strong>adiantada 90°</strong> em relação à Corrente I(t).<br>• <strong>Capacitor (C):</strong> A Corrente I(t) fica <strong>adiantada 90°</strong> em relação à Tensão V(t).<br><br>💡 <em>Pergunta para reflexão:</em> Como você representa o vetor da impedância Z combinando a resistência R na horizontal e as reatâncias (X_L - X_C) na vertical?";
+            }
+
+            // 2. Resistência / Resistor / Efeito Joule
+            if (texto.includes('resist') || texto.includes('ohm') || texto.includes('joule')) {
                 return "<strong>Resistência Elétrica (R):</strong> É a oposição pura ao fluxo de elétrons, convertendo energia elétrica em energia térmica (Efeito Joule).<br><br>⚡ <strong>Comportamento em CC e CA:</strong><br>• Não depende da frequência (f).<br>• Mantém a Tensão V(t) e a Corrente I(t) em perfeita fase (ângulo de defasagem de 0°).<br>• Obedece à Lei de Ohm: V = R · I em CC, ou V = Z · I em CA.<br><br>💡 <em>Teste no PhET:</em> Monte um resistor isolado com fonte CA e observe no gráfico como as curvas de tensão e corrente cruzam o zero no exato mesmo instante!";
             }
 
-            if (texto.includes('thevenin') || texto.includes('thévenin') || texto.includes('norton') || texto.includes('superposi')) {
-                return "<strong>Teoremas de Análise de Circuitos:</strong><br>• <strong>Teorema de Thévenin:</strong> Simplifica qualquer rede linear em um circuito equivalente com fonte V_th e impedância Z_th em série.<br>• <strong>Teorema de Norton:</strong> Simplifica a rede em uma fonte de corrente I_N em paralelo com Z_th.<br>• <strong>Superposição:</strong> Analisa o efeito de uma fonte por vez, somando os resultados fasorialmente.";
+            // 3. Indutância / Indutor
+            if (texto.includes('indut') || texto.includes('henry') || texto.includes('bobina')) {
+                return "<strong>Indutância (L):</strong> Propriedade do indutor de armazenar energia em campo magnético e opor-se a variações de corrente.<br><br>🌀 <strong>Comportamento em CC vs CA:</strong><br>• <strong>Em CC (f = 0 Hz):</strong> Comporta-se como um curto-circuito em regime permanente.<br>• <strong>Em CA:</strong> Apresenta Reatância Indutiva <strong>X_L = 2 · π · f · L</strong>, fazendo a corrente atrasar 90° em relação à tensão.<br><br>💡 <em>Reflexão:</em> O que acontece com a oposição X_L do indutor se aumentarmos a frequência da fonte?";
             }
 
-            if (texto.includes('sondagem') || texto.includes('kirchhoff') || texto.includes('malha') || texto.includes('nó')) {
-                return "<strong>Leis Fundamentais de Kirchhoff (LKC e LKV):</strong><br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram num nó é igual às que saem.<br>• <strong>Lei das Malhas (LKV):</strong> A soma algébrica das tensões numa malha fechada é zero.";
-            }
-
-            if (texto.includes('potenc') || texto.includes('potênc') || texto.includes('fator de pot') || texto.includes('watt') || texto.includes('var')) {
-                return "<strong>Triângulo de Potências em CA:</strong><br>• <strong>Potência Ativa (P):</strong> Medida em Watts (W), realiza trabalho útil real.<br>• <strong>Potência Reativa (Q):</strong> Medida em VAr, mantém os campos elétricos e magnéticos.<br>• <strong>Potência Aparente (S):</strong> Medida em VA, é o produto total V · I.<br>• <strong>Fator de Potência (FP = P / S = cos φ):</strong> Mede a eficiência do uso da energia elétrica.";
-            }
-
+            // 4. Capacitância / Capacitor
             if (texto.includes('capacit') || texto.includes('farad')) {
-                return "<strong>Capacitância (C):</strong> Armazena energia em campo elétrico.<br>• Em CC: Carrega-se e atua como circuito aberto em regime permanente.<br>• Em CA: Apresenta Reatância Capacitiva <strong>X_C = 1 / (2·π·f·C)</strong>, adiantando a corrente em 90° em relação à tensão.";
+                return "<strong>Capacitância (C):</strong> Propriedade do capacitor de armazenar energia num campo elétrico entre suas placas.<br><br>⚡ <strong>Comportamento em CC vs CA:</strong><br>• <strong>Em CC:</strong> Carrega-se até a tensão da fonte e atua como circuito aberto em regime permanente.<br>• <strong>Em CA:</strong> Oferece Reatância Capacitiva <strong>X_C = 1 / (2 · π · f · C)</strong>, adiantando a corrente em 90° em relação à tensão.<br><br>💡 <em>Reflexão:</em> Por que a reatância capacitiva diminui quando a frequência aumenta?";
             }
 
-            if (texto.includes('indut') || texto.includes('henry')) {
-                return "<strong>Indutância (L):</strong> Armazena energia em campo magnético.<br>• Em CC: Atua como curto-circuito em regime permanente.<br>• Em CA: Apresenta Reatância Indutiva <strong>X_L = 2·π·f·L</strong>, atrasando a corrente em 90° em relação à tensão.";
+            // 5. Impedância
+            if (texto.includes('impedan') || texto.includes('z') || texto.includes('triangulo de impedan')) {
+                return "<strong>Impedância Total (Z):</strong> É a oposição TOTAL à passagem da Corrente Alternada, unindo a parte resistiva (R) e a parte reativa (X = X_L - X_C).<br><br>📐 <em>Fórmula fundamental:</em><br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √( R² + (X_L - X_C)² )</code><br>• Ângulo de fase: φ = arctan( (X_L - X_C) / R ).<br><br>💡 <em>Desafio:</em> O que ocorre com a impedância Z quando X_L é exatamente igual a X_C?";
             }
 
-            if (texto.includes('impedan') || texto.includes('impedân') || texto.includes('z')) {
-                return "<strong>Impedância (Z):</strong> Oposição total à corrente em CA.<br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br>O ângulo indica a defasagem entre a tensão e a corrente do circuito.";
+            // 6. Frequência / Hertz / Período
+            if (texto.includes('frequenc') || texto.includes('hertz') || texto.includes('periodo')) {
+                return "<strong>Frequência (f) e Período (T):</strong><br>• <strong>Frequência (f):</strong> Número de ciclos senoidais por segundo, medido em Hertz (Hz).<br>• <strong>Período (T):</strong> Tempo necessário para completar um ciclo: <code class='bg-slate-200 px-1 rounded text-xs'>f = 1 / T</code>.<br>• <strong>Em CC:</strong> Frequência f = 0 Hz.<br>• <strong>Em CA Comercial:</strong> A rede elétrica no Brasil opera em 60 Hz (60 ciclos por segundo).";
             }
 
-            return "Excelente dúvida sobre Eletrotécnica e Circuitos!<br><br>Como seu <strong>Tutor Mediador Pedagógico</strong>, estou à disposição para apoiar sua análise técnica. Como você equacionaria essa etapa do circuito com as Leis de Ohm e Kirchhoff?";
+            // 7. Tensão / Voltagem / RMS
+            if (texto.includes('tens') || texto.includes('volt') || texto.includes('rms') || texto.includes('pico')) {
+                return "<strong>Tensão Elétrica em CA:</strong><br>• <strong>Tensão Senoidal:</strong> V(t) = V_pico · sen(2·π·f·t).<br>• <strong>Tensão RMS (Eficaz):</strong> É o valor em CA que produz o mesmo efeito térmico que uma tensão em CC equivalente: <code class='bg-slate-200 px-1 rounded text-xs'>V_rms = V_pico / √2</code>.<br>• Multímetros e voltímetros de bancada medem o valor RMS!";
+            }
+
+            // 8. Corrente / Amperagem
+            if (texto.includes('corrent') || texto.includes('amper')) {
+                return "<strong>Corrente Elétrica (I) em CA:</strong><br>• Fluxo de elétrons que inverte seu sentido periodicamente no tempo.<br>• Valor eficaz: <code class='bg-slate-200 px-1 rounded text-xs'>I_rms = I_pico / √2</code>.<br>• Pela Lei de Ohm generalizada em CA: <code class='bg-slate-200 px-1 rounded text-xs'>I = V / Z</code>.";
+            }
+
+            // 9. Potência / Fator de Potência
+            if (texto.includes('potenc') || texto.includes('watt') || texto.includes('var') || texto.includes('fator de pot') || texto.includes('fp')) {
+                return "<strong>Triângulo de Potências em CA:</strong><br>• <strong>Potência Ativa (P):</strong> Medida em Watts (W), realiza trabalho útil real (P = V · I · cos φ).<br>• <strong>Potência Reativa (Q):</strong> Medida em VAr, mantém os campos elétricos/magnéticos (Q = V · I · sen φ).<br>• <strong>Potência Aparente (S):</strong> Medida em VA, produto total V · I (S = √(P² + Q²)).<br>• <strong>Fator de Potência (FP = P / S = cos φ):</strong> Indica a eficiência da instalação.";
+            }
+
+            // 10. Ressonância
+            if (texto.includes('ressonan')) {
+                return "<strong>Ressonância Elétrica em CA:</strong><br>Ocorre em circuitos RLC quando a Reatância Indutiva iguala a Reatância Capacitiva (<strong>X_L = X_C</strong>).<br>• <strong>Frequência de Ressonância:</strong> <code class='bg-slate-200 px-1 rounded text-xs'>f_0 = 1 / (2·π·√(L·C))</code>.<br>• <strong>No RLC Série:</strong> A impedância torna-se puramente resistiva (Z = R) e a corrente atinge seu PICO MÁXIMO!";
+            }
+
+            // 11. Thévenin / Norton / Superposição
+            if (texto.includes('thevenin') || texto.includes('norton') || texto.includes('superposi')) {
+                return "<strong>Teoremas de Análise de Circuitos:</strong><br>• <strong>Teorema de Thévenin:</strong> Simplifica qualquer rede linear em uma fonte de tensão V_th com impedância Z_th em série.<br>• <strong>Teorema de Norton:</strong> Simplifica a rede em uma fonte de corrente I_N em paralelo com Z_th.<br>• <strong>Superposição:</strong> Analisa o efeito de cada fonte isoladamente e soma os resultados fasorialmente.";
+            }
+
+            // 12. Leis de Kirchhoff / Ohm
+            if (texto.includes('kirchhoff') || texto.includes('malha') || texto.includes('no') || texto.includes('lkc') || texto.includes('lkv')) {
+                return "<strong>Leis de Kirchhoff em CA e CC:</strong><br>• <strong>Lei dos Nós (LKC):</strong> A soma fasorial das correntes que entram num nó é igual às que saem (∑ I = 0).<br>• <strong>Lei das Malhas (LKV):</strong> A soma fasorial das tensões em uma malha fechada é nula (∑ V = 0).<br>• <strong>Lei de Ohm:</strong> V = R · I em CC, ou V = Z · I em CA.";
+            }
+
+            // 13. Filtros
+            if (texto.includes('filtro') || texto.includes('passa')) {
+                return "<strong>Filtros Elétricos em CA:</strong><br>• <strong>Passa-Baixas (RC/RL):</strong> Permite a passagem de baixas frequências e atenua altas frequências.<br>• <strong>Passa-Altas (RC/RL):</strong> Permite a passagem de altas frequências e atenua baixas frequências.<br>• <strong>Passa-Banda (RLC):</strong> Seleciona uma faixa específica de frequências em torno da ressonância f_0.";
+            }
+
+            // 14. Topologias / Série / Paralelo / Misto
+            if (texto.includes('serie') || texto.includes('paralelo') || texto.includes('misto') || texto.includes('topologia')) {
+                return "<strong>Topologias de Circuitos em CA:</strong><br>• <strong>Circuito Série:</strong> A corrente I é idêntica em todos os elementos; as tensões somam-se fasorialmente.<br>• <strong>Circuito Paralelo:</strong> A tensão V é idêntica em todos os ramos; as correntes somam-se fasorialmente.<br>• <strong>Circuito Misto:</strong> Combinação de ramos série e paralelo.";
+            }
+
+            return "Excelente dúvida sobre Eletrotécnica e Circuitos!<br><br>Como seu <strong>Tutor Mediador Pedagógico</strong>, estou à disposição para apoiar sua análise técnica. Para guiarmos seu raciocínio: como você equacionaria essa etapa do circuito considerando as grandezas (R, L, C) e as Leis de Ohm ou Kirchhoff?";
         }
 
         async function fetchGeminiWithBackoff(prompt, systemPrompt) {
@@ -426,7 +469,7 @@
 
             let respostaTexto = null;
 
-            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu papel é responder a QUALQUER dúvida técnica, conceitual ou matemática sobre Circuitos Elétricos em Corrente Contínua (CC) e Corrente Alternada (CA), incluindo resistência, indutância, capacitância, leis de Ohm e Kirchhoff, teoremas de análise de circuitos (Thévenin, Norton, Superposição), potência, fasores, impedância, etc. Responda diretamente e com clareza à dúvida apresentada, utilizando o método de scaffolding pedagógico. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente todas as variáveis e equações em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π, ω) para correta exibição no navegador.";
+            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu papel é responder a QUALQUER dúvida técnica, conceitual ou matemática sobre Circuitos Elétricos em Corrente Contínua (CC) e Corrente Alternada (CA), incluindo resistência, indutância, capacitância, fasores, leis de Ohm e Kirchhoff, teoremas de análise de circuitos (Thévenin, Norton, Superposição), potência, impedância, etc. Responda diretamente e com clareza à dúvida apresentada, utilizando o método de scaffolding pedagógico. NUNCA use marcadores cifrão de LaTeX como $Z$, $R$ ou $$fórmulas$$. Apresente todas as variáveis e equações em texto simples e negrito (ex: Z, R, X, C, L, V, I, f, π, ω) para correta exibição no navegador.";
             
             respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
 
@@ -611,7 +654,7 @@
                     Agora que revisamos CC, avançamos para a <strong>Corrente Alternada (CA)</strong>! Clique nos cartões abaixo para explorar o material teórico ou assista aos vídeos ilustrativos selecionados:
                 </p>
 
-                <!-- GRID DE CARDS COM O NOVO ÍCONE DE VÍDEOS LÚDICOS INTEGRADO -->
+                <!-- GRID DE CARDS COM O ÍCONE DE VÍDEOS LÚDICOS INTEGRADO -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
                     
                     <!-- Ícone 1: Grandezas -->
@@ -635,7 +678,7 @@
                         <p class="text-[11px] text-slate-500 mt-1">Triângulo R, X_L e X_C em CA</p>
                     </div>
 
-                    <!-- Ícone 4: VÍDEOS LÚDICOS (ÍCONE DE EXIBIÇÃO DIRETA) -->
+                    <!-- Ícone 4: VÍDEOS LÚDICOS -->
                     <div class="interactive-card border-indigo-300 hover:border-indigo-600 bg-indigo-50/60 shadow-sm" onclick="document.getElementById('secao-videos-ludicos').scrollIntoView({behavior: 'smooth'})">
                         <span class="text-3xl mb-1">🎬</span>
                         <h3 class="font-bold text-indigo-900 text-xs uppercase">Vídeos Lúdicos</h3>
@@ -995,7 +1038,7 @@
                 <!-- Chat Scroll Area -->
                 <div id="chat-window" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
                     <div class="chat-bubble tutor-msg">
-                        Olá! Sou seu mediador pedagógico. Você pode me fazer qualquer pergunta sobre circuitos CC ou CA enquanto cumpre sua trilha!
+                        Olá! Sou seu mediador pedagógico. Você pode me fazer qualquer pergunta sobre circuitos CC ou CA (fasores, reatância, impedância, etc.) enquanto cumpre sua trilha!
                     </div>
                 </div>
 
