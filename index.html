@@ -144,7 +144,6 @@
                 .replace(/"/g, "&quot;");
         }
 
-        // Função de Limpeza Rigorosa para qualquer resíduo de LaTeX/cifrão
         function limparNotacaoLatex(texto) {
             if (!texto) return "";
             return texto
@@ -219,7 +218,7 @@
             }
         };
 
-        // PROTEÇÃO COM SENA DO MODO BANCA (SENHA: 2026)
+        // PROTEÇÃO COM SENHA DO MODO BANCA (SENHA: 2026)
         window.toggleModoBanca = function() {
             if (!window.modoApresentacaoBanca) {
                 const senhaDigitada = prompt("🔒 Acesso Restrito ao Pesquisador / Banca de Qualificação:\nDigite a senha para liberar a navegação livre entre as telas:");
@@ -258,7 +257,7 @@
             }
         };
 
-        // 1. ENVIO DE FEEDBACK FINAL COM RETORNO VISUAL GARANTIDO
+        // 1. ENVIO DE FEEDBACK FINAL
         window.enviarFeedbackAnalytics = function(event) {
             event.preventDefault();
 
@@ -334,41 +333,34 @@
             }, 300);
         };
 
-        // BASE DE CONHECIMENTO COMPLETA DO TUTOR IA (SUPORTE COMPLETO PARA RESISTÊNCIA E DEMAIS TERMOS)
+        // BASE DE CONHECIMENTO COMPLETA DO TUTOR IA
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase();
 
-            // Resistência / Resistor / Efeito Joule
             if (texto.includes('resist') || texto.includes('ohm')) {
                 return "<strong>Resistência Elétrica (R):</strong> É a oposição pura ao fluxo de elétrons, convertendo energia elétrica em energia térmica (Efeito Joule).<br><br>⚡ <strong>Comportamento em CC e CA:</strong><br>• Não depende da frequência (f).<br>• Mantém a Tensão V(t) e a Corrente I(t) em perfeita fase (ângulo de defasagem de 0°).<br>• Obedece à Lei de Ohm: V = R · I em CC, ou V = Z · I em CA.<br><br>💡 <em>Teste no PhET:</em> Monte um resistor isolado com fonte CA e observe no gráfico como as curvas de tensão e corrente cruzam o zero no exato mesmo instante!";
             }
 
-            // Thévenin / Norton
             if (texto.includes('thevenin') || texto.includes('thévenin') || texto.includes('norton') || texto.includes('superposi')) {
-                return "<strong>Teoremas de Análise de Circuitos:</strong><br>• <strong>Teorema de Thévenin:</strong> Simplifica qualquer rede linear em um circuito equivalente com fonte V_th e impedância Z_th em série.<br>• <strong>Teorema de Norton:</strong> Simplifica a rede em uma fonte de corrente I_N em paralelo com Z_th.<br>• <strong>Superposição:</strong> Analisa o efeito de uma fonte por vez, somando os resultados fasorialmente.<br><br>💡 <em>Como podemos ajudar na resolução da sua malha?</em>";
+                return "<strong>Teoremas de Análise de Circuitos:</strong><br>• <strong>Teorema de Thévenin:</strong> Simplifica qualquer rede linear em um circuito equivalente com fonte V_th e impedância Z_th em série.<br>• <strong>Teorema de Norton:</strong> Simplifica a rede em uma fonte de corrente I_N em paralelo com Z_th.<br>• <strong>Superposição:</strong> Analisa o efeito de uma fonte por vez, somando os resultados fasorialmente.";
             }
 
-            // Sondagem / Kirchhoff
             if (texto.includes('sondagem') || texto.includes('kirchhoff') || texto.includes('malha') || texto.includes('nó')) {
-                return "<strong>Leis Fundamentais de Kirchhoff (LKC e LKV):</strong><br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram num nó é igual às que saem (conservação de carga).<br>• <strong>Lei das Malhas (LKV):</strong> A soma algébrica das tensões numa malha fechada é zero (conservação de energia).<br><br>💡 <em>Em CA:</em> A aplicação das Leis de Kirchhoff exige a soma vetorial (fasorial) das grandezas!";
+                return "<strong>Leis Fundamentais de Kirchhoff (LKC e LKV):</strong><br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram num nó é igual às que saem.<br>• <strong>Lei das Malhas (LKV):</strong> A soma algébrica das tensões numa malha fechada é zero.";
             }
 
-            // Potência e Fator de Potência
             if (texto.includes('potenc') || texto.includes('potênc') || texto.includes('fator de pot') || texto.includes('watt') || texto.includes('var')) {
-                return "<strong>Triângulo de Potências em CA:</strong><br>• <strong>Potência Ativa (P):</strong> Medida em Watts (W), realiza trabalho útil real.<br>• <strong>Potência Reativa (Q):</strong> Medida em VAr, mantém os campos elétricos e magnéticos.<br>• <strong>Potência Aparente (S):</strong> Medida em VA, é o produto total V · I.<br>• <strong>Fator de Potência (FP = P / S = cos φ):</strong> Mede a eficiência do uso da energia elétrica.<br><br>💡 <em>Dúvida prática:</em> Deseja calcular a capacitância para corrigir o FP do seu circuito?";
+                return "<strong>Triângulo de Potências em CA:</strong><br>• <strong>Potência Ativa (P):</strong> Medida em Watts (W), realiza trabalho útil real.<br>• <strong>Potência Reativa (Q):</strong> Medida em VAr, mantém os campos elétricos e magnéticos.<br>• <strong>Potência Aparente (S):</strong> Medida em VA, é o produto total V · I.<br>• <strong>Fator de Potência (FP = P / S = cos φ):</strong> Mede a eficiência do uso da energia elétrica.";
             }
 
-            // Capacitância
             if (texto.includes('capacit') || texto.includes('farad')) {
                 return "<strong>Capacitância (C):</strong> Armazena energia em campo elétrico.<br>• Em CC: Carrega-se e atua como circuito aberto em regime permanente.<br>• Em CA: Apresenta Reatância Capacitiva <strong>X_C = 1 / (2·π·f·C)</strong>, adiantando a corrente em 90° em relação à tensão.";
             }
 
-            // Indutância
             if (texto.includes('indut') || texto.includes('henry')) {
-                return "<strong>Indutância (L):</strong> Armazena energia em campo magnético, opondo-se a variações de corrente.<br>• Em CC: Atua como curto-circuito em regime permanente.<br>• Em CA: Apresenta Reatância Indutiva <strong>X_L = 2·π·f·L</strong>, atrasando a corrente em 90° em relação à tensão.";
+                return "<strong>Indutância (L):</strong> Armazena energia em campo magnético.<br>• Em CC: Atua como curto-circuito em regime permanente.<br>• Em CA: Apresenta Reatância Indutiva <strong>X_L = 2·π·f·L</strong>, atrasando a corrente em 90° em relação à tensão.";
             }
 
-            // Impedância
             if (texto.includes('impedan') || texto.includes('impedân') || texto.includes('z')) {
                 return "<strong>Impedância (Z):</strong> Oposição total à corrente em CA.<br><code class='bg-slate-200 px-1.5 py-0.5 rounded text-xs'>Z = √(R² + (X_L - X_C)²)</code><br>O ângulo indica a defasagem entre a tensão e a corrente do circuito.";
             }
@@ -448,31 +440,24 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         };
 
-        // LÓGICA DA LUPA
-        window.moverLupa = function(e, container) {
-            const target = container.querySelector('.lupa-target');
-            const rect = container.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            target.style.transformOrigin = `${x}% ${y}%`;
-            target.style.transform = "scale(2.2)";
-        };
+        // LÓGICA DE ABRIR MODAL DE VÍDEO
+        window.abrirModalVideo = function(titulo, embedUrl, desc) {
+            document.getElementById('video-modal-title').innerText = titulo;
+            document.getElementById('video-modal-desc').innerText = desc;
+            const playerBox = document.getElementById('video-player-box');
 
-        window.resetarLupa = function(container) {
-            const target = container.querySelector('.lupa-target');
-            target.style.transformOrigin = "center center";
-            target.style.transform = "scale(1)";
-        };
-
-        window.expandirImagemTopologia = function(titulo, imgSrc, desc) {
-            document.getElementById('topologia-title').innerText = "Ampliação HD: " + titulo;
-            document.getElementById('topologia-desc').innerText = desc;
-            const imgBox = document.getElementById('topologia-img-box');
-            
-            imgBox.innerHTML = `
-                <img src="${imgSrc}" class="max-h-[320px] max-w-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/600x350/0f172a/ffffff?text=${encodeURIComponent(titulo)}';">
-            `;
-            document.getElementById('modal-topologia-zoom').classList.remove('hidden');
+            if (embedUrl && embedUrl.includes('http')) {
+                playerBox.innerHTML = `<iframe class="w-full h-full rounded-xl" src="${embedUrl}" title="${titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+                playerBox.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full text-center p-6 bg-slate-800 text-slate-300">
+                        <span class="text-4xl mb-2">🎬</span>
+                        <p class="font-bold text-white text-sm">Vídeo em Frequência de Triagem Curatorial</p>
+                        <p class="text-xs text-slate-400 mt-1 max-w-sm">Daniel, este espaço está pronto! Quando decidir os vídeos, basta colar a URL do YouTube no código index.html.</p>
+                    </div>
+                `;
+            }
+            document.getElementById('modal-video-ludico').classList.remove('hidden');
         };
     </script>
 </head>
@@ -535,15 +520,13 @@
     <!-- Alerta Flutuante de Bloqueio da Trilha -->
     <div id="trilha-alerta-floating" class="hidden fixed top-16 left-1/2 -translate-x-1/2 bg-amber-500 text-white font-bold text-xs px-4 py-2 rounded-full shadow-lg z-50 animate-bounce"></div>
 
-    <!-- CORPO PRINCIPAL (LAYOUT EM DUAS COLUNAS: TELA ATIVA DA TRILHA + TUTOR IA ACOMPANHANTE) -->
+    <!-- CORPO PRINCIPAL -->
     <div class="max-w-[1400px] mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- COLUNA PRINCIPAL DA TRILHA (TELA ÚNICA POR VEZ) -->
+        <!-- COLUNA PRINCIPAL DA TRILHA -->
         <main class="lg:col-span-8 space-y-6">
 
-            <!-- ========================================================================= -->
             <!-- ETAPA / MISSÃO 1: SONDAGEM DIAGNÓSTICA DE CC E LEIS DE KIRCHHOFF -->
-            <!-- ========================================================================= -->
             <section id="etapa-card-1" class="bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200">
                 <div class="flex items-center justify-between mb-4 border-b pb-3">
                     <div class="flex items-center gap-2">
@@ -614,9 +597,7 @@
                 </script>
             </section>
 
-            <!-- ========================================================================= -->
-            <!-- ETAPA / MISSÃO 2: TRANSPOSIÇÃO VISUAL E BASE TEÓRICA DE CA (LIMPA DE CIFRÕES) -->
-            <!-- ========================================================================= -->
+            <!-- ETAPA / MISSÃO 2: TRANSPOSIÇÃO VISUAL E BASE TEÓRICA DE CA -->
             <section id="etapa-card-2" class="hidden bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200">
                 <div class="flex items-center justify-between mb-4 border-b pb-3">
                     <div class="flex items-center gap-2">
@@ -626,31 +607,41 @@
                 </div>
 
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 text-justify">
-                    Agora que revisamos CC, avançamos para a <strong>Corrente Alternada (CA)</strong>! Clique nos 3 cartões abaixo para explorar a base conceitual dos componentes e fasores:
+                    Agora que revisamos CC, avançamos para a <strong>Corrente Alternada (CA)</strong>! Clique nos cartões abaixo para explorar o material teórico ou assista aos vídeos ilustrativos no final da página:
                 </p>
 
-                <!-- Cards Teóricos -->
+                <!-- ========================================================================= -->
+                <!-- DANIEL: EDITE OS TEXTOS DOS ÍCONES/CARDS ABAIXO MANUAMENTE SE DESEJAR    -->
+                <!-- ========================================================================= -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    
+                    <!-- Ícone 1: Grandezas -->
                     <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="location.href='grandezas.html'">
                         <span class="text-3xl mb-1">⚡</span>
+                        <!-- DANIEL: EDITE O TÍTULO E SUBTÍTULO DO ÍCONE 1 -->
                         <h3 class="font-bold text-slate-800 text-xs uppercase">Grandezas CA</h3>
                         <p class="text-[11px] text-slate-500 mt-1">Frequência (f), Tensão RMS e Período (T)</p>
                     </div>
 
+                    <!-- Ícone 2: Fasores -->
                     <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="location.href='fasores.html'">
                         <span class="text-3xl mb-1">📈</span>
+                        <!-- DANIEL: EDITE O TÍTULO E SUBTÍTULO DO ÍCONE 2 -->
                         <h3 class="font-bold text-slate-800 text-xs uppercase">Fasores</h3>
                         <p class="text-[11px] text-slate-500 mt-1">Vetores girantes e defasagem temporal (90°)</p>
                     </div>
 
+                    <!-- Ícone 3: Impedância -->
                     <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="location.href='impedancia.html'">
                         <span class="text-3xl mb-1">🔋</span>
+                        <!-- DANIEL: EDITE O TÍTULO E SUBTÍTULO DO ÍCONE 3 -->
                         <h3 class="font-bold text-slate-800 text-xs uppercase">Impedância (Z)</h3>
                         <p class="text-[11px] text-slate-500 mt-1">Triângulo R, X_L e X_C em CA</p>
                     </div>
+
                 </div>
 
-                <!-- Resumo Visual Rápido das Fórmulas (Textos Sem Cifrão $) -->
+                <!-- DANIEL: EDITE AS FÓRMULAS E EXPLICAÇÕES DE RESUMO SE DESEJAR -->
                 <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900 mb-6 space-y-3">
                     <p class="font-bold text-sm">📐 Equações Fundamentais de Corrente Alternada:</p>
 
@@ -675,6 +666,56 @@
                     </div>
                 </div>
 
+                <!-- ========================================================================= -->
+                <!-- NOVA SEÇÃO: VÍDEOS DIDÁTICOS & LÚDICOS PARA OS ALUNOS (CURATORIA DANIEL)  -->
+                <!-- ========================================================================= -->
+                <div class="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-5 mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-bold text-indigo-900 flex items-center gap-2">
+                            <span>🎬 Vídeos Didáticos & Curiosidades Lúdicas</span>
+                        </h3>
+                        <span class="bg-indigo-200 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Espaço Lúdico</span>
+                    </div>
+                    <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                        Assista aos vídeos selecionados para visualizar de forma divertida como os elétrons se comportam em Corrente Alternada e a Guerra das Correntes:
+                    </p>
+
+                    <!-- GRID DE CARDS DE VÍDEO (DANIEL: INSERIR SEUS VÍDEOS TRIADOS AQUI) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        
+                        <!-- VÍDEO 1 -->
+                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm hover:border-indigo-400 transition cursor-pointer flex flex-col justify-between" onclick="abrirModalVideo('Guerra das Correntes: Tesla vs Edison', 'https://www.youtube.com/embed/gJ1Mz7cMTHg', 'Animação lúdica sobre a disputa histórica entre Corrente Contínua e Corrente Alternada.')">
+                            <div>
+                                <div class="w-full h-28 bg-slate-900 rounded-lg flex items-center justify-center text-white relative overflow-hidden mb-2">
+                                    <span class="text-3xl opacity-80 group-hover:scale-110 transition">▶️</span>
+                                    <span class="absolute bottom-1 right-2 bg-black/70 text-[9px] px-1.5 py-0.5 rounded text-white font-mono">Vídeo 1</span>
+                                </div>
+                                <h4 class="font-bold text-xs text-slate-800">Guerra das Correntes: CC vs CA</h4>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Por que o mundo adotou a Corrente Alternada?</p>
+                            </div>
+                            <span class="mt-3 inline-block bg-indigo-100 text-indigo-800 text-[10px] font-bold py-1 px-2.5 rounded-lg text-center">
+                                🍿 Assistir Vídeo Lúdico
+                            </span>
+                        </div>
+
+                        <!-- VÍDEO 2 -->
+                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm hover:border-indigo-400 transition cursor-pointer flex flex-col justify-between" onclick="abrirModalVideo('O que são Fasores? Explicado de Forma Simples', '', 'Animação visual demonstrando vetores girantes de tensão e corrente.')">
+                            <div>
+                                <div class="w-full h-28 bg-slate-900 rounded-lg flex items-center justify-center text-white relative overflow-hidden mb-2">
+                                    <span class="text-3xl opacity-80">▶️</span>
+                                    <span class="absolute bottom-1 right-2 bg-black/70 text-[9px] px-1.5 py-0.5 rounded text-white font-mono">Vídeo 2</span>
+                                </div>
+                                <h4 class="font-bold text-xs text-slate-800">Como Funcionam os Fasores?</h4>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Entendendo a defasagem temporal de 90° em R, L e C.</p>
+                            </div>
+                            <span class="mt-3 inline-block bg-indigo-100 text-indigo-800 text-[10px] font-bold py-1 px-2.5 rounded-lg text-center">
+                                🍿 Assistir Vídeo Lúdico
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
                 <div class="flex justify-between items-center pt-2">
                     <button onclick="irParaEtapa(1)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs transition">
                         ⬅️ Voltar para Missão 1
@@ -687,9 +728,7 @@
                 </div>
             </section>
 
-            <!-- ========================================================================= -->
             <!-- ETAPA / MISSÃO 3: EXPERIMENTAÇÃO EM BANCADA (PhET + SA ENGENHARIA + RA) -->
-            <!-- ========================================================================= -->
             <section id="etapa-card-3" class="hidden bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200">
                 <div class="flex items-center justify-between mb-4 border-b pb-3">
                     <div class="flex items-center gap-2">
@@ -702,7 +741,7 @@
                     Chegou o momento da prática! Resolva a <strong>Situação de Aprendizagem (SA1)</strong> montando o circuito diretamente no simulador PhET embutido abaixo:
                 </p>
 
-                <!-- Card de Desafio de Engenharia (SA1 Calibrada para o PhET) -->
+                <!-- Card de Desafio de Engenharia -->
                 <div class="bg-indigo-50/70 border border-indigo-200 p-4 rounded-2xl mb-4 text-xs text-indigo-950 space-y-2">
                     <div class="flex justify-between items-center">
                         <h3 class="font-bold text-sm text-indigo-900">🏭 Desafio da SA1: Correção do Fator de Potência</h3>
@@ -754,9 +793,7 @@
                 </div>
             </section>
 
-            <!-- ========================================================================= -->
             <!-- ETAPA / MISSÃO 4: FECHAMENTO & QUIZ SÍNCRONO DE AVALIAÇÃO -->
-            <!-- ========================================================================= -->
             <section id="etapa-card-4" class="hidden bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200">
                 <div class="flex items-center justify-between mb-4 border-b pb-3">
                     <div class="flex items-center gap-2">
@@ -887,9 +924,7 @@
                 </div>
             </section>
 
-            <!-- ========================================================================= -->
             <!-- ETAPA / MISSÃO 5: FEEDBACK DISCENTE & CONCLUSÃO DA PESQUISA DE MESTRADO -->
-            <!-- ========================================================================= -->
             <section id="etapa-card-5" class="hidden bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200">
                 <div class="flex items-center justify-between mb-4 border-b pb-3">
                     <div class="flex items-center gap-2">
@@ -932,7 +967,6 @@
                     </button>
                 </form>
 
-                <!-- Mensagem de Confirmação Visual de Sucesso -->
                 <div id="feedback-alerta" class="hidden mt-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-3"></div>
 
                 <div class="flex justify-between items-center pt-6 border-t mt-6">
@@ -944,7 +978,7 @@
 
         </main>
 
-        <!-- COLUNA LATERAL FIXA: TUTOR IA MEDIADOR (DISPONÍVEL DURANTE TODA A TRILHA) -->
+        <!-- COLUNA LATERAL FIXA: TUTOR IA MEDIADOR -->
         <aside class="lg:col-span-4">
             <div class="bg-white rounded-2xl shadow-lg border-t-4 border-blue-600 h-[600px] flex flex-col sticky top-20 border-x border-b border-slate-200 overflow-hidden">
                 <!-- Chat Header -->
@@ -977,14 +1011,17 @@
 
     </div>
 
-    <!-- MODAL DE AMPLIAÇÃO DAS TOPOLOGIAS DE CIRCUITO -->
-    <div id="modal-topologia-zoom" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <!-- MODAL DE VÍDEO LÚDICO (EMBED YOUTUBE) -->
+    <div id="modal-video-ludico" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full p-6 text-center shadow-2xl relative">
-            <button onclick="document.getElementById('modal-topologia-zoom').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-800 font-bold text-xl p-2 transition">✕</button>
-            <h3 id="topologia-title" class="text-base font-bold text-blue-900 mb-2">Ampliação de Esquema</h3>
-            <div id="topologia-img-box" class="w-full bg-slate-900 rounded-xl p-4 min-h-[220px] flex items-center justify-center my-3 border border-slate-700"></div>
-            <p id="topologia-desc" class="text-xs text-slate-600 leading-relaxed mb-4"></p>
-            <button onclick="document.getElementById('modal-topologia-zoom').classList.add('hidden')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg text-xs shadow transition">Fechar Ampliação</button>
+            <button onclick="document.getElementById('modal-video-ludico').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-800 font-bold text-xl p-2 transition">✕</button>
+            <h3 id="video-modal-title" class="text-base font-bold text-indigo-900 mb-2">Vídeo Didático</h3>
+            
+            <div id="video-player-box" class="w-full bg-slate-900 rounded-xl h-[320px] flex items-center justify-center my-3 border border-slate-700 overflow-hidden">
+            </div>
+
+            <p id="video-modal-desc" class="text-xs text-slate-600 leading-relaxed mb-4"></p>
+            <button onclick="document.getElementById('modal-video-ludico').classList.add('hidden')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-xs shadow transition">Fechar Vídeo</button>
         </div>
     </div>
 
