@@ -21,12 +21,12 @@
     <style>
         body { font-family: 'Roboto', sans-serif; background-color: #f1f5f9; scroll-behavior: smooth; }
         
-        /* CORREÇÃO DEFINITIVA DO BANNER: Exibição 100% Integral sem cortar a frase inferior */
+        /* Banner do Cabeçalho Responsivo sem Cortes */
         .main-header-banner {
             background: #0f172a url('./assets/cabecalho-anexo.png') no-repeat center center;
-            background-size: 100% 100%; /* Garante que 100% do texto e logos apareçam sem cortes */
+            background-size: 100% 100%;
             width: 100%;
-            height: 200px; /* Altura ideal para telemóveis */
+            height: 200px;
             border-bottom: 4px solid #2563eb;
         }
         @media (min-width: 640px) {
@@ -36,7 +36,7 @@
             .main-header-banner { height: 260px; }
         }
 
-        /* Estilos do Indicador da Trilha Sequencial */
+        /* Estilos da Trilha Sequencial */
         .step-pill {
             transition: all 0.3s ease;
             cursor: pointer;
@@ -125,7 +125,7 @@
             console.warn("Analytics ativado.");
         }
 
-        // FUNÇÃO DE ATUALIZAÇÃO DO RELÓGIO DIGITAL
+        // RELÓGIO DIGITAL EM TEMPO REAL
         function atualizarRelogioDigital() {
             const agora = new Date();
             const dataFormatada = agora.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -160,7 +160,7 @@
                 .replace(/\$/g, '');
         }
 
-        // LÓGICA DE GERENCIAMENTO DA TRILHA DE APRENDIZAGEM
+        // GERENCIAMENTO DA TRILHA DE APRENDIZAGEM
         window.etapaAtual = 1;
         window.maxEtapaLiberada = 1;
         window.modoApresentacaoBanca = false;
@@ -338,31 +338,61 @@
             }, 300);
         };
 
-        // BASE DE RESPOSTAS EDUCACIONAIS DO TUTOR IA
+        // BASE DE CONHECIMENTO AMPLIADA DO TUTOR IA (eletrotécnica + ferramentas da pesquisa)
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
+            // 1. Dúvidas sobre Plickers
+            if (texto.includes('plickers')) {
+                return "<strong>Aplicativo Plickers:</strong><br>• É uma ferramenta de avaliação formativa síncrona que utiliza cartões impressos com códigos QR bidimensionais.<br>• Permite ao professor escanear instantaneamente as respostas da turma com a câmera do smartphone, sem exigir que os alunos usem celulares.<br>• No ecossistema <strong>CircuitosEdu</strong>, é utilizado nas sessões de <em>Peer Instruction (Instrução por Pares)</em> para medir o Pré-Teste e Pós-Teste sem viés tecnológico.";
+            }
+
+            // 2. Dúvidas sobre Ganho de Hake
+            if (texto.includes('hake') || texto.includes('ganho') || texto.includes('fator de ganho')) {
+                return "<strong>Fator de Ganho Normalizado de Hake ($g$):</strong><br>• É o índice estatístico que mensura a fração do ganho conceitual alcançado pelo estudante em relação ao ganho máximo possível.<br>• <strong>Fórmula:</strong> <code class='bg-slate-200 px-1 py-0.5 rounded text-xs'>g = (S_f - S_i) / (100 - S_i)</code>, onde $S_i$ é a nota inicial (Pré-Teste) e $S_f$ é a nota final (Pós-Teste).<br>• <strong>Interpretação pedagógica:</strong><br>  - $g < 0{,}30$: Baixo ganho (*Low-g*)<br>  - $0{,}30 \\le g \\le 0{,}70$: <strong>Médio ganho (*Medium-g* - Objetivo Alvo)</strong><br>  - $g > 0{,}70$: Alto ganho (*High-g*)";
+            }
+
+            // 3. Dúvidas sobre Fator de Potência e SA1
+            if (texto.includes('fator de potencia') || texto.includes('fp') || texto.includes('correcao') || texto.includes('sa1')) {
+                return "<strong>Fator de Potência (FP) e Correção (SA1):</strong><br>• O FP representa a eficiência com que a energia elétrica é convertida em trabalho útil: $\\text{FP} = \\cos(\\theta) = P / S$.<br>• Cargas indutivas (como motores elétricos) consomem Potência Reativa Indutiva ($Q_L$), reduzindo o FP e aumentando a corrente na rede.<br>• <strong>Na SA1 do PhET:</strong> A adição de um capacitor em paralelo fornece Potência Reativa Capacitiva ($Q_C$), neutralizando $Q_L$, elevando o FP para $1{,}00$ e reduzindo a corrente total da fonte de $1{,}41\\text{ A}$ para $1{,}00\\text{ A}$.";
+            }
+
+            // 4. Dúvidas sobre Fasores e Defasagem
             if (texto.includes('fasor') || texto.includes('fase') || texto.includes('defasagem')) {
-                return "<strong>Fasores e Análise Vetorial em CA:</strong><br>• <strong>O que são:</strong> Vetores girantes com velocidade angular ω = 2·π·f.<br>• <strong>Resistor (R):</strong> Tensão V(t) e Corrente I(t) em <strong>fase (0°)</strong>.<br>• <strong>Indutor (L):</strong> Tensão V(t) <strong>adiantada 90°</strong> em relação à Corrente I(t).<br>• <strong>Capacitor (C):</strong> Corrente I(t) <strong>adiantada 90°</strong> em relação à Tensão V(t).";
+                return "<strong>Fasores e Análise Vetorial em CA:</strong><br>• <strong>O que são:</strong> Vetores girantes que representam grandezas senoidais com velocidade angular $\\omega = 2\\cdot\\pi\\cdot f$.<br>• <strong>Resistor (R):</strong> Tensão $V(t)$ e Corrente $I(t)$ em <strong>fase (0°)</strong>.<br>• <strong>Indutor (L):</strong> Tensão $V(t)$ <strong>adiantada 90°</strong> em relação à Corrente $I(t)$.<br>• <strong>Capacitor (C):</strong> Corrente $I(t)$ <strong>adiantada 90°</strong> em relação à Tensão $V(t)$.";
             }
 
+            // 5. Dúvidas sobre Resistência e Lei de Ohm
             if (texto.includes('resist') || texto.includes('ohm')) {
-                return "<strong>Resistência Elétrica (R):</strong> Oposição pura ao fluxo de elétrons (Efeito Joule). Não depende da frequência (f) e mantém V(t) e I(t) em fase (0°).";
+                return "<strong>Resistência Elétrica (R):</strong> Oposição pura ao fluxo de elétrons (Efeito Joule). Não depende da frequência ($f$) e mantém tensão e corrente em perfeita fase (0°).";
             }
 
-            if (texto.includes('indut') || texto.includes('henry')) {
-                return "<strong>Indutância (L):</strong> Armazena energia em campo magnético. Apresenta Reatância Indutiva <strong>X_L = 2 · π · f · L</strong> em CA, atrasando a corrente em 90°.";
+            // 6. Dúvidas sobre Indutância e Reatância Indutiva
+            if (texto.includes('indut') || texto.includes('henry') || texto.includes('x_l')) {
+                return "<strong>Indutância (L) e Reatância Indutiva ($X_L$):</strong><br>• O indutor armazena energia em campo magnético.<br>• Apresenta oposição chamada Reatância Indutiva: <strong>$X_L = 2 \\cdot \\pi \\cdot f \\cdot L$</strong>.<br>• Quanto maior a frequência ($f$), maior a oposição $X_L$. Fica atrasado em 90° em relação à tensão.";
             }
 
-            if (texto.includes('capacit') || texto.includes('farad')) {
-                return "<strong>Capacitância (C):</strong> Armazena energia em campo elétrico. Oferece Reatância Capacitiva <strong>X_C = 1 / (2 · π · f · C)</strong>, adiantando a corrente em 90°.";
+            // 7. Dúvidas sobre Capacitância e Reatância Capacitiva
+            if (texto.includes('capacit') || texto.includes('farad') || texto.includes('x_c')) {
+                return "<strong>Capacitância (C) e Reatância Capacitiva ($X_C$):</strong><br>• O capacitor armazena energia em campo elétrico.<br>• Apresenta Reatância Capacitiva: <strong>$X_C = 1 / (2 \\cdot \\pi \\cdot f \\cdot C)$</strong>.<br>• Quanto maior a frequência ($f$), menor a oposição $X_C$. Adiantado em 90° em relação à tensão.";
             }
 
+            // 8. Dúvidas sobre Impedância
             if (texto.includes('impedan') || texto.includes('z')) {
-                return "<strong>Impedância Total (Z):</strong> Oposição total em CA.<br>Fórmula: <code class='bg-slate-200 px-1 py-0.5 rounded text-xs'>Z = √( R² + (X_L - X_C)² )</code>.";
+                return "<strong>Impedância Total (Z):</strong> Oposição total ao fluxo de Corrente Alternada em circuitos RLC.<br>• <strong>Fórmula:</strong> <code class='bg-slate-200 px-1 py-0.5 rounded text-xs'>Z = √( R² + (X_L - X_C)² )</code>.<br>• É a soma vetorial da resistência física ($R$) com as reatâncias ($X_L - X_C$).";
             }
 
-            return "Excelente questão sobre Circuitos Elétricos!<br><br>Como seu <strong>Tutor Mediador</strong>, sugiro relacionar as grandezas R, L e C no simulador PhET e observar as defasagens fasoriais no gráfico.";
+            // 9. Dúvidas sobre Leis de Kirchhoff
+            if (texto.includes('kirchhoff') || texto.includes('lkc') || texto.includes('lkt') || texto.includes('no') || texto.includes('malha')) {
+                return "<strong>Leis de Kirchhoff:</strong><br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram em um nó é igual à soma das correntes que saem (Conservação de Carga).<br>• <strong>Lei das Malhas (LKT):</strong> A soma algébrica de todas as tensões em uma malha fechada é igual a zero (Conservação de Energia).";
+            }
+
+            // 10. Dúvidas sobre Peer Instruction / Metodologia
+            if (texto.includes('peer') || texto.includes('instrucao por pares') || texto.includes('metodologia')) {
+                return "<strong>Instrução por Pares (Peer Instruction):</strong><br>• Metodologia ativa criada por Eric Mazur (Harvard).<br>• Consiste na aplicação de um desafio conceitual (Conceptest), votação individual via Plickers, debate em duplas/grupos para negociação de significados e segunda votação.<br>• Estimula a reorganização de subsunçores (Ausubel) e a aprendizagem colaborativa.";
+            }
+
+            return "Excelente questão!<br><br>Como seu <strong>Tutor IA Mediador</strong> do CircuitosEdu, posso te ajudar com assuntos de Corrente Alternada (Fasores, Impedância $Z$, $X_L$, $X_C$), simulações no PhET, Situações de Aprendizagem (SA1), além do uso dos cartões Plickers e do Fator de Ganho de Hake ($g$). Como posso orientar sua pesquisa/estudo agora?";
         }
 
         async function fetchGeminiWithBackoff(prompt, systemPrompt) {
@@ -421,7 +451,7 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             let respostaTexto = null;
-            const systemPrompt = "Você é o Tutor IA Mediador pedagógico da plataforma CircuitosEdu. Seu papel é responder a dúvidas técnicas de Circuitos CC e CA sem usar LaTeX ou cifrões ($). Responda com clareza em português simples e negrito para fórmulas.";
+            const systemPrompt = "Você é o Tutor IA Mediador pedagógico do produto educacional CircuitosEdu (pesquisa de mestrado PPGET - IFAM/UEA de Daniel Sandoval). Seu papel é responder a dúvidas técnicas de Circuitos CC e CA, simulador PhET, Plickers, Instrução por Pares, Fator de Ganho de Hake (g), Fator de Potência (SA1), Fasores, Impedância e Realidade Aumentada. Responda com clareza em português simples e negrito para fórmulas e destaques, sem usar notação LaTeX ou cifrões ($).";
 
             respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
 
@@ -720,7 +750,7 @@
                 </div>
             </section>
 
-            <!-- MISSÃO 3: EXPERIMENTAÇÃO PRACTICA (PhET + SA ENGENHARIA + RA) -->
+            <!-- MISSÃO 3: EXPERIMENTAÇÃO PRÁTICA (PhET + SA ENGENHARIA + RA) -->
             <section id="etapa-card-3" class="hidden bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200">
                 <div class="flex items-center justify-between mb-4 border-b pb-3">
                     <div class="flex items-center gap-2">
@@ -818,7 +848,7 @@
                             q: "1. No simulador PhET com circuito RLC série, a frequência de ressonância (f_0) ocorre quando:",
                             opts: ["Reatância Indutiva maior que Reatância Capacitiva", "X_L é igual a X_C, tornando a corrente MÁXIMA e Z = R", "Frequência f é igual a zero", "Resistência R ser infinita"],
                             correct: 1,
-                            exp: "Na ressonância (X_L = X_C), as reatâncias anulam-se mutuamente, resultando em Z = R e pico máximo de corrente."
+                            exp: "Na ressonância (X_L = X_C), as reatâncias anulam-se mutually, resultando em Z = R e pico máximo de corrente."
                         },
                         {
                             q: "2. Em uma instalação indutiva no PhET com FP = 0,707, qual ação eleva o Fator de Potência para 1,00?",
@@ -983,13 +1013,13 @@
 
                 <div id="chat-window" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
                     <div class="chat-bubble tutor-msg">
-                        Olá! Sou seu mediador pedagógico. Você pode me fazer qualquer pergunta sobre circuitos CC ou CA (fasores, reatância, impedância, etc.) enquanto cumpre sua trilha!
+                        Olá! Sou seu mediador pedagógico. Você pode me fazer qualquer pergunta sobre circuitos CC/CA, PhET, Plickers ou Ganho de Hake enquanto cumpre sua trilha!
                     </div>
                 </div>
 
                 <div class="p-3 border-t bg-slate-50">
                     <form onsubmit="enviarTutorIa(event)" class="flex gap-2 bg-white border border-slate-300 rounded-full p-1 shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
-                        <input type="text" id="chat-input" placeholder="Pergunte sobre qualquer circuito..." class="flex-1 outline-none text-xs px-3 bg-transparent" autocomplete="off">
+                        <input type="text" id="chat-input" placeholder="Pergunte sobre qualquer circuito, Plickers ou Hake..." class="flex-1 outline-none text-xs px-3 bg-transparent" autocomplete="off">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white w-8 h-8 rounded-full flex items-center justify-center transition flex-shrink-0 text-xs">
                             ➤
                         </button>
