@@ -21,16 +21,19 @@
     <style>
         body { font-family: 'Roboto', sans-serif; background-color: #f1f5f9; scroll-behavior: smooth; }
         
-        /* Banner do Cabeçalho Responsivo */
+        /* CORREÇÃO DEFINITIVA DO BANNER: Exibição 100% Integral sem cortar a frase inferior */
         .main-header-banner {
             background: #0f172a url('./assets/cabecalho-anexo.png') no-repeat center center;
-            background-size: cover;
+            background-size: 100% 100%; /* Garante que 100% do texto e logos apareçam sem cortes */
             width: 100%;
-            height: 160px;
+            height: 200px; /* Altura ideal para telemóveis */
             border-bottom: 4px solid #2563eb;
         }
-        @media (min-width: 768px) {
-            .main-header-banner { height: 190px; }
+        @media (min-width: 640px) {
+            .main-header-banner { height: 230px; }
+        }
+        @media (min-width: 1024px) {
+            .main-header-banner { height: 260px; }
         }
 
         /* Estilos do Indicador da Trilha Sequencial */
@@ -180,7 +183,7 @@
             }
 
             window.atualizarInterfaceTrilha();
-            window.scrollTo({ top: 180, behavior: 'smooth' });
+            window.scrollTo({ top: 220, behavior: 'smooth' });
         };
 
         window.concluirEAvancar = function(etapaConcluida) {
@@ -455,7 +458,7 @@
 </head>
 <body>
 
-    <!-- Header Banner Principal -->
+    <!-- Header Banner Principal Sem Cortes de Texto -->
     <header class="main-header-banner shadow-md" aria-label="Cabeçalho CircuitosEdu"></header>
 
     <!-- PAINEL SUPERIOR: TRILHA DE APRENDIZAGEM E PAINEL DE DATA/HORA -->
