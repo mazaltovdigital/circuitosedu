@@ -74,7 +74,7 @@
         }
 
         /* Chat do Tutor IA Flutuante */
-        .chat-bubble { padding: 10px 14px; border-radius: 14px; max-width: 88%; font-size: 0.88rem; line-height: 1.4; margin-bottom: 8px; }
+        .chat-bubble { padding: 10px 14px; border-radius: 14px; max-width: 90%; font-size: 0.88rem; line-height: 1.45; margin-bottom: 8px; }
         .tutor-msg { background: #f1f5f9; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #e2e8f0; }
         .user-msg { background: #2563eb; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
         
@@ -150,15 +150,69 @@
                 .replace(/"/g, "&quot;");
         }
 
-        function limparNotacaoLatex(texto) {
+        // PARSER E LIMPADOR COMPLETO DE NOTAÇÃO LATEX / FÓRMULAS
+        window.limparNotacaoLatex = function(texto) {
             if (!texto) return "";
-            return texto
-                .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '$1 / $2')
-                .replace(/\\sqrt\{([^}]+)\}/g, '√($1)')
-                .replace(/\\cdot/g, '·')
-                .replace(/\$([^\$]+)\$/g, '<strong>$1</strong>')
-                .replace(/\$/g, '');
-        }
+            let t = String(texto);
+
+            // 1. Ajuste de vírgula decimal do LaTeX: {,} -> ,
+            t = t.replace(/\{,\}/g, ',');
+
+            // 2. Remoção de blocos \text{...}
+            t = t.replace(/\\text\{([^}]+)\}/g, '$1');
+
+            // 3. Conversão de frações \frac{A}{B}
+            let maxIter = 5;
+            while (t.includes('\\frac') && maxIter > 0) {
+                t = t.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '($1 / $2)');
+                maxIter--;
+            }
+
+            // 4. Raízes quadradas \sqrt{X}
+            t = t.replace(/\\sqrt\{([^}]+)\}/g, '√($1)');
+            t = t.replace(/\\sqrt/g, '√');
+
+            // 5. Operadores e símbolos matemáticos
+            t = t.replace(/\\cdot/g, '·');
+            t = t.replace(/\\times/g, '×');
+            t = t.replace(/\\le|\\leq/g, '≤');
+            t = t.replace(/\\ge|\\geq/g, '≥');
+            t = t.replace(/\\neq/g, '≠');
+            t = t.replace(/\\approx/g, '≈');
+            t = t.replace(/\\degree|\\deg/g, '°');
+
+            // 6. Letras gregas
+            t = t.replace(/\\pi/g, 'π');
+            t = t.replace(/\\theta/g, 'θ');
+            t = t.replace(/\\omega/g, 'ω');
+            t = t.replace(/\\phi/g, 'φ');
+            t = t.replace(/\\Delta/g, 'Δ');
+            t = t.replace(/\\mu/g, 'μ');
+
+            // 7. Expoentes e subscritos
+            t = t.replace(/\^2/g, '²');
+            t = t.replace(/\^3/g, '³');
+            t = t.replace(/_\{([^}]+)\}/g, '<sub>$1</sub>');
+            t = t.replace(/_([a-zA-Z0-9])/g, '<sub>$1</sub>');
+
+            // 8. Formatação de negrito e código Markdown
+            t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            t = t.replace(/`([^`]+)`/g, '<code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono font-bold">$1</code>');
+
+            // 9. Destaque de expressões entre cifrões $...$
+            t = t.replace(/\$([^\$]+)\$/g, function(match, p1) {
+                return '<span class="font-mono bg-blue-50 text-blue-900 border border-blue-200 px-1.5 py-0.5 rounded text-[11px] font-bold inline-block my-0.5">' + p1 + '</span>';
+            });
+
+            // 10. Limpeza final de cifrões e barras invertidas residuais
+            t = t.replace(/\$/g, '');
+            t = t.replace(/\\/g, '');
+
+            // 11. Quebras de linha
+            t = t.replace(/\n/g, '<br>');
+
+            return t;
+        };
 
         // GERENCIAMENTO DA TRILHA DE APRENDIZAGEM
         window.etapaAtual = 1;
@@ -338,61 +392,51 @@
             }, 300);
         };
 
-        // BASE DE CONHECIMENTO AMPLIADA DO TUTOR IA (eletrotécnica + ferramentas da pesquisa)
+        // BASE DE CONHECIMENTO DO TUTOR IA (LIMPA DE CIFRÕES E LATEX CRU)
         function gerarRespostaTutorEducacional(duvida) {
             const texto = duvida.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-            // 1. Dúvidas sobre Plickers
             if (texto.includes('plickers')) {
-                return "<strong>Aplicativo Plickers:</strong><br>• É uma ferramenta de avaliação formativa síncrona que utiliza cartões impressos com códigos QR bidimensionais.<br>• Permite ao professor escanear instantaneamente as respostas da turma com a câmera do smartphone, sem exigir que os alunos usem celulares.<br>• No ecossistema <strong>CircuitosEdu</strong>, é utilizado nas sessões de <em>Peer Instruction (Instrução por Pares)</em> para medir o Pré-Teste e Pós-Teste sem viés tecnológico.";
+                return "<strong>Aplicativo Plickers:</strong><br>• Ferramenta de avaliação formativa síncrona que utiliza cartões QR impressos.<br>• Permite ao professor escanear instantaneamente as respostas da turma com a câmera do celular.<br>• No <strong>CircuitosEdu</strong>, é utilizado no <em>Peer Instruction</em> para medir o Pré-Teste e Pós-Teste sem exigir uso de telemóvel pelos alunos.";
             }
 
-            // 2. Dúvidas sobre Ganho de Hake
             if (texto.includes('hake') || texto.includes('ganho') || texto.includes('fator de ganho')) {
-                return "<strong>Fator de Ganho Normalizado de Hake ($g$):</strong><br>• É o índice estatístico que mensura a fração do ganho conceitual alcançado pelo estudante em relação ao ganho máximo possível.<br>• <strong>Fórmula:</strong> <code class='bg-slate-200 px-1 py-0.5 rounded text-xs'>g = (S_f - S_i) / (100 - S_i)</code>, onde $S_i$ é a nota inicial (Pré-Teste) e $S_f$ é a nota final (Pós-Teste).<br>• <strong>Interpretação pedagógica:</strong><br>  - $g < 0{,}30$: Baixo ganho (*Low-g*)<br>  - $0{,}30 \\le g \\le 0{,}70$: <strong>Médio ganho (*Medium-g* - Objetivo Alvo)</strong><br>  - $g > 0{,}70$: Alto ganho (*High-g*)";
+                return "<strong>Fator de Ganho Normalizado de Hake (g):</strong><br>• Mede a proporção do ganho conceitual alcançado pelo estudante em relação ao ganho máximo possível.<br>• <strong>Fórmula:</strong> <span class='bg-slate-200 text-slate-900 px-2 py-0.5 rounded font-mono font-bold text-xs'>g = (S<sub>f</sub> - S<sub>i</sub>) / (100 - S<sub>i</sub>)</span><br>Onde <strong>S<sub>i</sub></strong> é a nota inicial (Pré-Teste) e <strong>S<sub>f</sub></strong> é a nota final (Pós-Teste).<br>• <strong>Faixas Pedagógicas:</strong><br>  - g &lt; 0,30: Baixo ganho (Low-g)<br>  - 0,30 ≤ g ≤ 0,70: <strong>Médio ganho (Medium-g - Objetivo da Pesquisa)</strong><br>  - g &gt; 0,70: Alto ganho (High-g)";
             }
 
-            // 3. Dúvidas sobre Fator de Potência e SA1
             if (texto.includes('fator de potencia') || texto.includes('fp') || texto.includes('correcao') || texto.includes('sa1')) {
-                return "<strong>Fator de Potência (FP) e Correção (SA1):</strong><br>• O FP representa a eficiência com que a energia elétrica é convertida em trabalho útil: $\\text{FP} = \\cos(\\theta) = P / S$.<br>• Cargas indutivas (como motores elétricos) consomem Potência Reativa Indutiva ($Q_L$), reduzindo o FP e aumentando a corrente na rede.<br>• <strong>Na SA1 do PhET:</strong> A adição de um capacitor em paralelo fornece Potência Reativa Capacitiva ($Q_C$), neutralizando $Q_L$, elevando o FP para $1{,}00$ e reduzindo a corrente total da fonte de $1{,}41\\text{ A}$ para $1{,}00\\text{ A}$.";
+                return "<strong>Fator de Potência (FP) e Correção (SA1):</strong><br>• Mede a eficiência do uso da energia em CA: <span class='bg-slate-200 text-slate-900 px-2 py-0.5 rounded font-mono font-bold text-xs'>FP = cos(θ) = P / S</span>.<br>• Cargas indutivas (como motores) consomem Potência Reativa Indutiva (Q<sub>L</sub>), reduzindo o FP.<br>• <strong>Na SA1 do PhET:</strong> A adição de um capacitor em paralelo fornece Potência Reativa Capacitiva (Q<sub>C</sub>), cancelando Q<sub>L</sub>, elevando o FP para 1,00 e reduzindo a corrente total de 1,41 A para 1,00 A!";
             }
 
-            // 4. Dúvidas sobre Fasores e Defasagem
             if (texto.includes('fasor') || texto.includes('fase') || texto.includes('defasagem')) {
-                return "<strong>Fasores e Análise Vetorial em CA:</strong><br>• <strong>O que são:</strong> Vetores girantes que representam grandezas senoidais com velocidade angular $\\omega = 2\\cdot\\pi\\cdot f$.<br>• <strong>Resistor (R):</strong> Tensão $V(t)$ e Corrente $I(t)$ em <strong>fase (0°)</strong>.<br>• <strong>Indutor (L):</strong> Tensão $V(t)$ <strong>adiantada 90°</strong> em relação à Corrente $I(t)$.<br>• <strong>Capacitor (C):</strong> Corrente $I(t)$ <strong>adiantada 90°</strong> em relação à Tensão $V(t)$.";
+                return "<strong>Fasores e Análise Vetorial em CA:</strong><br>• <strong>O que são:</strong> Vetores girantes de amplitude e fase com velocidade angular <strong>ω = 2 · π · f</strong>.<br>• <strong>Resistor (R):</strong> Tensão V(t) e Corrente I(t) em <strong>fase (0°)</strong>.<br>• <strong>Indutor (L):</strong> Tensão V(t) <strong>adiantada 90°</strong> em relação à Corrente I(t).<br>• <strong>Capacitor (C):</strong> Corrente I(t) <strong>adiantada 90°</strong> em relação à Tensão V(t).";
             }
 
-            // 5. Dúvidas sobre Resistência e Lei de Ohm
             if (texto.includes('resist') || texto.includes('ohm')) {
-                return "<strong>Resistência Elétrica (R):</strong> Oposição pura ao fluxo de elétrons (Efeito Joule). Não depende da frequência ($f$) e mantém tensão e corrente em perfeita fase (0°).";
+                return "<strong>Resistência Elétrica (R):</strong><br>• Oposição pura ao fluxo de elétrons (Efeito Joule).<br>• Não depende da frequência (f) e mantém a tensão V(t) e a corrente I(t) em perfeita fase (ângulo de 0°).";
             }
 
-            // 6. Dúvidas sobre Indutância e Reatância Indutiva
             if (texto.includes('indut') || texto.includes('henry') || texto.includes('x_l')) {
-                return "<strong>Indutância (L) e Reatância Indutiva ($X_L$):</strong><br>• O indutor armazena energia em campo magnético.<br>• Apresenta oposição chamada Reatância Indutiva: <strong>$X_L = 2 \\cdot \\pi \\cdot f \\cdot L$</strong>.<br>• Quanto maior a frequência ($f$), maior a oposição $X_L$. Fica atrasado em 90° em relação à tensão.";
+                return "<strong>Indutância (L) e Reatância Indutiva (X<sub>L</sub>):</strong><br>• O indutor armazena energia no campo magnético.<br>• <strong>Reatância Indutiva:</strong> <span class='bg-slate-200 text-slate-900 px-2 py-0.5 rounded font-mono font-bold text-xs'>X<sub>L</sub> = 2 · π · f · L</span>.<br>• Quanto maior a frequência (f), maior a oposição X<sub>L</sub>. A tensão fica 90° adiantada em relação à corrente.";
             }
 
-            // 7. Dúvidas sobre Capacitância e Reatância Capacitiva
             if (texto.includes('capacit') || texto.includes('farad') || texto.includes('x_c')) {
-                return "<strong>Capacitância (C) e Reatância Capacitiva ($X_C$):</strong><br>• O capacitor armazena energia em campo elétrico.<br>• Apresenta Reatância Capacitiva: <strong>$X_C = 1 / (2 \\cdot \\pi \\cdot f \\cdot C)$</strong>.<br>• Quanto maior a frequência ($f$), menor a oposição $X_C$. Adiantado em 90° em relação à tensão.";
+                return "<strong>Capacitância (C) e Reatância Capacitiva (X<sub>C</sub>):</strong><br>• O capacitor armazena energia no campo elétrico.<br>• <strong>Reatância Capacitiva:</strong> <span class='bg-slate-200 text-slate-900 px-2 py-0.5 rounded font-mono font-bold text-xs'>X<sub>C</sub> = 1 / (2 · π · f · C)</span>.<br>• Quanto maior a frequência (f), menor a oposição X<sub>C</sub>. A corrente fica 90° adiantada em relação à tensão.";
             }
 
-            // 8. Dúvidas sobre Impedância
             if (texto.includes('impedan') || texto.includes('z')) {
-                return "<strong>Impedância Total (Z):</strong> Oposição total ao fluxo de Corrente Alternada em circuitos RLC.<br>• <strong>Fórmula:</strong> <code class='bg-slate-200 px-1 py-0.5 rounded text-xs'>Z = √( R² + (X_L - X_C)² )</code>.<br>• É a soma vetorial da resistência física ($R$) com as reatâncias ($X_L - X_C$).";
+                return "<strong>Impedância Total (Z):</strong><br>• Oposição total em circuitos de Corrente Alternada (RLC).<br>• <strong>Fórmula:</strong> <span class='bg-slate-200 text-slate-900 px-2 py-0.5 rounded font-mono font-bold text-xs'>Z = √( R² + (X<sub>L</sub> - X<sub>C</sub>)² )</span>.<br>• É a combinação vetorial da resistência física (R) com as reatâncias (X<sub>L</sub> e X<sub>C</sub>).";
             }
 
-            // 9. Dúvidas sobre Leis de Kirchhoff
             if (texto.includes('kirchhoff') || texto.includes('lkc') || texto.includes('lkt') || texto.includes('no') || texto.includes('malha')) {
-                return "<strong>Leis de Kirchhoff:</strong><br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram em um nó é igual à soma das correntes que saem (Conservação de Carga).<br>• <strong>Lei das Malhas (LKT):</strong> A soma algébrica de todas as tensões em uma malha fechada é igual a zero (Conservação de Energia).";
+                return "<strong>Leis de Kirchhoff:</strong><br>• <strong>Lei dos Nós (LKC):</strong> A soma das correntes que entram em um nó é igual à soma das que saem (Conservação da Carga).<br>• <strong>Lei das Malhas (LKT):</strong> A soma algébrica das tensões ao longo de uma malha fechada é zero (Conservação da Energia).";
             }
 
-            // 10. Dúvidas sobre Peer Instruction / Metodologia
             if (texto.includes('peer') || texto.includes('instrucao por pares') || texto.includes('metodologia')) {
-                return "<strong>Instrução por Pares (Peer Instruction):</strong><br>• Metodologia ativa criada por Eric Mazur (Harvard).<br>• Consiste na aplicação de um desafio conceitual (Conceptest), votação individual via Plickers, debate em duplas/grupos para negociação de significados e segunda votação.<br>• Estimula a reorganização de subsunçores (Ausubel) e a aprendizagem colaborativa.";
+                return "<strong>Instrução por Pares (Peer Instruction):</strong><br>• Metodologia ativa desenvolvida pelo Prof. Eric Mazur (Harvard).<br>• Votação individual via Plickers ➔ Discussão em duplas para negociação conceitual ➔ Segunda votação.<br>• Estimula a reorganização de subsunçores (Ausubel) e o aprendizado colaborativo.";
             }
 
-            return "Excelente questão!<br><br>Como seu <strong>Tutor IA Mediador</strong> do CircuitosEdu, posso te ajudar com assuntos de Corrente Alternada (Fasores, Impedância $Z$, $X_L$, $X_C$), simulações no PhET, Situações de Aprendizagem (SA1), além do uso dos cartões Plickers e do Fator de Ganho de Hake ($g$). Como posso orientar sua pesquisa/estudo agora?";
+            return "Excelente questão!<br><br>Como seu <strong>Tutor IA Mediador</strong> do CircuitosEdu, posso te ajudar com assuntos de Corrente Alternada (Fasores, Impedância Z, X<sub>L</sub>, X<sub>C</sub>), simulações no PhET, Situações de Aprendizagem (SA1), cartões Plickers e Fator de Ganho de Hake (g). Como posso orientar seu estudo agora?";
         }
 
         async function fetchGeminiWithBackoff(prompt, systemPrompt) {
@@ -451,7 +495,7 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             let respostaTexto = null;
-            const systemPrompt = "Você é o Tutor IA Mediador pedagógico do produto educacional CircuitosEdu (pesquisa de mestrado PPGET - IFAM/UEA de Daniel Sandoval). Seu papel é responder a dúvidas técnicas de Circuitos CC e CA, simulador PhET, Plickers, Instrução por Pares, Fator de Ganho de Hake (g), Fator de Potência (SA1), Fasores, Impedância e Realidade Aumentada. Responda com clareza em português simples e negrito para fórmulas e destaques, sem usar notação LaTeX ou cifrões ($).";
+            const systemPrompt = "Você é o Tutor IA Mediador pedagógico do produto educacional CircuitosEdu (pesquisa de mestrado PPGET - IFAM/UEA de Daniel Sandoval). Seu papel é responder a dúvidas técnicas de Circuitos CC e CA, simulador PhET, Plickers, Instrução por Pares, Fator de Ganho de Hake (g), Fator de Potência (SA1), Fasores, Impedância e Realidade Aumentada. Responda com clareza em português simples e negrito para fórmulas. NUNCA utilize notação LaTeX crua (como \\frac, \\sqrt, \\text ou cifrões $). Escreva equações de forma limpa e direta em texto ou HTML simples (ex: Z = √(R² + (X_L - X_C)²), g = (S_f - S_i) / (100 - S_i)).";
 
             respostaTexto = await fetchGeminiWithBackoff(mensagem, systemPrompt);
 
@@ -459,7 +503,7 @@
                 respostaTexto = gerarRespostaTutorEducacional(mensagem);
             }
 
-            respostaTexto = limparNotacaoLatex(respostaTexto);
+            respostaTexto = window.limparNotacaoLatex(respostaTexto);
 
             const elem = document.getElementById(aiTempId);
             if (elem) elem.innerHTML = respostaTexto;
@@ -483,6 +527,105 @@
                 `;
             }
             document.getElementById('modal-video-ludico').classList.remove('hidden');
+        };
+
+        // MODAL DE TEORIA DA MISSÃO 2 (SEM CIFRÕES E SEM LATEX CRU)
+        window.abrirModalTeoria = function(modulo) {
+            const modal = document.getElementById('modal-teoria-ludica');
+            const titulo = document.getElementById('teoria-modal-title');
+            const corpo = document.getElementById('teoria-modal-body');
+
+            if (modulo === 'grandezas') {
+                titulo.innerText = "⚡ Grandezas Fundamentais em Corrente Alternada (CA)";
+                corpo.innerHTML = `
+                    <div class="space-y-4 text-left text-xs text-slate-700">
+                        <div class="bg-blue-50 border border-blue-200 p-3.5 rounded-xl">
+                            <p class="font-bold text-blue-900 text-sm mb-1">1. Frequência (f) e Período (T)</p>
+                            <p class="leading-relaxed mb-2">
+                                O <strong>Período (T)</strong> é o tempo necessário para a onda senoidal completar 1 ciclo inteiro. A <strong>Frequência (f)</strong> mede quantas oscilações ocorrem por segundo (Hertz).
+                            </p>
+                            <div class="bg-white p-2.5 rounded-lg font-mono font-bold text-slate-800 border border-blue-100 flex flex-wrap gap-4 text-center justify-center">
+                                <span class="bg-blue-100 text-blue-900 px-2 py-1 rounded">f = 1 / T (Hz)</span>
+                                <span class="bg-blue-100 text-blue-900 px-2 py-1 rounded">T = 1 / f (segundos)</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-2">
+                                📌 <em>Exemplo Prático:</em> Na rede elétrica brasileira de <strong>60 Hz</strong>, 1 ciclo dura <strong>T = 1 / 60 ≈ 16,67 ms</strong>.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl">
+                            <p class="font-bold text-slate-900 text-sm mb-1">2. Tensão Eficaz (V<sub>rms</sub>) e Tensão de Pico (V<sub>pico</sub>)</p>
+                            <p class="leading-relaxed mb-2">
+                                O valor <strong>RMS (Root Mean Square)</strong> representa a tensão contínua equivalente que produziria a mesma potência térmica no resistor.
+                            </p>
+                            <div class="bg-white p-2.5 rounded-lg font-mono font-bold text-slate-800 border border-slate-200 flex flex-wrap gap-4 justify-center">
+                                <span class="bg-emerald-100 text-emerald-900 px-2 py-1 rounded">V<sub>rms</sub> = V<sub>pico</sub> / √2 ≈ 0,707 · V<sub>pico</sub></span>
+                                <span class="bg-amber-100 text-amber-900 px-2 py-1 rounded">V<sub>pico</sub> = V<sub>rms</sub> · √2 ≈ 1,414 · V<sub>rms</sub></span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-2">
+                                📌 <em>Exemplo no Multímetro:</em> Quando o voltímetro mede <strong>220 V RMS</strong> na tomada do laboratório, a onda atinge picos reais de <strong>311 V</strong> a cada ciclo!
+                            </p>
+                        </div>
+                    </div>
+                `;
+            } else if (modulo === 'fasores') {
+                titulo.innerText = "📈 Fasores e Defasagem Angular (90°)";
+                corpo.innerHTML = `
+                    <div class="space-y-4 text-left text-xs text-slate-700">
+                        <div class="bg-indigo-50 border border-indigo-200 p-3.5 rounded-xl">
+                            <p class="font-bold text-indigo-900 text-sm mb-1">1. O que é um Fasor?</p>
+                            <p class="leading-relaxed mb-2">
+                                Um fasor é um <strong>vetor girante</strong> que simplifica a análise de ondas senoidais, girando no sentido anti-horário com velocidade angular <strong>ω = 2 · π · f</strong>.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-center">
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                                <span class="text-xl">🟡</span>
+                                <p class="font-bold text-slate-800 text-xs mt-1">Resistor (R)</p>
+                                <p class="text-[11px] text-slate-600 mt-1">Tensão e Corrente em <strong>fase (0°)</strong>.</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                                <span class="text-xl">🔵</span>
+                                <p class="font-bold text-slate-800 text-xs mt-1">Indutor (L)</p>
+                                <p class="text-[11px] text-slate-600 mt-1">Tensão V(t) <strong>adiantada 90°</strong> em relação à corrente.</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                                <span class="text-xl">🔴</span>
+                                <p class="font-bold text-slate-800 text-xs mt-1">Capacitor (C)</p>
+                                <p class="text-[11px] text-slate-600 mt-1">Corrente I(t) <strong>adiantada 90°</strong> em relação à tensão.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (modulo === 'impedancia') {
+                titulo.innerText = "🔋 Impedância Total (Z) e Triângulo de Potências";
+                corpo.innerHTML = `
+                    <div class="space-y-4 text-left text-xs text-slate-700">
+                        <div class="bg-amber-50 border border-amber-200 p-3.5 rounded-xl">
+                            <p class="font-bold text-amber-900 text-sm mb-1">1. Reatâncias Indutiva e Capacitiva</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+                                <div class="bg-white p-2.5 rounded-lg border border-amber-200 font-mono">
+                                    <span class="font-bold text-amber-900 block">X<sub>L</sub> = 2 · π · f · L</span>
+                                    <span class="text-[10px] text-slate-500">Reatância Indutiva (Aumenta com a frequência f)</span>
+                                </div>
+                                <div class="bg-white p-2.5 rounded-lg border border-amber-200 font-mono">
+                                    <span class="font-bold text-blue-900 block">X<sub>C</sub> = 1 / (2 · π · f · C)</span>
+                                    <span class="text-[10px] text-slate-500">Reatância Capacitiva (Diminui com a frequência f)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 text-white p-4 rounded-xl text-center font-mono">
+                            <p class="text-amber-400 text-xs uppercase font-sans font-bold mb-1">Fórmula da Impedância Total (Z):</p>
+                            <p class="text-base font-bold text-white">Z = √( R² + (X<sub>L</sub> - X<sub>C</sub>)² )</p>
+                            <p class="text-[10px] text-slate-400 font-sans mt-1">Soma vetorial dos catetos R e (X<sub>L</sub> - X<sub>C</sub>) no triângulo retângulo.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            modal.classList.remove('hidden');
         };
     </script>
 </head>
@@ -640,27 +783,27 @@
                 </div>
 
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 text-justify">
-                    Agora que revisamos CC, avançamos para a <strong>Corrente Alternada (CA)</strong>! Clique nos cartões abaixo para explorar o material teórico ou assista aos vídeos ilustrativos selecionados:
+                    Agora que revisamos CC, avançamos para a <strong>Corrente Alternada (CA)</strong>! Clique nos cartões abaixo para explorar a base teórica completa em modais interativos ou assista aos vídeos ilustrativos selecionados:
                 </p>
 
-                <!-- GRID DE CARDS -->
+                <!-- GRID DE CARDS INTERATIVOS COM MODAIS INTERNOS -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                    <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="location.href='grandezas.html'">
+                    <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="abrirModalTeoria('grandezas')">
                         <span class="text-3xl mb-1">⚡</span>
                         <h3 class="font-bold text-slate-800 text-xs uppercase">Grandezas CA</h3>
                         <p class="text-[11px] text-slate-500 mt-1">Frequência (f), Tensão RMS e Período (T)</p>
                     </div>
 
-                    <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="location.href='fasores.html'">
+                    <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="abrirModalTeoria('fasores')">
                         <span class="text-3xl mb-1">📈</span>
                         <h3 class="font-bold text-slate-800 text-xs uppercase">Fasores</h3>
                         <p class="text-[11px] text-slate-500 mt-1">Vetores girantes e defasagem (90°)</p>
                     </div>
 
-                    <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="location.href='impedancia.html'">
+                    <div class="interactive-card border-blue-200 hover:border-blue-500" onclick="abrirModalTeoria('impedancia')">
                         <span class="text-3xl mb-1">🔋</span>
                         <h3 class="font-bold text-slate-800 text-xs uppercase">Impedância (Z)</h3>
-                        <p class="text-[11px] text-slate-500 mt-1">Triângulo R, X_L e X_C em CA</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Triângulo R, X<sub>L</sub> e X<sub>C</sub> em CA</p>
                     </div>
 
                     <div class="interactive-card border-indigo-300 hover:border-indigo-600 bg-indigo-50/60 shadow-sm" onclick="document.getElementById('secao-videos-ludicos').scrollIntoView({behavior: 'smooth'})">
@@ -670,28 +813,30 @@
                     </div>
                 </div>
 
-                <!-- EQUAÇÕES FUNDAMENTAIS -->
-                <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900 mb-6 space-y-3">
-                    <p class="font-bold text-sm">📐 Equações Fundamentais de Corrente Alternada:</p>
+                <!-- EQUAÇÕES FUNDAMENTAIS (FORMATADAS SEM CIFRÕES) -->
+                <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900 mb-6 space-y-3 shadow-sm">
+                    <p class="font-bold text-sm text-blue-950 flex items-center gap-2">
+                        <span>📐 Equações Fundamentais de Corrente Alternada:</span>
+                    </p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="bg-white p-3 rounded-lg border border-blue-200 text-slate-800">
                             <span class="font-bold text-blue-800">1. Frequência e Período:</span>
-                            <p class="font-mono font-bold mt-1 text-slate-900">f = 1 / T</p>
+                            <p class="font-mono font-bold mt-1 text-slate-900 text-sm">f = 1 / T</p>
                             <p class="text-[10px] text-slate-500 mt-0.5">Onde T é o período em segundos e f é a frequência em Hertz (Hz).</p>
                         </div>
 
                         <div class="bg-white p-3 rounded-lg border border-blue-200 text-slate-800">
                             <span class="font-bold text-blue-800">2. Tensão Eficaz (RMS):</span>
-                            <p class="font-mono font-bold mt-1 text-slate-900">V_rms = V_pico / √2</p>
+                            <p class="font-mono font-bold mt-1 text-slate-900 text-sm">V<sub>rms</sub> = V<sub>pico</sub> / √2</p>
                             <p class="text-[10px] text-slate-500 mt-0.5">Equivalente térmico em CC de uma onda senoidal pura.</p>
                         </div>
                     </div>
 
                     <div class="bg-white p-3 rounded-lg border border-blue-200 text-center text-slate-800">
                         <span class="font-bold text-blue-800">3. Impedância Total (Z):</span>
-                        <p class="font-mono font-bold text-sm text-slate-900 mt-1">Z = √( R² + (X_L - X_C)² )</p>
-                        <p class="text-[10px] text-slate-500 mt-0.5">Onde <strong>X_L = 2 · π · f · L</strong> (Reatância Indutiva) e <strong>X_C = 1 / (2 · π · f · C)</strong> (Reatância Capacitiva).</p>
+                        <p class="font-mono font-bold text-sm text-slate-900 mt-1">Z = √( R² + (X<sub>L</sub> - X<sub>C</sub>)² )</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Onde <strong>X<sub>L</sub> = 2 · π · f · L</strong> (Reatância Indutiva) e <strong>X<sub>C</sub> = 1 / (2 · π · f · C)</strong> (Reatância Capacitiva).</p>
                     </div>
                 </div>
 
@@ -848,7 +993,7 @@
                             q: "1. No simulador PhET com circuito RLC série, a frequência de ressonância (f_0) ocorre quando:",
                             opts: ["Reatância Indutiva maior que Reatância Capacitiva", "X_L é igual a X_C, tornando a corrente MÁXIMA e Z = R", "Frequência f é igual a zero", "Resistência R ser infinita"],
                             correct: 1,
-                            exp: "Na ressonância (X_L = X_C), as reatâncias anulam-se mutually, resultando em Z = R e pico máximo de corrente."
+                            exp: "Na ressonância (X_L = X_C), as reatâncias anulam-se mutuamente, resultando em Z = R e pico máximo de corrente."
                         },
                         {
                             q: "2. Em uma instalação indutiva no PhET com FP = 0,707, qual ação eleva o Fator de Potência para 1,00?",
@@ -1030,7 +1175,17 @@
 
     </div>
 
-    <!-- MODAIS DE SUPORTE -->
+    <!-- MODAL TEÓRICO DA MISSÃO 2 (GRANDEZA CA, FASORES E IMPEDÂNCIA) -->
+    <div id="modal-teoria-ludica" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-xl w-full p-6 text-center shadow-2xl relative">
+            <button onclick="document.getElementById('modal-teoria-ludica').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-800 font-bold text-xl p-2 transition">✕</button>
+            <h3 id="teoria-modal-title" class="text-base font-bold text-blue-900 mb-4">Base Teórica de Corrente Alternada</h3>
+            <div id="teoria-modal-body" class="w-full my-2"></div>
+            <button onclick="document.getElementById('modal-teoria-ludica').classList.add('hidden')" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow transition">Fechar Leitura Teórica</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE VÍDEO LÚDICO -->
     <div id="modal-video-ludico" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full p-6 text-center shadow-2xl relative">
             <button onclick="document.getElementById('modal-video-ludico').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-800 font-bold text-xl p-2 transition">✕</button>
@@ -1041,6 +1196,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE REALIDADE AUMENTADA (RA 3D) -->
     <div id="modal-ra-3d" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-xl w-full p-6 text-center shadow-2xl relative">
             <button onclick="document.getElementById('modal-ra-3d').classList.add('hidden')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 font-bold text-lg p-1">✕</button>
