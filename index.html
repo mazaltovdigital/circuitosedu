@@ -21,7 +21,7 @@
     <style>
         body { font-family: 'Roboto', sans-serif; background-color: #f1f5f9; scroll-behavior: smooth; }
         
-        /* Banner do Cabeçalho Responsivo sem Cortes */
+        /* Banner do Cabeçalho Responsivo sem Cortes de Texto */
         .main-header-banner {
             background: #0f172a url('./assets/cabecalho-anexo.png') no-repeat center center;
             background-size: 100% 100%;
@@ -150,7 +150,7 @@
                 .replace(/"/g, "&quot;");
         }
 
-        // PARSER E LIMPADOR COMPLETO DE NOTAÇÃO LATEX / FÓRMULAS
+        // PARSER E LIMPADOR DE NOTAÇÃO LATEX / FÓRMULAS
         window.limparNotacaoLatex = function(texto) {
             if (!texto) return "";
             let t = String(texto);
@@ -496,20 +496,26 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         };
 
-        // ABRIR VÍDEO DO YOUTUBE NO MODAL
+        // FUNÇÃO DE ABRIR VÍDEO NO MODAL
         window.abrirModalVideo = function(titulo, embedUrl, desc) {
             document.getElementById('video-modal-title').innerText = titulo;
             document.getElementById('video-modal-desc').innerText = desc;
             const playerBox = document.getElementById('video-player-box');
 
-            if (embedUrl && embedUrl.includes('http')) {
+            // Verifica se o link do YouTube foi configurado
+            if (embedUrl && embedUrl.includes('http') && !embedUrl.includes('SEU_CODIGO_YOUTUBE')) {
                 playerBox.innerHTML = `<iframe class="w-full h-full rounded-xl" src="${embedUrl}" title="${titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             } else {
                 playerBox.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full text-center p-6 bg-slate-800 text-slate-300">
+                    <div class="flex flex-col items-center justify-center h-full text-center p-6 bg-slate-800 text-slate-200">
                         <span class="text-4xl mb-2">🎬</span>
-                        <p class="font-bold text-white text-sm">Vídeo Didático em Curadoria</p>
-                        <p class="text-xs text-slate-400 mt-1 max-w-sm">Insira o link não listado do YouTube no atributo do vídeo.</p>
+                        <p class="font-bold text-white text-sm">Vídeo Configurado na Trilha Didática</p>
+                        <p class="text-xs text-slate-300 mt-2 max-w-md leading-relaxed">
+                            Insira o código do seu vídeo hospedado no YouTube (modo Não Listado) substituindo a chave no código <code class="bg-slate-700 text-amber-300 px-1.5 py-0.5 rounded font-mono">index.html</code>.
+                        </p>
+                        <div class="mt-3 p-2 bg-slate-900 border border-slate-700 rounded-lg text-[11px] font-mono text-emerald-400">
+                            Exemplo: https://www.youtube.com/embed/SEU_ID_AQUI
+                        </div>
                     </div>
                 `;
             }
@@ -770,7 +776,7 @@
                 </div>
 
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 text-justify">
-                    Agora que revisamos CC, avançamos para a <strong>Corrente Alternada (CA)</strong>! Clique nos cartões abaixo para explorar a base teórica completa em modais interativos ou assista aos vídeos ilustrativos selecionados:
+                    Agora que revisamos CC, avançamos para a <strong>Corrente Alternada (CA)</strong>! Clique nos cartões abaixo para explorar a base teórica completa em modais interativos ou assista aos vídeos ilustrativos da série histórica selecionados:
                 </p>
 
                 <!-- GRID DE CARDS INTERATIVOS COM MODAIS INTERNOS -->
@@ -795,12 +801,12 @@
 
                     <div class="interactive-card border-indigo-300 hover:border-indigo-600 bg-indigo-50/60 shadow-sm" onclick="document.getElementById('secao-videos-ludicos').scrollIntoView({behavior: 'smooth'})">
                         <span class="text-3xl mb-1">🎬</span>
-                        <h3 class="font-bold text-indigo-900 text-xs uppercase">Vídeos Lúdicos</h3>
-                        <p class="text-[11px] text-indigo-700 mt-1">Guerra das Correntes e Animações</p>
+                        <h3 class="font-bold text-indigo-900 text-xs uppercase">Vídeos Didáticos</h3>
+                        <p class="text-[11px] text-indigo-700 mt-1">Série Viagem na Eletricidade</p>
                     </div>
                 </div>
 
-                <!-- EQUAÇÕES FUNDAMENTAIS (FORMATADAS SEM CIFRÕES) -->
+                <!-- EQUAÇÕES FUNDAMENTAIS -->
                 <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900 mb-6 space-y-3 shadow-sm">
                     <p class="font-bold text-sm text-blue-950 flex items-center gap-2">
                         <span>📐 Equações Fundamentais de Corrente Alternada:</span>
@@ -827,63 +833,68 @@
                     </div>
                 </div>
 
-                <!-- SEÇÃO DE VÍDEOS DIDÁTICOS (3 VÍDEOS DIDÁTICOS INTEGRADOS) -->
+                <!-- SEÇÃO DE VÍDEOS DIDÁTICOS (SÉRIE VIAGEM NA ELETRICIDADE) -->
                 <div id="secao-videos-ludicos" class="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-5 mb-6">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-sm font-bold text-indigo-900 flex items-center gap-2">
-                            <span>🎬 Vídeos Didáticos & Curiosidades Lúdicas</span>
+                            <span>🎬 Vídeos Didáticos Lúdicos (Série: Viagem na Eletricidade)</span>
                         </h3>
-                        <span class="bg-indigo-200 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">3 Módulos de Vídeo</span>
+                        <span class="bg-indigo-200 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">3 Módulos de Animação</span>
                     </div>
                     <p class="text-xs text-slate-600 mb-4 leading-relaxed">
-                        Assista aos vídeos selecionados para visualizar como os elétrons se comportam em Corrente Alternada, a Guerra das Correntes e a formação de Fasores:
+                        Assista aos vídeos animados da curadoria didática para visualizar a estrutura atômica dos condutores, as quatro grandezas elétricas e a geração da onda senoidal:
                     </p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <!-- VÍDEO 1 -->
-                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm hover:border-indigo-400 transition cursor-pointer flex flex-col justify-between" onclick="abrirModalVideo('Guerra das Correntes: Tesla vs Edison', 'https://www.youtube.com/embed/gJ1Mz7cMTHg', 'Animação lúdica sobre a disputa histórica entre Corrente Contínua e Corrente Alternada.')">
+                        
+                        <!-- VÍDEO 1: ENTRE O MAIS E O MENOS -->
+                        <!-- NOTA DE ATUALIZAÇÃO: Para inserir seu vídeo do YouTube, substitua 'SEU_CODIGO_YOUTUBE_1' pelo código ID do vídeo (ex: 'https://www.youtube.com/embed/dQw4w9WgXcQ') -->
+                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm hover:border-indigo-400 transition cursor-pointer flex flex-col justify-between" onclick="abrirModalVideo('Eletricidade 3: Entre o Mais e o Menos', 'https://www.youtube.com/embed/SEU_CODIGO_YOUTUBE_1', 'Animação explicativa sobre elétrons livres, cargas (+ e -), pilha de Alessandro Volta e o deslocamento de corrente em geradores e receptores.')">
                             <div>
                                 <div class="w-full h-28 bg-slate-900 rounded-lg flex items-center justify-center text-white relative overflow-hidden mb-2">
                                     <span class="text-3xl opacity-80">▶️</span>
                                     <span class="absolute bottom-1 right-2 bg-black/70 text-[9px] px-1.5 py-0.5 rounded text-white font-mono">Vídeo 1</span>
                                 </div>
-                                <h4 class="font-bold text-xs text-slate-800">1. Guerra das Correntes: CC vs CA</h4>
-                                <p class="text-[11px] text-slate-500 mt-0.5">Por que o mundo adotou a Corrente Alternada para distribuição?</p>
+                                <h4 class="font-bold text-xs text-slate-800">1. Entre o Mais e o Menos</h4>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Átomos, elétrons livres, cargas elétricas e sentido da corrente em geradores.</p>
                             </div>
                             <span class="mt-3 inline-block bg-indigo-100 text-indigo-800 text-[10px] font-bold py-1 px-2.5 rounded-lg text-center">
                                 🍿 Assistir Vídeo 1
                             </span>
                         </div>
 
-                        <!-- VÍDEO 2 -->
-                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm hover:border-indigo-400 transition cursor-pointer flex flex-col justify-between" onclick="abrirModalVideo('Como Funcionam os Fasores e a Defasagem?', 'https://www.youtube.com/embed/9Nvh1K_5Mew', 'Demonstração visual interativa sobre vetores girantes e a defasagem temporal de 90° em R, L e C.')">
+                        <!-- VÍDEO 2: OS TRÊS MOSQUETEIROS -->
+                        <!-- NOTA DE ATUALIZAÇÃO: Substitua 'SEU_CODIGO_YOUTUBE_2' pelo ID do seu vídeo 2 -->
+                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm hover:border-indigo-400 transition cursor-pointer flex flex-col justify-between" onclick="abrirModalVideo('Eletricidade 4: Os Três Mosqueteiros', 'https://www.youtube.com/embed/SEU_CODIGO_YOUTUBE_2', 'Demonstração lúdica das 4 grandezas elétricas: Volts (V), Ampères (A), Watts (W) e Ohms (Ω), com as equações I = W / V e R = V / I.')">
                             <div>
                                 <div class="w-full h-28 bg-slate-900 rounded-lg flex items-center justify-center text-white relative overflow-hidden mb-2">
                                     <span class="text-3xl opacity-80">▶️</span>
                                     <span class="absolute bottom-1 right-2 bg-black/70 text-[9px] px-1.5 py-0.5 rounded text-white font-mono">Vídeo 2</span>
                                 </div>
-                                <h4 class="font-bold text-xs text-slate-800">2. Fasores e Defasagem em CA</h4>
-                                <p class="text-[11px] text-slate-500 mt-0.5">Visualizando a relação angular de 90° em resistores, indutores e capacitores.</p>
+                                <h4 class="font-bold text-xs text-slate-800">2. Os Três Mosqueteiros</h4>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Volts (V), Ampères (A), Watts (W) e Ohms (Ω). Equações I = W/V e R = V/I.</p>
                             </div>
                             <span class="mt-3 inline-block bg-indigo-100 text-indigo-800 text-[10px] font-bold py-1 px-2.5 rounded-lg text-center">
                                 🍿 Assistir Vídeo 2
                             </span>
                         </div>
 
-                        <!-- VÍDEO 3 -->
-                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm hover:border-indigo-400 transition cursor-pointer flex flex-col justify-between" onclick="abrirModalVideo('Impedância Elétrica e Triângulo RLC', 'https://www.youtube.com/embed/V0m3m0T8Tsk', 'Explicação passo a passo de como a resistência e as reatâncias (X_L e X_C) formam a impedância total Z.')">
+                        <!-- VÍDEO 3: CORRENTE ALTERNADA -->
+                        <!-- NOTA DE ATUALIZAÇÃO: Substitua 'SEU_CODIGO_YOUTUBE_3' pelo ID do seu vídeo 3 -->
+                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm hover:border-indigo-400 transition cursor-pointer flex flex-col justify-between" onclick="abrirModalVideo('Eletricidade 5: Corrente Alternada', 'https://www.youtube.com/embed/SEU_CODIGO_YOUTUBE_3', 'Visualização do princípio de indução eletromagnética (ímã em bobina), inversão de polaridade, geração da onda senoidal e frequência em Hertz (Hz).')">
                             <div>
                                 <div class="w-full h-28 bg-slate-900 rounded-lg flex items-center justify-center text-white relative overflow-hidden mb-2">
                                     <span class="text-3xl opacity-80">▶️</span>
                                     <span class="absolute bottom-1 right-2 bg-black/70 text-[9px] px-1.5 py-0.5 rounded text-white font-mono">Vídeo 3</span>
                                 </div>
-                                <h4 class="font-bold text-xs text-slate-800">3. Impedância e Reatâncias</h4>
-                                <p class="text-[11px] text-slate-500 mt-0.5">Entendendo a soma vetorial no triângulo de impedância (Z).</p>
+                                <h4 class="font-bold text-xs text-slate-800">3. Corrente Alternada</h4>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Geração por indução eletromagnética, onda senoidal e Frequência em Hertz (Hz).</p>
                             </div>
                             <span class="mt-3 inline-block bg-indigo-100 text-indigo-800 text-[10px] font-bold py-1 px-2.5 rounded-lg text-center">
                                 🍿 Assistir Vídeo 3
                             </span>
                         </div>
+
                     </div>
                 </div>
 
@@ -1162,13 +1173,13 @@
 
                 <div id="chat-window" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
                     <div class="chat-bubble tutor-msg">
-                        Olá! Sou seu mediador pedagógico. Você pode me fazer qualquer pergunta sobre circuitos CC/CA, PhET, Plickers ou Ganho de Hake enquanto cumpre sua trilha!
+                        Olá! Sou seu mediador pedagógico. Você pode me fazer qualquer pergunta sobre circuitos CC/CA, os vídeos da série Viagem na Eletricidade, PhET, Plickers ou Ganho de Hake enquanto cumpre sua trilha!
                     </div>
                 </div>
 
                 <div class="p-3 border-t bg-slate-50">
                     <form onsubmit="enviarTutorIa(event)" class="flex gap-2 bg-white border border-slate-300 rounded-full p-1 shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
-                        <input type="text" id="chat-input" placeholder="Pergunte sobre qualquer circuito, Plickers ou Hake..." class="flex-1 outline-none text-xs px-3 bg-transparent" autocomplete="off">
+                        <input type="text" id="chat-input" placeholder="Pergunte sobre qualquer circuito, vídeos ou Plickers..." class="flex-1 outline-none text-xs px-3 bg-transparent" autocomplete="off">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white w-8 h-8 rounded-full flex items-center justify-center transition flex-shrink-0 text-xs">
                             ➤
                         </button>
