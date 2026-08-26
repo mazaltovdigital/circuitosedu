@@ -22,139 +22,158 @@
     }
     .top-bar {
       position: fixed;
-      top: 15px;
+      top: 12px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 9999;
-      width: 90%;
-      max-width: 440px;
+      width: 95%;
+      max-width: 460px;
+    }
+    .btn-tab.active {
+      background-color: #2563eb;
+      color: #ffffff;
+      border-color: #60a5fa;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <!-- Barra Superior -->
-  <div class="top-bar flex justify-between items-center bg-slate-900/90 text-white p-3 rounded-2xl shadow-xl backdrop-blur-md border border-slate-700">
-    <div class="flex items-center gap-2">
-      <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
-      <span class="text-xs font-bold tracking-wide">CircuitosEdu WebAR (4 TAGs Ativas)</span>
+  <!-- Barra Superior com Seletor Interativo de Modelos -->
+  <div class="top-bar bg-slate-900/95 text-white p-3 rounded-2xl shadow-2xl border border-slate-700 backdrop-blur-md">
+    <div class="flex justify-between items-center mb-2">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+        <span class="text-xs font-bold tracking-wide">CircuitosEdu WebAR</span>
+      </div>
+      <a href="index.html" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-600 transition">Voltar à Trilha</a>
     </div>
-    <a href="index.html" class="text-[11px] bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-full font-bold transition">Voltar à Trilha</a>
+
+    <!-- Botões de Troca de Modelo 3D -->
+    <div class="grid grid-cols-4 gap-1.5 text-center">
+      <button id="tab-resistor" onclick="selecionarComponente('resistor')" class="btn-tab active bg-slate-800 border border-slate-700 text-slate-300 text-[10px] py-1.5 rounded-lg transition">
+        Resistor (0°)
+      </button>
+      <button id="tab-indutor" onclick="selecionarComponente('indutor')" class="btn-tab bg-slate-800 border border-slate-700 text-slate-300 text-[10px] py-1.5 rounded-lg transition">
+        Indutor (+90°)
+      </button>
+      <button id="tab-capacitor" onclick="selecionarComponente('capacitor')" class="btn-tab bg-slate-800 border border-slate-700 text-slate-300 text-[10px] py-1.5 rounded-lg transition">
+        Capacitor (-90°)
+      </button>
+      <button id="tab-impedancia" onclick="selecionarComponente('impedancia')" class="btn-tab bg-slate-800 border border-slate-700 text-slate-300 text-[10px] py-1.5 rounded-lg transition">
+        Impedância (Z)
+      </button>
+    </div>
   </div>
 
-  <!-- Painel Dinâmico de Conceitos em Tempo Real -->
+  <!-- Painel Inferior de Conceito Físico / Equação -->
   <div class="ar-ui-overlay bg-slate-900/95 text-white p-4 rounded-2xl shadow-2xl border border-blue-500/40 backdrop-blur-md">
-    <h3 id="ra-title" class="text-sm font-bold text-amber-400">📷 Aponte para uma das TAGs na Bancada</h3>
+    <h3 id="ra-title" class="text-sm font-bold text-amber-400">⚡ Componente R: Resistor Puro</h3>
     <p id="ra-desc" class="text-xs text-slate-300 mt-1 leading-relaxed">
-      Aponte para o TAG 1 (Resistor), TAG 2 (Indutor), TAG 3 (Capacitor) ou TAG 4 (Impedância Z).
+      <strong>Comportamento:</strong> Dissipação Joule pura. Tensão <em>V(t)</em> e Corrente <em>I(t)</em> estão em <strong>perfeita fase (0°)</strong>.
     </p>
   </div>
 
-  <!-- Cena AR habilitando Presets e Códigos Matriciais 3x3 -->
+  <!-- Cena A-Frame com Marcador HIRO Universal -->
   <a-scene embedded 
            vr-mode-ui="enabled: false"
-           arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
+           arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono; trackingMethod: best;">
 
-    <!-- ==================== TAG 1: RESISTOR (HIRO) ==================== -->
-    <a-marker preset="hiro" id="marker-resistor" smooth="true" smoothCount="5">
-      <a-cylinder position="0 0.3 0" rotation="0 0 90" radius="0.22" height="1.1" color="#fde047">
-        <a-ring position="0 0.25 0" rotation="90 0 0" radius-inner="0.221" radius-outer="0.24" color="#ef4444"></a-ring>
-        <a-ring position="0 0.05 0" rotation="90 0 0" radius-inner="0.221" radius-outer="0.24" color="#a855f7"></a-ring>
-        <a-ring position="0 -0.15 0" rotation="90 0 0" radius-inner="0.221" radius-outer="0.24" color="#78350f"></a-ring>
-      </a-cylinder>
-      <a-entity position="0 1.0 0">
-        <a-box position="0.5 0 0" width="1" height="0.04" depth="0.04" color="#ef4444"></a-box>
-        <a-cone position="1.05 0 0" rotation="0 0 -90" radius-bottom="0.08" height="0.15" color="#ef4444"></a-cone>
-        <a-text value="V(t) [0 deg]" position="0.2 0.2 0" scale="0.8 0.8 0.8" color="#ef4444"></a-text>
-        <a-box position="0.4 -0.15 0" width="0.8" height="0.03" depth="0.03" color="#3b82f6"></a-box>
-        <a-cone position="0.85 -0.15 0" rotation="0 0 -90" radius-bottom="0.07" height="0.12" color="#3b82f6"></a-cone>
-        <a-text value="I(t) [0 deg]" position="0.2 -0.35 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
+    <a-marker preset="hiro" id="main-marker" smooth="true" smoothCount="5">
+      
+      <!-- 1. GRUPO RESISTOR 3D -->
+      <a-entity id="grupo-resistor" visible="true">
+        <a-cylinder position="0 0.3 0" rotation="0 0 90" radius="0.22" height="1.1" color="#fde047">
+          <a-ring position="0 0.25 0" rotation="90 0 0" radius-inner="0.221" radius-outer="0.24" color="#ef4444"></a-ring>
+          <a-ring position="0 0.05 0" rotation="90 0 0" radius-inner="0.221" radius-outer="0.24" color="#a855f7"></a-ring>
+          <a-ring position="0 -0.15 0" rotation="90 0 0" radius-inner="0.221" radius-outer="0.24" color="#78350f"></a-ring>
+        </a-cylinder>
+        <a-entity position="0 1.0 0">
+          <a-box position="0.5 0 0" width="1" height="0.04" depth="0.04" color="#ef4444"></a-box>
+          <a-cone position="1.05 0 0" rotation="0 0 -90" radius-bottom="0.08" height="0.15" color="#ef4444"></a-cone>
+          <a-text value="V(t) [0 deg]" position="0.2 0.2 0" scale="0.8 0.8 0.8" color="#ef4444"></a-text>
+          <a-box position="0.4 -0.15 0" width="0.8" height="0.03" depth="0.03" color="#3b82f6"></a-box>
+          <a-cone position="0.85 -0.15 0" rotation="0 0 -90" radius-bottom="0.07" height="0.12" color="#3b82f6"></a-cone>
+          <a-text value="I(t) [0 deg]" position="0.2 -0.35 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
+        </a-entity>
       </a-entity>
-    </a-marker>
 
-    <!-- ==================== TAG 2: INDUTOR (KANJI) ==================== -->
-    <a-marker preset="kanji" id="marker-indutor" smooth="true" smoothCount="5">
-      <a-torus position="0 0.3 0" rotation="90 0 0" radius="0.4" radius-tubular="0.08" color="#d97706"></a-torus>
-      <a-cylinder position="0 0.3 0" radius="0.16" height="0.7" color="#64748b"></a-cylinder>
-      <a-entity position="0 1.0 0">
-        <a-box position="0 0.5 0" width="0.04" height="1" depth="0.04" color="#ef4444"></a-box>
-        <a-cone position="0 1.05 0" radius-bottom="0.08" height="0.15" color="#ef4444"></a-cone>
-        <a-text value="V(t) [+90 deg]" position="0.1 0.7 0" scale="0.8 0.8 0.8" color="#ef4444"></a-text>
-        <a-box position="0.4 0 0" width="0.8" height="0.03" depth="0.03" color="#3b82f6"></a-box>
-        <a-cone position="0.85 0 0" rotation="0 0 -90" radius-bottom="0.07" height="0.12" color="#3b82f6"></a-cone>
-        <a-text value="I(t) [0 deg]" position="0.3 -0.2 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
+      <!-- 2. GRUPO INDUTOR 3D -->
+      <a-entity id="grupo-indutor" visible="false">
+        <a-torus position="0 0.3 0" rotation="90 0 0" radius="0.4" radius-tubular="0.08" color="#d97706"></a-torus>
+        <a-cylinder position="0 0.3 0" radius="0.16" height="0.7" color="#64748b"></a-cylinder>
+        <a-entity position="0 1.0 0">
+          <a-box position="0 0.5 0" width="0.04" height="1" depth="0.04" color="#ef4444"></a-box>
+          <a-cone position="0 1.05 0" radius-bottom="0.08" height="0.15" color="#ef4444"></a-cone>
+          <a-text value="V(t) [+90 deg]" position="0.1 0.7 0" scale="0.8 0.8 0.8" color="#ef4444"></a-text>
+          <a-box position="0.4 0 0" width="0.8" height="0.03" depth="0.03" color="#3b82f6"></a-box>
+          <a-cone position="0.85 0 0" rotation="0 0 -90" radius-bottom="0.07" height="0.12" color="#3b82f6"></a-cone>
+          <a-text value="I(t) [0 deg]" position="0.3 -0.2 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
+        </a-entity>
       </a-entity>
-    </a-marker>
 
-    <!-- ==================== TAG 3: CAPACITOR (BARCODE ID: 5) ==================== -->
-    <a-marker type="barcode" value="5" id="marker-capacitor" smooth="true" smoothCount="5">
-      <a-cylinder position="-0.15 0.3 0" radius="0.35" height="0.04" color="#0284c7" rotation="0 90 0"></a-cylinder>
-      <a-cylinder position="0.15 0.3 0" radius="0.35" height="0.04" color="#0284c7" rotation="0 90 0"></a-cylinder>
-      <a-cylinder position="0 0.3 0" radius="0.02" height="0.8" color="#94a3b8" rotation="0 0 90"></a-cylinder>
-      <a-entity position="0 1.0 0">
-        <!-- V em 0° horizontal -->
-        <a-box position="0.4 0 0" width="0.8" height="0.03" depth="0.03" color="#ef4444"></a-box>
-        <a-cone position="0.85 0 0" rotation="0 0 -90" radius-bottom="0.07" height="0.12" color="#ef4444"></a-cone>
-        <a-text value="V(t) [0 deg]" position="0.3 -0.2 0" scale="0.8 0.8 0.8" color="#ef4444"></a-text>
-        <!-- I adiantada +90° para cima (ou V atrasada -90°) -->
-        <a-box position="0 0.5 0" width="0.04" height="1" depth="0.04" color="#3b82f6"></a-box>
-        <a-cone position="0 1.05 0" radius-bottom="0.08" height="0.15" color="#3b82f6"></a-cone>
-        <a-text value="I(t) [+90 deg]" position="0.1 0.7 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
+      <!-- 3. GRUPO CAPACITOR 3D -->
+      <a-entity id="grupo-capacitor" visible="false">
+        <a-cylinder position="-0.15 0.3 0" radius="0.35" height="0.04" color="#0284c7" rotation="0 90 0"></a-cylinder>
+        <a-cylinder position="0.15 0.3 0" radius="0.35" height="0.04" color="#0284c7" rotation="0 90 0"></a-cylinder>
+        <a-cylinder position="0 0.3 0" radius="0.02" height="0.8" color="#94a3b8" rotation="0 0 90"></a-cylinder>
+        <a-entity position="0 1.0 0">
+          <a-box position="0.4 0 0" width="0.8" height="0.03" depth="0.03" color="#ef4444"></a-box>
+          <a-cone position="0.85 0 0" rotation="0 0 -90" radius-bottom="0.07" height="0.12" color="#ef4444"></a-cone>
+          <a-text value="V(t) [0 deg]" position="0.3 -0.2 0" scale="0.8 0.8 0.8" color="#ef4444"></a-text>
+          <a-box position="0 0.5 0" width="0.04" height="1" depth="0.04" color="#3b82f6"></a-box>
+          <a-cone position="0 1.05 0" radius-bottom="0.08" height="0.15" color="#3b82f6"></a-cone>
+          <a-text value="I(t) [+90 deg]" position="0.1 0.7 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
+        </a-entity>
       </a-entity>
-    </a-marker>
 
-    <!-- ==================== TAG 4: TRIÂNGULO DE IMPEDÂNCIA Z (BARCODE ID: 6) ==================== -->
-    <a-marker type="barcode" value="6" id="marker-impedancia" smooth="true" smoothCount="5">
-      <!-- Base R (Horizontal) -->
-      <a-box position="0.5 0.1 0" width="1" height="0.04" depth="0.04" color="#f59e0b"></a-box>
-      <a-text value="R" position="0.4 0.25 0" color="#f59e0b" scale="0.9 0.9 0.9"></a-text>
-      <!-- Altura (XL - XC) Vertical -->
-      <a-box position="1.0 0.5 0" width="0.04" height="0.8" depth="0.04" color="#8b5cf6"></a-box>
-      <a-text value="X = (XL - XC)" position="1.05 0.5 0" color="#8b5cf6" scale="0.7 0.7 0.7"></a-text>
-      <!-- Hipotenusa Z (Inclinada) -->
-      <a-box position="0.5 0.5 0" rotation="0 0 38.6" width="1.28" height="0.05" depth="0.05" color="#10b981"></a-box>
-      <a-text value="Z = sqrt(R^2 + X^2)" position="0.1 0.7 0" color="#10b981" scale="0.8 0.8 0.8"></a-text>
+      <!-- 4. GRUPO IMPEDÂNCIA Z 3D -->
+      <a-entity id="grupo-impedancia" visible="false">
+        <a-box position="0.5 0.1 0" width="1" height="0.04" depth="0.04" color="#f59e0b"></a-box>
+        <a-text value="R" position="0.4 0.25 0" color="#f59e0b" scale="0.9 0.9 0.9"></a-text>
+        <a-box position="1.0 0.5 0" width="0.04" height="0.8" depth="0.04" color="#8b5cf6"></a-box>
+        <a-text value="X = (XL - XC)" position="1.05 0.5 0" color="#8b5cf6" scale="0.7 0.7 0.7"></a-text>
+        <a-box position="0.5 0.5 0" rotation="0 0 38.6" width="1.28" height="0.05" depth="0.05" color="#10b981"></a-box>
+        <a-text value="Z = sqrt(R^2 + X^2)" position="0.1 0.7 0" color="#10b981" scale="0.8 0.8 0.8"></a-text>
+      </a-entity>
+
     </a-marker>
 
     <a-entity camera="near: 0.01; far: 1000;"></a-entity>
   </a-scene>
 
   <script>
-    const title = document.getElementById('ra-title');
-    const desc = document.getElementById('ra-desc');
+    const titulos = {
+      resistor: "⚡ Componente R: Resistor Puro (0°)",
+      indutor: "🌀 Componente L: Indutor Ideal (+90°)",
+      capacitor: "🔋 Componente C: Capacitor Ideal (-90°)",
+      impedancia: "📐 Triângulo de Impedância Fasorial (Z)"
+    };
 
-    const mResistor = document.getElementById('marker-resistor');
-    const mIndutor = document.getElementById('marker-indutor');
-    const mCapacitor = document.getElementById('marker-capacitor');
-    const mImpedancia = document.getElementById('marker-impedancia');
+    const descricoes = {
+      resistor: "<strong>Comportamento:</strong> Dissipação Joule pura. Tensão <em>V(t)</em> e Corrente <em>I(t)</em> estão em <strong>perfeita fase (0°)</strong>. Independe da frequência.",
+      indutor: "<strong>Comportamento:</strong> Armazena campo magnético. Reatância <em>X<sub>L</sub> = 2·π·f·L</em>. Tensão <em>V(t)</em> fica <strong>adiantada em +90°</strong> em relação à corrente.",
+      capacitor: "<strong>Comportamento:</strong> Armazena campo elétrico. Reatância <em>X<sub>C</sub> = 1/(2·π·f·C)</em>. Corrente <em>I(t)</em> fica <strong>adiantada em +90°</strong> (Tensão atrasada em -90°).",
+      impedancia: "<strong>Equação Fasorial:</strong> <em>Z = √( R² + (X<sub>L</sub> - X<sub>C</sub>)² )</em>. Relação geométrica entre resistência pura (R) e a reatância resultante (X)."
+    };
 
-    if (mResistor) {
-      mResistor.addEventListener('markerFound', () => {
-        title.innerText = "⚡ TAG 1: Resistor Puro (R)";
-        desc.innerHTML = "<strong>Comportamento:</strong> Efeito Joule. Tensão e Corrente em <strong>fase (0°)</strong>. Não depende da frequência.";
+    window.selecionarComponente = function(tipo) {
+      ['resistor', 'indutor', 'capacitor', 'impedancia'].forEach(k => {
+        const grp = document.getElementById('grupo-' + k);
+        const tab = document.getElementById('tab-' + k);
+        if (grp) grp.setAttribute('visible', k === tipo);
+        if (tab) {
+          if (k === tipo) {
+            tab.className = "btn-tab active bg-blue-600 border border-blue-400 text-white text-[10px] py-1.5 rounded-lg font-bold shadow";
+          } else {
+            tab.className = "btn-tab bg-slate-800 border border-slate-700 text-slate-300 text-[10px] py-1.5 rounded-lg transition";
+          }
+        }
       });
-    }
 
-    if (mIndutor) {
-      mIndutor.addEventListener('markerFound', () => {
-        title.innerText = "🌀 TAG 2: Indutor Ideal (L / XL)";
-        desc.innerHTML = "<strong>Comportamento:</strong> Campo Magnético. Reatância <em>X<sub>L</sub> = 2·π·f·L</em>. Tensão <strong>adiantada em +90°</strong>.";
-      });
-    }
-
-    if (mCapacitor) {
-      mCapacitor.addEventListener('markerFound', () => {
-        title.innerText = "🔋 TAG 3: Capacitor (C / XC)";
-        desc.innerHTML = "<strong>Comportamento:</strong> Campo Elétrico. Reatância <em>X<sub>C</sub> = 1/(2·π·f·C)</em>. Corrente <strong>adiantada em +90°</strong> (Tensão atrasada em -90°).";
-      });
-    }
-
-    if (mImpedancia) {
-      mImpedancia.addEventListener('markerFound', () => {
-        title.innerText = "📐 TAG 4: Triângulo de Impedância (Z)";
-        desc.innerHTML = "<strong>Equação Fasorial:</strong> <em>Z = √( R² + (X<sub>L</sub> - X<sub>C</sub>)² )</em>. Relação trigonométrica entre Resistência e Reatâncias.";
-      });
-    }
+      document.getElementById('ra-title').innerHTML = titulos[tipo];
+      document.getElementById('ra-desc').innerHTML = descricoes[tipo];
+    };
   </script>
 </body>
 </html>
