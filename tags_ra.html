@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marcadores de Realidade Aumentada - CircuitosEdu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; color: black; }
+      .tag-page { page-break-after: always; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 p-6 min-h-screen">
+
+  <!-- Cabeçalho de Instruções -->
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-8 no-print">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 class="text-xl font-bold text-slate-900">🏷️ Marcadores Ópticos de Realidade Aumentada (TAGs)</h1>
+        <p class="text-xs text-slate-600 mt-1">
+          Utilize estes marcadores nas bancadas do laboratório ou aponte a câmera do celular diretamente para esta tela.
+        </p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow transition flex items-center gap-2">
+          <span>🖨️ Imprimir TAGs (PDF)</span>
+        </button>
+        <a href="index.html" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1">
+          <span>Trilha</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grade de Marcadores SVG Nativos (Sem risco de link quebrado) -->
+  <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+
+    <!-- MARCADOR 1: HIRO (Resistor) -->
+    <div class="bg-white p-6 rounded-2xl border-2 border-slate-300 shadow-sm flex flex-col items-center text-center tag-page">
+      <span class="bg-amber-100 text-amber-900 font-bold text-xs px-3 py-1 rounded-full mb-3">
+        TAG 1 — Marcador HIRO (Resistor)
+      </span>
+      <p class="text-xs text-slate-500 mb-4">Projeta o Resistor 3D com Tensão e Corrente em fase (0°)</p>
+      
+      <!-- Desenho Vetorial Preciso do Marcador HIRO -->
+      <div class="w-64 h-64 bg-black p-8 flex items-center justify-center">
+        <div class="w-full h-full bg-white flex items-center justify-center p-2">
+          <svg viewBox="0 0 100 100" class="w-full h-full">
+            <!-- Letras H I R O em bloco estilizado -->
+            <rect x="10" y="10" width="16" height="80" fill="black"/>
+            <rect x="10" y="42" width="40" height="16" fill="black"/>
+            <rect x="34" y="10" width="16" height="80" fill="black"/>
+            <rect x="60" y="10" width="30" height="80" fill="black"/>
+            <rect x="70" y="24" width="20" height="24" fill="white"/>
+            <rect x="70" y="60" width="20" height="30" fill="white"/>
+          </svg>
+        </div>
+      </div>
+      <p class="text-[11px] font-mono text-slate-400 mt-4">Padrão: preset="hiro"</p>
+    </div>
+
+    <!-- MARCADOR 2: KANJI (Indutor) -->
+    <div class="bg-white p-6 rounded-2xl border-2 border-slate-300 shadow-sm flex flex-col items-center text-center tag-page">
+      <span class="bg-indigo-100 text-indigo-900 font-bold text-xs px-3 py-1 rounded-full mb-3">
+        TAG 2 — Marcador KANJI (Indutor)
+      </span>
+      <p class="text-xs text-slate-500 mb-4">Projeta o Indutor 3D com Tensão adiantada em +90°</p>
+
+      <!-- Desenho Vetorial do Marcador KANJI -->
+      <div class="w-64 h-64 bg-black p-8 flex items-center justify-center">
+        <div class="w-full h-full bg-white flex items-center justify-center p-2">
+          <svg viewBox="0 0 100 100" class="w-full h-full">
+            <rect x="15" y="15" width="70" height="14" fill="black"/>
+            <rect x="43" y="15" width="14" height="70" fill="black"/>
+            <rect x="20" y="45" width="60" height="12" fill="black"/>
+            <rect x="25" y="72" width="50" height="14" fill="black"/>
+          </svg>
+        </div>
+      </div>
+      <p class="text-[11px] font-mono text-slate-400 mt-4">Padrão: preset="kanji"</p>
+    </div>
+
+  </div>
+
+</body>
+</html>
