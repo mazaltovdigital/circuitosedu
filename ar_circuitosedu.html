@@ -3,22 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CircuitosEdu WebAR - Fasores e Componentes 3D</title>
+  <title>CircuitosEdu WebAR - Modelos Fasoriais e Componentes 3D</title>
   
+  <!-- A-Frame e AR.js compatíveis com WebRTC/Safari iOS e Chrome Android -->
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    body { margin: 0; overflow: hidden; font-family: sans-serif; }
+    body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
     .ar-ui-overlay {
       position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 9999;
-      width: 90%;
-      max-width: 440px;
+      width: 92%;
+      max-width: 480px;
     }
     .top-bar {
       position: fixed;
@@ -27,29 +28,30 @@
       transform: translateX(-50%);
       z-index: 9999;
       width: 95%;
-      max-width: 460px;
+      max-width: 480px;
     }
     .btn-tab.active {
       background-color: #2563eb;
       color: #ffffff;
       border-color: #60a5fa;
-      font-weight: bold;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(37, 99, 235, 0.6);
     }
   </style>
 </head>
 <body>
 
-  <!-- Barra Superior com Seletor Interativo de Modelos -->
+  <!-- Barra Superior com Seletor Rápido de Componentes -->
   <div class="top-bar bg-slate-900/95 text-white p-3 rounded-2xl shadow-2xl border border-slate-700 backdrop-blur-md">
     <div class="flex justify-between items-center mb-2">
       <div class="flex items-center gap-2">
         <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
-        <span class="text-xs font-bold tracking-wide">CircuitosEdu WebAR</span>
+        <span class="text-xs font-bold tracking-wide">CircuitosEdu WebAR (4 Projeções 3D)</span>
       </div>
       <a href="index.html" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-600 transition">Voltar à Trilha</a>
     </div>
 
-    <!-- Botões de Troca de Modelo 3D -->
+    <!-- Navegação entre os 4 Modelos Didáticos -->
     <div class="grid grid-cols-4 gap-1.5 text-center">
       <button id="tab-resistor" onclick="selecionarComponente('resistor')" class="btn-tab active bg-slate-800 border border-slate-700 text-slate-300 text-[10px] py-1.5 rounded-lg transition">
         Resistor (0°)
@@ -61,16 +63,16 @@
         Capacitor (-90°)
       </button>
       <button id="tab-impedancia" onclick="selecionarComponente('impedancia')" class="btn-tab bg-slate-800 border border-slate-700 text-slate-300 text-[10px] py-1.5 rounded-lg transition">
-        Impedância (Z)
+        Triângulo Z
       </button>
     </div>
   </div>
 
-  <!-- Painel Inferior de Conceito Físico / Equação -->
+  <!-- Painel de Transposição Didática e Leis Físicas -->
   <div class="ar-ui-overlay bg-slate-900/95 text-white p-4 rounded-2xl shadow-2xl border border-blue-500/40 backdrop-blur-md">
-    <h3 id="ra-title" class="text-sm font-bold text-amber-400">⚡ Componente R: Resistor Puro</h3>
+    <h3 id="ra-title" class="text-sm font-bold text-amber-400">⚡ Componente R: Resistor Puro (0°)</h3>
     <p id="ra-desc" class="text-xs text-slate-300 mt-1 leading-relaxed">
-      <strong>Comportamento:</strong> Dissipação Joule pura. Tensão <em>V(t)</em> e Corrente <em>I(t)</em> estão em <strong>perfeita fase (0°)</strong>.
+      <strong>Comportamento Físico:</strong> Dissipação Joule pura. Tensão <em>V(t)</em> e Corrente <em>I(t)</em> permanecem em <strong>perfeita fase (0°)</strong>.
     </p>
   </div>
 
@@ -81,60 +83,109 @@
 
     <a-marker preset="hiro" id="main-marker" smooth="true" smoothCount="5">
       
-      <!-- 1. GRUPO RESISTOR 3D -->
+      <!-- ==================== 1. GRUPO RESISTOR 3D (EM FASE 0°) ==================== -->
       <a-entity id="grupo-resistor" visible="true">
+        <!-- Corpo e Terminais do Resistor -->
         <a-cylinder position="0 0.3 0" rotation="0 0 90" radius="0.22" height="1.1" color="#fde047">
           <a-ring position="0 0.25 0" rotation="90 0 0" radius-inner="0.221" radius-outer="0.24" color="#ef4444"></a-ring>
           <a-ring position="0 0.05 0" rotation="90 0 0" radius-inner="0.221" radius-outer="0.24" color="#a855f7"></a-ring>
           <a-ring position="0 -0.15 0" rotation="90 0 0" radius-inner="0.221" radius-outer="0.24" color="#78350f"></a-ring>
         </a-cylinder>
-        <a-entity position="0 1.0 0">
+        <a-cylinder position="-0.7 0.3 0" rotation="0 0 90" radius="0.03" height="0.4" color="#cbd5e1"></a-cylinder>
+        <a-cylinder position="0.7 0.3 0" rotation="0 0 90" radius="0.03" height="0.4" color="#cbd5e1"></a-cylinder>
+
+        <!-- Diagrama Fasorial em Fase -->
+        <a-entity position="0 1.1 0">
           <a-box position="0.5 0 0" width="1" height="0.04" depth="0.04" color="#ef4444"></a-box>
           <a-cone position="1.05 0 0" rotation="0 0 -90" radius-bottom="0.08" height="0.15" color="#ef4444"></a-cone>
           <a-text value="V(t) [0 deg]" position="0.2 0.2 0" scale="0.8 0.8 0.8" color="#ef4444"></a-text>
+
           <a-box position="0.4 -0.15 0" width="0.8" height="0.03" depth="0.03" color="#3b82f6"></a-box>
           <a-cone position="0.85 -0.15 0" rotation="0 0 -90" radius-bottom="0.07" height="0.12" color="#3b82f6"></a-cone>
           <a-text value="I(t) [0 deg]" position="0.2 -0.35 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
         </a-entity>
       </a-entity>
 
-      <!-- 2. GRUPO INDUTOR 3D -->
+      <!-- ==================== 2. GRUPO INDUTOR 3D (+90°) ==================== -->
       <a-entity id="grupo-indutor" visible="false">
-        <a-torus position="0 0.3 0" rotation="90 0 0" radius="0.4" radius-tubular="0.08" color="#d97706"></a-torus>
-        <a-cylinder position="0 0.3 0" radius="0.16" height="0.7" color="#64748b"></a-cylinder>
-        <a-entity position="0 1.0 0">
+        <!-- Bobina Toroidal e Núcleo Ferromagnético -->
+        <a-torus position="0 0.35 0" rotation="90 0 0" radius="0.42" radius-tubular="0.08" color="#d97706" segments-tubular="32"></a-torus>
+        <a-cylinder position="0 0.35 0" radius="0.18" height="0.8" color="#64748b"></a-cylinder>
+
+        <!-- Fasor V Adiantado 90° -->
+        <a-entity position="0 1.1 0">
+          <!-- V(t) para cima (+90°) -->
           <a-box position="0 0.5 0" width="0.04" height="1" depth="0.04" color="#ef4444"></a-box>
           <a-cone position="0 1.05 0" radius-bottom="0.08" height="0.15" color="#ef4444"></a-cone>
           <a-text value="V(t) [+90 deg]" position="0.1 0.7 0" scale="0.8 0.8 0.8" color="#ef4444"></a-text>
+
+          <!-- I(t) horizontal (0°) -->
           <a-box position="0.4 0 0" width="0.8" height="0.03" depth="0.03" color="#3b82f6"></a-box>
           <a-cone position="0.85 0 0" rotation="0 0 -90" radius-bottom="0.07" height="0.12" color="#3b82f6"></a-cone>
           <a-text value="I(t) [0 deg]" position="0.3 -0.2 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
         </a-entity>
       </a-entity>
 
-      <!-- 3. GRUPO CAPACITOR 3D -->
+      <!-- ==================== 3. GRUPO CAPACITOR 3D REFINADO (-90°) ==================== -->
       <a-entity id="grupo-capacitor" visible="false">
-        <a-cylinder position="-0.15 0.3 0" radius="0.35" height="0.04" color="#0284c7" rotation="0 90 0"></a-cylinder>
-        <a-cylinder position="0.15 0.3 0" radius="0.35" height="0.04" color="#0284c7" rotation="0 90 0"></a-cylinder>
-        <a-cylinder position="0 0.3 0" radius="0.02" height="0.8" color="#94a3b8" rotation="0 0 90"></a-cylinder>
-        <a-entity position="0 1.0 0">
-          <a-box position="0.4 0 0" width="0.8" height="0.03" depth="0.03" color="#ef4444"></a-box>
-          <a-cone position="0.85 0 0" rotation="0 0 -90" radius-bottom="0.07" height="0.12" color="#ef4444"></a-cone>
+        <!-- Estrutura Física: Placas Paralelas, Dielétrico e Campo Elétrico E -->
+        <a-cylinder position="-0.22 0.35 0" radius="0.4" height="0.05" color="#0284c7" rotation="0 90 0"></a-cylinder>
+        <a-cylinder position="0.22 0.35 0" radius="0.4" height="0.05" color="#0284c7" rotation="0 90 0"></a-cylinder>
+        <!-- Dielétrico Central Translúcido -->
+        <a-box position="0 0.35 0" width="0.34" height="0.6" depth="0.6" color="#38bdf8" opacity="0.35" transparent="true"></a-box>
+        <!-- Terminais Metálicos -->
+        <a-cylinder position="-0.5 0.35 0" radius="0.025" height="0.5" color="#cbd5e1" rotation="0 0 90"></a-cylinder>
+        <a-cylinder position="0.5 0.35 0" radius="0.025" height="0.5" color="#cbd5e1" rotation="0 0 90"></a-cylinder>
+
+        <!-- Linhas de Campo Elétrico E no Dielétrico -->
+        <a-entity position="0 0.35 0">
+          <a-box position="0 0.15 0" width="0.38" height="0.015" depth="0.015" color="#facc15"></a-box>
+          <a-box position="0 0 0" width="0.38" height="0.015" depth="0.015" color="#facc15"></a-box>
+          <a-box position="0 -0.15 0" width="0.38" height="0.015" depth="0.015" color="#facc15"></a-box>
+          <a-text value="Campo E" position="-0.15 0.45 0" scale="0.6 0.6 0.6" color="#facc15"></a-text>
+        </a-entity>
+
+        <!-- Diagrama Fasorial: Corrente I Adiantada +90° (Tensão V Atrasada -90°) -->
+        <a-entity position="0 1.25 0">
+          <!-- Vetor Tensão V(t) em 0° horizontal (Referência) -->
+          <a-box position="0.45 0 0" width="0.9" height="0.04" depth="0.04" color="#ef4444"></a-box>
+          <a-cone position="0.95 0 0" rotation="0 0 -90" radius-bottom="0.08" height="0.15" color="#ef4444"></a-cone>
           <a-text value="V(t) [0 deg]" position="0.3 -0.2 0" scale="0.8 0.8 0.8" color="#ef4444"></a-text>
+
+          <!-- Vetor Corrente I(t) em +90° vertical (Adiantada) -->
           <a-box position="0 0.5 0" width="0.04" height="1" depth="0.04" color="#3b82f6"></a-box>
           <a-cone position="0 1.05 0" radius-bottom="0.08" height="0.15" color="#3b82f6"></a-cone>
-          <a-text value="I(t) [+90 deg]" position="0.1 0.7 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
+          <a-text value="I(t) [+90 deg] (Adiantada)" position="0.1 0.8 0" scale="0.8 0.8 0.8" color="#3b82f6"></a-text>
+
+          <!-- Rótulo Pedagógico da Reatância XC -->
+          <a-text value="Xc = 1 / (2*pi*f*C)" position="-0.6 1.3 0" scale="0.7 0.7 0.7" color="#38bdf8"></a-text>
         </a-entity>
       </a-entity>
 
-      <!-- 4. GRUPO IMPEDÂNCIA Z 3D -->
+      <!-- ==================== 4. GRUPO TRIÂNGULO DE IMPEDÂNCIA Z 3D ==================== -->
       <a-entity id="grupo-impedancia" visible="false">
-        <a-box position="0.5 0.1 0" width="1" height="0.04" depth="0.04" color="#f59e0b"></a-box>
-        <a-text value="R" position="0.4 0.25 0" color="#f59e0b" scale="0.9 0.9 0.9"></a-text>
-        <a-box position="1.0 0.5 0" width="0.04" height="0.8" depth="0.04" color="#8b5cf6"></a-box>
-        <a-text value="X = (XL - XC)" position="1.05 0.5 0" color="#8b5cf6" scale="0.7 0.7 0.7"></a-text>
-        <a-box position="0.5 0.5 0" rotation="0 0 38.6" width="1.28" height="0.05" depth="0.05" color="#10b981"></a-box>
-        <a-text value="Z = sqrt(R^2 + X^2)" position="0.1 0.7 0" color="#10b981" scale="0.8 0.8 0.8"></a-text>
+        <!-- Plano Retangular / Base Fasorial -->
+        <a-entity position="-0.4 0.2 0">
+          
+          <!-- Cateto Adjacente: Resistência R (Eixo Real - Amarelo/Dourado) -->
+          <a-box position="0.6 0 0" width="1.2" height="0.06" depth="0.06" color="#f59e0b"></a-box>
+          <a-cone position="1.25 0 0" rotation="0 0 -90" radius-bottom="0.08" height="0.14" color="#f59e0b"></a-cone>
+          <a-text value="R (Ohm - Real)" position="0.35 -0.2 0" scale="0.75 0.75 0.75" color="#f59e0b"></a-text>
+
+          <!-- Cateto Oposto: Reatância Resultante X = XL - XC (Eixo Imaginário - Roxo/Azul) -->
+          <a-box position="1.2 0.45 0" width="0.06" height="0.9" depth="0.06" color="#8b5cf6"></a-box>
+          <a-cone position="1.2 0.95 0" radius-bottom="0.08" height="0.14" color="#8b5cf6"></a-cone>
+          <a-text value="X = (XL - XC)" position="1.3 0.5 0" scale="0.7 0.7 0.7" color="#8b5cf6"></a-text>
+
+          <!-- Hipotenusa: Impedância Total Z (Verde Esmeralda) -->
+          <a-box position="0.6 0.45 0" rotation="0 0 36.87" width="1.5" height="0.08" depth="0.08" color="#10b981"></a-box>
+          <a-cone position="1.2 0.9 0" rotation="0 0 -53.13" radius-bottom="0.1" height="0.16" color="#10b981"></a-cone>
+          <a-text value="Z = sqrt( R^2 + X^2 )" position="-0.1 0.75 0" scale="0.85 0.85 0.85" color="#10b981"></a-text>
+
+          <!-- Arco do Ângulo de Defasagem Teta (theta) ligado ao Fator de Potência FP -->
+          <a-ring position="0 0 0" rotation="0 0 0" radius-inner="0.28" radius-outer="0.32" theta-start="0" theta-length="37" color="#ec4899"></a-ring>
+          <a-text value="theta (FP = cos theta)" position="0.35 0.12 0" scale="0.65 0.65 0.65" color="#ec4899"></a-text>
+        </a-entity>
       </a-entity>
 
     </a-marker>
@@ -142,19 +193,20 @@
     <a-entity camera="near: 0.01; far: 1000;"></a-entity>
   </a-scene>
 
+  <!-- Lógica Dinâmica de Atualização dos Modelos e Descrições -->
   <script>
     const titulos = {
       resistor: "⚡ Componente R: Resistor Puro (0°)",
       indutor: "🌀 Componente L: Indutor Ideal (+90°)",
-      capacitor: "🔋 Componente C: Capacitor Ideal (-90°)",
-      impedancia: "📐 Triângulo de Impedância Fasorial (Z)"
+      capacitor: "🔋 Componente C: Capacitor Ideal (-90° / Adiantamento de I)",
+      impedancia: "📐 Triângulo de Impedância Fasorial (Z) & Fator de Potência"
     };
 
     const descricoes = {
-      resistor: "<strong>Comportamento:</strong> Dissipação Joule pura. Tensão <em>V(t)</em> e Corrente <em>I(t)</em> estão em <strong>perfeita fase (0°)</strong>. Independe da frequência.",
-      indutor: "<strong>Comportamento:</strong> Armazena campo magnético. Reatância <em>X<sub>L</sub> = 2·π·f·L</em>. Tensão <em>V(t)</em> fica <strong>adiantada em +90°</strong> em relação à corrente.",
-      capacitor: "<strong>Comportamento:</strong> Armazena campo elétrico. Reatância <em>X<sub>C</sub> = 1/(2·π·f·C)</em>. Corrente <em>I(t)</em> fica <strong>adiantada em +90°</strong> (Tensão atrasada em -90°).",
-      impedancia: "<strong>Equação Fasorial:</strong> <em>Z = √( R² + (X<sub>L</sub> - X<sub>C</sub>)² )</em>. Relação geométrica entre resistência pura (R) e a reatância resultante (X)."
+      resistor: "<strong>Comportamento Físico:</strong> Dissipação Joule pura. Tensão <em>V(t)</em> e Corrente <em>I(t)</em> permanecem em <strong>perfeita fase (0°)</strong>. Independe da frequência da rede.",
+      indutor: "<strong>Comportamento Físico:</strong> Armazenamento de energia em campo magnético. Reatância <em>X<sub>L</sub> = 2·π·f·L</em>. A Tensão <em>V(t)</em> fica <strong>adiantada em +90°</strong> em relação à corrente.",
+      capacitor: "<strong>Comportamento Físico:</strong> Armazenamento de energia em campo elétrico (placas paralelas). Reatância <em>X<sub>C</sub> = 1/(2·π·f·C)</em>. A Corrente <em>I(t)</em> fica <strong>adiantada em +90°</strong> (ou a Tensão fica atrasada em -90°).",
+      impedancia: "<strong>Transposição Matemática:</strong> <em>Z = √( R² + (X<sub>L</sub> - X<sub>C</sub>)² )</em>. O ângulo de defasagem fasorial <strong>θ</strong> determina diretamente o Fator de Potência <em>(FP = cos θ)</em> das instalações de engenharia."
     };
 
     window.selecionarComponente = function(tipo) {
